@@ -5,7 +5,7 @@ const express = require('express'),
 	wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
 
 const app = express();
-let data = scraper.updateData(wikipediaPage);
+let data = {}; 
 
 app.get('/',function(req, res){
 	res.send( {
@@ -43,9 +43,9 @@ app.get('/brexit/:data.json', function (req, res) {
 	}
 });
 
-
-
 const server = app.listen(5000, function () {
 	const host = server.address().address;
 	const port = server.address().port;
 });
+
+data = scraper.updateData(wikipediaPage);
