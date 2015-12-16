@@ -17,31 +17,45 @@ const tableKeys = [
 
 
 const app = express();
-let data = {};
+let data = updateData(wikipediaPage);
+let updated = null;
 
-getPage(wikipediaPage)
-	.then(function(page){
-		cheerio.load(page)('table')
-			.each(function(i,t){
-				if(i<tableKeys.length){
-					let tableArray = parseTable(t);
-					let year = Number(tableKeys[i].split('-')[1]);
-					data[ tableKeys[i] ] = csv.parse( csv.formatRows(tableArray) )
-						.map(function(d){
-							
-							return clean(d, year); 
-						})
-						.filter(function(d){ return d; }); //filter out nulls
-				}
+function updateData(pageURL){
+	let data = {};
+	console.log('updating...');
+	getPage(pageURL)
+		.then(function(page){
+			let tables = cheerio.load(page)('table')
+				
+			tables.each(function(i,t){
+				if( i>=tableKeys.length ) return;
+
+				let tableArray = parseTable(t);
+				let year = Number(tableKeys[i].split('-')[1]);
+				
+				data[ tableKeys[i] ] = csv.parse( csv.formatRows(tableArray) )
+					.map(function(d){	
+						return clean(d, year); 
+					})
+					.filter(function(d){ return d; }); //filter out nulls
 			});
-	})
-	.catch(function(reason){
-		console.log('Failed :( ', reason);
-	});
+			updated = new Date();
+			console.log('updated', updated);
+		})
+		.catch(function(reason){
+			console.log('Failed :( ', reason);
+		});
 
+	return data;
+}
 
 app.get('/brexit/:data.:format', function (req, res) {
-	res.send( data[req.params.data] );
+	res.send( {
+		data:data[req.params.data],
+		updated:updated
+	} );
+	let now = new Date();
+	if(now.getTime() - updated.getTime() >= 60000) data = updateData(wikipediaPage);
 });
 
 const server = app.listen(3000, function () {
