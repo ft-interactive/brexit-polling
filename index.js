@@ -7,6 +7,13 @@ const express = require('express'),
 const app = express();
 let data = scraper.updateData(wikipediaPage);
 
+app.get('/',function(req, res){
+	res.send( {
+		error: 'nothing to see',
+		updated: new Date()
+	} );
+});
+
 app.get('/brexit/:data.json', function (req, res) {
 	if(scraper.tableKeys.indexOf(req.params.data) > -1){
 		res.send( {
