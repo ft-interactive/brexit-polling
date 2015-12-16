@@ -43,7 +43,7 @@ app.get('/brexit/:data.json', function (req, res) {
 	}
 });
 
-const server = app.listen(5000, function () {
+const server = app.listen(process.env.PORT || 5000, function () {
 	const host = server.address().address;
 	const port = server.address().port;
 });
