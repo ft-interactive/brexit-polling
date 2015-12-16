@@ -14,7 +14,7 @@ app.get('/',function(req, res){
 	} );
 });
 
-app.get('/brexit/:data.json', function (req, res) {
+app.get('/:data.json', function (req, res) {
 	if(scraper.tableKeys.indexOf(req.params.data) > -1){
 		res.send( {
 			data: data[req.params.data],
