@@ -114,8 +114,8 @@ function clean(datum, year){ //need to pass in the year as this isn't always in 
 		'startDate':startDate,
 		'endDate':endDate,
 		'remain':Number(datum[remain].replace('%','')),
-		'leave':Number(datum[remain].replace('%','')),
-		'undecided':Number(datum[remain].replace('%','')),
+		'leave':Number(datum[leave].replace('%','')),
+		'undecided':Number(datum[undecided].replace('%','')),
 		'sample':Number(datum['Sample'].replace(/,/g,'')),
 		'pollster':datum[pollster],
 		'notes':datum["Notes"]
