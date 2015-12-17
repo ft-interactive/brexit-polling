@@ -2,9 +2,18 @@
 
 const express = require('express'),
 	scraper = require('./scraper.js'),
-	wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
+	layout = require('./visualization-layout.js'),
+	nunjucks = require('nunjucks');
+
+const 	wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
 
 const app = express();
+
+nunjucks.configure('views', {
+    autoescape: true,
+    express: app
+});
+
 let data = {}; 
 
 app.get('/',function(req, res){
@@ -21,12 +30,8 @@ app.get('/:data.json', function (req, res) {
 			updated: scraper.updated()
 		} );
 	}else if(req.params.data === 'data'){
-		let combinedData = scraper.tableKeys.reduce(function(previousValue, currentValue){
-				return previousValue.concat( data[currentValue] );
-			},[]);
-
 		res.send( {
-			data: combinedData,
+			data: data.combinedData,
 			updated: scraper.updated()
 		} );
 
@@ -43,6 +48,21 @@ app.get('/:data.json', function (req, res) {
 	}
 });
 
+app.get('/latest/:width-x-:height.svg', function (req, res) {
+	let now = new Date();
+	let d = data.combinedData.sort(function(a,b){
+		let aDate = new Date(a.startDate.split('-'));
+		let bDate = new Date(b.startDate.split('-'));
+		return bDate.getTime() - aDate.getTime();
+	})[0];
+
+	res.render( 'latest.svg' , layout.latestPoll(req.params.width, req.params.height, d) );
+	
+	if(now.getTime() - scraper.updated().getTime() >= 60000){
+		return data = scraper.updateData(wikipediaPage);
+	}
+});
+
 const server = app.listen(process.env.PORT || 5000, function () {
 	const host = server.address().address;
 	const port = server.address().port;
@@ -50,3 +70,5 @@ const server = app.listen(process.env.PORT || 5000, function () {
 });
 
 data = scraper.updateData( wikipediaPage );
+
+

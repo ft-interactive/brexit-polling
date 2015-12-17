@@ -1,0 +1,21 @@
+<svg width="{{ width }}" height="{{ height }}">
+	<title>title</title>
+	<text class="chart-title" dy="20">{{ title }}</text>
+	<text class="chart-source" dy="{{ (height - 2) }}" font-size="10px">{{ footer }}</text>
+	
+	<g class="chart-plot" transform="translate({{ margin.left }},{{ margin.top }})">
+		<text text-anchor="start" font-size="20px">{{ remain.title }}</text>
+		<text text-anchor="end" x="{{ width }}" font-size="20px">{{ leave.title }}</text>
+		<text text-anchor="middle" x="{{ (width/2) }}" font-size="20px">{{ undecided.title }}</text>
+		
+		<g class="latest">
+			<rect x="0" y="0" width="{{ remain.width }}" height="{{ remain.height }}" fill="{{ remain.fill }}" class="remain"></rect>
+			<rect x="{{ (remain.width + undecided.width) }}" y="0" width="{{ leave.width }}" height="{{ leave.height }}" fill="{{ leave.fill }}" class="leave"></rect>
+			<rect x="{{ remain.width }}" y="0" width="{{ undecided.width }}" height="{{ undecided.height }}" fill="{{ undecided.fill }}" class="undecided"></rect>
+			<text y="50" dy="-2" font-size="{{ remain.height }}" font-weight="800">{{ remain.value }}%</text>
+			<text y="50" x="{{ width }}" dy="-2" text-anchor="end" font-size="{{ leave.height }}" font-weight="800">{{ leave.value }}%</text>
+		</g>
+	</g>
+	
+	<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="icons.svg#logo" class="chart-watermark" transform="translate(580,980) scale(0.2) "></use>	
+</svg>

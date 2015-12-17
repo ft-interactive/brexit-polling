@@ -14,6 +14,8 @@ const tableKeys = [
 
 let updated = null;
 
+
+
 function updateData(pageURL){
 	let data = {};
 	console.log('updating...', pageURL);
@@ -33,11 +35,18 @@ function updateData(pageURL){
 					})
 					.filter(function(d){ return d; }); //filter out nulls
 			});
+			
+			data.combinedData = tableKeys.reduce(function(previousValue, currentValue){
+				return previousValue.concat( data[currentValue] );
+			},[]);
+			
 			updated = new Date();
 		})
 		.catch(function(reason){
 			console.log('Failed to get ' + pageURL, reason);
 		});
+		
+	
 
 	return data;
 }
