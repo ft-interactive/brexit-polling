@@ -11,7 +11,7 @@ app.get('/',function(req, res){
 	res.send( {
 		error: 'nothing to see',
 		updated: new Date()
-	} );
+	});
 });
 
 app.get('/:data.json', function (req, res) {
@@ -49,4 +49,4 @@ const server = app.listen(process.env.PORT || 5000, function () {
 	console.log(`running ${host} ${port}`);
 });
 
-data = scraper.updateData(wikipediaPage);
+data = scraper.updateData( wikipediaPage );
