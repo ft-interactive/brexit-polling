@@ -4,16 +4,17 @@
 	<text class="chart-source" dy="{{ (height - 2) }}" font-size="10px">{{ footer }}</text>
 	
 	<g class="chart-plot" transform="translate({{ margin.left }},{{ margin.top }})">
-		<text text-anchor="start" font-size="20px">{{ remain.title }}</text>
-		<text text-anchor="end" x="{{ width }}" font-size="20px">{{ leave.title }}</text>
-		<text text-anchor="middle" x="{{ (width/2) }}" font-size="20px">{{ undecided.title }}</text>
+		<text text-anchor="start" dy="-3" font-size="20px">{{ remain.title }}</text>
+		<text text-anchor="end" x="{{ width }}" dy="-3" font-size="20px">{{ leave.title }}</text>
+		<text text-anchor="middle" x="{{ (width/2) }}" dy="-3" font-size="20px">{{ undecided.title }}</text>
 		
 		<g class="latest">
 			<rect x="0" y="0" width="{{ remain.width }}" height="{{ remain.height }}" fill="{{ remain.fill }}" class="remain"></rect>
 			<rect x="{{ (remain.width + undecided.width) }}" y="0" width="{{ leave.width }}" height="{{ leave.height }}" fill="{{ leave.fill }}" class="leave"></rect>
 			<rect x="{{ remain.width }}" y="0" width="{{ undecided.width }}" height="{{ undecided.height }}" fill="{{ undecided.fill }}" class="undecided"></rect>
-			<text y="50" dy="-2" font-size="{{ remain.height }}" font-weight="800">{{ remain.value }}%</text>
-			<text y="50" x="{{ width }}" dy="-2" text-anchor="end" font-size="{{ leave.height }}" font-weight="800">{{ leave.value }}%</text>
+			<text y="50" font-size="{{ remain.height }}" font-weight="800">{{ remain.value }}%</text>
+			<text y="50" x="{{ width }}" text-anchor="end" font-size="{{ leave.height }}" font-weight="800">{{ leave.value }}%</text>
+			<line x1="{{ width/2 }}" y1="0" x2="{{ width/2 }}" y2="{{ remain.height }}" stroke-width="2" stroke="#000" stroke-dasharray="2, 2"></line>
 		</g>
 	</g>
 	

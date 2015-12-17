@@ -16,7 +16,7 @@ function latestPollLayout(width, height, data){
 		
 	let barHeight = height - (margin.top + margin.bottom);
 	let config = {
-		title:'Latest poll',
+		title:'',
 		footer:`${data.pollster} ${data.startDate} - ${data.endDate}`,
 		margin:margin,
 		width:width,
