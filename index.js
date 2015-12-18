@@ -5,16 +5,17 @@ const express = require('express'),
 	layout = require('./visualization-layout.js'),
 	nunjucks = require('nunjucks');
 
-const 	wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
+const wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
 
 const app = express();
+
 
 nunjucks.configure('views', {
     autoescape: true,
     express: app
 });
 
-let data = {}; 
+let data = scraper.updateData( wikipediaPage ); 
 
 app.get('/',function(req, res){
 	res.send( {
@@ -48,6 +49,7 @@ app.get('/:data.json', function (req, res) {
 	}
 });
 
+
 app.get('/latest/:width-x-:height.svg', function (req, res) {
 	let now = new Date();
 	let d = data.combinedData.sort(function(a,b){
@@ -68,7 +70,3 @@ const server = app.listen(process.env.PORT || 5000, function () {
 	const port = server.address().port;
 	console.log(`running ${host} ${port}`);
 });
-
-data = scraper.updateData( wikipediaPage );
-
-

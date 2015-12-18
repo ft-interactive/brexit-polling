@@ -15,7 +15,6 @@ const tableKeys = [
 let updated = null;
 
 
-
 function updateData(pageURL){
 	let data = {};
 	console.log('updating...', pageURL);
