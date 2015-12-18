@@ -11,11 +11,23 @@ const colour = {
 	ftPink:'#fff1e0',
 	font:'#333'
 };
+const isoShortFormat = d3TimeFormat.format('%Y-%m-%d');
+const ftDateFormat = d3TimeFormat.format('%e %b %Y');
 
-function reformatDate(dateString){
-	let isoShortFormat = d3TimeFormat.format('%Y-%m-%d');
-	let ftDateFormat = d3TimeFormat.format('%e %b %Y');
-	return ftDateFormat( isoShortFormat.parse( dateString ) );
+
+function simpleTimeSeries(width, height, data){
+	var processed = data.map(function(d){
+		d.startDate = isoShortFormat.parse(d.startDate);
+		d.startDate = isoShortFormat.parse(d.startDate);
+		return d;
+	}).sort(function(a,b){
+		return b.startDate.getTime() - a.startDate.getTime();
+	});
+	// start date, end date, two/ three? lines, (final values & positions)
+	let config = {
+		
+	}
+	return config;
 }
 
 
@@ -34,7 +46,7 @@ function latestPollLayout(width, height, data){
 	let barHeight = height - (margin.top + margin.bottom);
 	let config = {
 		title:'',
-		footer:`${data.pollster} polling from ${reformatDate(data.startDate)} to ${reformatDate(data.endDate)}. Sample size ${data.sample}`,
+		footer:`${data.pollster} polling from ${ftDateFormat(data.startDate)} to ${ftDateFormat(data.endDate)}. Sample size ${data.sample}`,
 		margin:margin,
 		width:width,
 		height:height,

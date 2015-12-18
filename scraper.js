@@ -112,9 +112,9 @@ function clean(datum, year){ //need to pass in the year as this isn't always in 
 		let day = Number(s.split(' ')[0]);
 
 		if(i===0){
-			startDate = year+'-'+month+'-'+day;
+			startDate = new Date(year, month-1, day);
 		}else{
-			endDate = year+'-'+month+'-'+day;
+			endDate = new Date(year, month-1, day);
 		}
 	});
 

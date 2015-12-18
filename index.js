@@ -52,11 +52,7 @@ app.get('/:data.json', function (req, res) {
 
 app.get('/latest/:width-x-:height.svg', function (req, res) {
 	let now = new Date();
-	let d = data.combinedData.sort(function(a,b){
-		let aDate = new Date(a.startDate.split('-'));
-		let bDate = new Date(b.startDate.split('-'));
-		return bDate.getTime() - aDate.getTime();
-	})[0];
+	let d = data.combinedData.sort(onDate)[0];
 
 	res.render( 'latest.svg' , layout.latestPoll(req.params.width, req.params.height, d) );
 	
@@ -65,6 +61,27 @@ app.get('/latest/:width-x-:height.svg', function (req, res) {
 	}
 });
 
+app.get('/lastmonth/:width-x-:height.svg', function (req, res) {
+	let now = new Date();
+	let d = data.combinedData
+		.filter(function(d){
+			console.log(d);
+			return ((now.getTime() - d.startDate.getTime()) < 1000 * 60 * 60 * 24 * 32);
+		})
+		.sort(onDate);
+		
+	console.log(d.length)
+	res.send('yep');
+//	res.render( 'latest.svg' , layout.latestPoll(req.params.width, req.params.height, d) );
+	
+	if(now.getTime() - scraper.updated().getTime() >= 60000){
+		return data = scraper.updateData(wikipediaPage);
+	}
+});
+
+function onDate(a,b){
+	return b.startDate.getTime() - a.startDate.getTime();
+}
 const server = app.listen(process.env.PORT || 5000, function () {
 	const host = server.address().address;
 	const port = server.address().port;
