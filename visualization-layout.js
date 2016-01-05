@@ -42,11 +42,14 @@ function latestPollLayout(width, height, data){
 	let scale = d3scale.linear()
 		.domain([0,100])
 		.range([0, width - (margin.left + margin.right)]);
-		
+	let sampleString = '';
+	if (data.sample!== null) {
+		sampleString = `Sample size ${data.sample}`;
+	}
 	let barHeight = height - (margin.top + margin.bottom);
 	let config = {
 		title:'',
-		footer:`${data.pollster} polling from ${ftDateFormat(data.startDate)} to ${ftDateFormat(data.endDate)}. Sample size ${data.sample}`,
+		footer:`${data.pollster} polling from ${ftDateFormat(data.startDate)} to ${ftDateFormat(data.endDate)}. ${sampleString}`,
 		margin:margin,
 		width:width,
 		height:height,
