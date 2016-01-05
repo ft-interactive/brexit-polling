@@ -36,7 +36,6 @@ app.get('/:data.json', function (req, res) {
 			updated: scraper.updated(),
 			source: wikipediaPage
 		} );
-
 	}else{
 		res.send( {
 			error: 'no data found for ' + req.params.data,
@@ -65,16 +64,12 @@ app.get('/latest/:width-x-:height.svg', function (req, res) {
 
 app.get('/lastmonth/:width-x-:height.svg', function (req, res) {
 	let now = new Date();
-	let d = data.combinedData
-		.filter(function(d){
-			console.log(d);
-			return ((now.getTime() - d.startDate.getTime()) < 1000 * 60 * 60 * 24 * 32);
-		})
-		.sort(onDate);
-		
-	console.log(d.length)
-	res.send('yep');
-//	res.render( 'latest.svg' , layout.latestPoll(req.params.width, req.params.height, d) );
+	let startDate = new Date();
+	startDate.setMonth(startDate.getMonth()-1 );
+	let dateRange = [ startDate, now] // last month
+	let config = layout.timeSeries(req.params.width, req.params.height, dateRange, data.combinedData);
+	console.log(config);
+	res.render( 'monthly.svg' , config );
 	
 	if(now.getTime() - scraper.updated().getTime() >= 60000){
 		return data = scraper.updateData(wikipediaPage);

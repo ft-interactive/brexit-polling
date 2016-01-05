@@ -1,0 +1,9 @@
+<svg>
+<text>Monthly</text>
+{% for poll in data %}
+<circle></circle>
+{% endfor %}
+<path d="{{ line.remain.path }}" fill="none" stroke="{{line.remain.stroke}}" ></path>
+<path d="{{ line.leave.path }}" fill="none" stroke="{{line.leave.stroke}}"></path>
+<path d="{{ line.undecided.path }}" fill="none" stroke="{{line.undecided.stroke}}"></path>
+</svg>
