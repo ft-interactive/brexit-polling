@@ -45,8 +45,6 @@ function updateData(pageURL){
 			console.log('Failed to get ' + pageURL, reason);
 		});
 		
-	
-
 	return data;
 }
 

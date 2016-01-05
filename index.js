@@ -33,13 +33,15 @@ app.get('/:data.json', function (req, res) {
 	}else if(req.params.data === 'data'){
 		res.send( {
 			data: data.combinedData,
-			updated: scraper.updated()
+			updated: scraper.updated(),
+			source: wikipediaPage
 		} );
 
 	}else{
 		res.send( {
 			error: 'no data found for ' + req.params.data,
-			updated: scraper.updated()
+			updated: scraper.updated(),
+			source: wikipediaPage
 		} );
 	}
 
