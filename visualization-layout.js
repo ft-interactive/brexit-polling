@@ -43,7 +43,7 @@ function latestPollLayout(width, height, data){
 		.domain([0,100])
 		.range([0, width - (margin.left + margin.right)]);
 	let sampleString = '';
-	if (data.sample!== null) {
+	if (data.sample) {
 		sampleString = `Sample size ${data.sample}`;
 	}
 	let barHeight = height - (margin.top + margin.bottom);
