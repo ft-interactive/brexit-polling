@@ -64,7 +64,7 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
 			.filter( e => (isoShortFormat(e.startDate) == parts[1]) )[0];
 	}
 	
-	res.render( 'latest.svg' , layout.singlePoll(req.params.width, req.params.height, d) );
+	res.render( 'single-poll.svg' , layout.singlePoll(req.params.width, req.params.height, d, true) );
 	
 	if(now.getTime() - scraper.updated().getTime() >= 60000){
 		return data = scraper.updateData(wikipediaPage);

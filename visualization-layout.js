@@ -7,9 +7,9 @@ const d3Array = require('d3-array');
 const d3Shape = require('d3-shape');
 
 const colour = {
-	remain:'#d66d06',
-	leave:'#819e9a',//'#458b00',//'#2e6e9e',
-	undecided:'#e9decf',//'#cec69b',
+	remain:'#8897ba', //'#d66d06',
+	leave:'#8eadab', //'#819e9a',//'#458b00',//'#2e6e9e',
+	undecided:'#e9decf',//'#e9decf',//'#cec69b',
 	ftPink:'#fff1e0',
 	font:'#333'
 };
@@ -98,7 +98,7 @@ function simpleTimeSeries(width, height, dateDomain, data){
 }
 
 
-function singlePollLayout(width, height, data){
+function singlePollLayout(width, height, data, metricEmbed){
 	let margin = {
 			top:20,
 			left:0,
@@ -125,6 +125,11 @@ function singlePollLayout(width, height, data){
 		width:width,
 		height:height,
 		fontColour:colour.font,
+		titleSize:'17',
+		metricEmbed: metricEmbed,
+		titleOffset:{
+			x:0,y:-5
+		},
 		valueLabelSize:Math.min(barHeight, 60),
 		leave:{
 			title:'Go',
