@@ -98,22 +98,26 @@ function simpleTimeSeries(width, height, dateDomain, data){
 }
 
 
-function latestPollLayout(width, height, data){
+function singlePollLayout(width, height, data){
 	let margin = {
 			top:20,
 			left:0,
 			bottom:20,
 			right:0
 		};
-		
+
 	let scale = d3scale.linear()
-		.domain([0,100])
-		.range([0, width - (margin.left + margin.right)]);
+		.domain( [0, data.leave + data.remain + data.undecided] )		//we can't rely on the pollsters numbers to add up to 100 so...
+		.range( [0, width - (margin.left + margin.right)] );
+
 	let sampleString = '';
+
 	if (data.sample) {
 		sampleString = `Sample size ${data.sample}`;
 	}
+
 	let barHeight = height - (margin.top + margin.bottom);
+
 	let config = {
 		title:'',
 		footer:`${data.pollster} polling from ${ftDateFormat(data.startDate)} to ${ftDateFormat(data.endDate)}. ${sampleString}`,
@@ -147,6 +151,6 @@ function latestPollLayout(width, height, data){
 }
 
 module.exports = {
-	latestPoll:latestPollLayout,
+	singlePoll:singlePollLayout,
 	timeSeries:simpleTimeSeries
 };
