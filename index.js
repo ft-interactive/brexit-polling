@@ -3,7 +3,8 @@
 const express = require('express'),
 	scraper = require('./scraper.js'),
 	layout = require('./visualization-layout.js'),
-	nunjucks = require('nunjucks');
+	nunjucks = require('nunjucks'),
+	isoShortFormat = require('d3-time-format').format('%Y-%m-%d');
 
 const wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
 
@@ -51,10 +52,18 @@ app.get('/:data.json', function (req, res) {
 });
 
 
-app.get('/latest/:width-x-:height.svg', function (req, res) {
+app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
 	let now = new Date();
 	let d = data.combinedData.sort(onDate)[0];
-
+	if(req.params.id == 'latest'){
+		d = data.combinedData.sort(onDate)[0];
+	}else{
+		let parts = req.params.id.split(',');
+		d = data.combinedData
+			.filter( e => (e.pollster == parts[0]) )
+			.filter( e => (isoShortFormat(e.startDate) == parts[1]) )[0];
+	}
+	
 	res.render( 'latest.svg' , layout.latestPoll(req.params.width, req.params.height, d) );
 	
 	if(now.getTime() - scraper.updated().getTime() >= 60000){
