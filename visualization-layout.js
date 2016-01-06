@@ -125,6 +125,7 @@ function singlePollLayout(width, height, data){
 		width:width,
 		height:height,
 		fontColour:colour.font,
+		valueLabelSize:Math.min(barHeight, 60),
 		leave:{
 			title:'Go',
 			width:scale(data.leave),
