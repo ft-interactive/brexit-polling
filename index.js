@@ -14,7 +14,7 @@ const app = express();
 nunjucks.configure('views', {
     autoescape: true,
     express: app
-});
+}).addFilter('isoShortFormat',isoShortFormat);
 
 let data = scraper.updateData( wikipediaPage ); 
 
@@ -47,6 +47,19 @@ app.get('/:data.json', function (req, res) {
 
 	let now = new Date();
 	if(now.getTime() - scraper.updated().getTime() >= 60000){
+		return data = scraper.updateData(wikipediaPage);
+	}
+});
+
+app.get('/data.html', function (req, res) {
+    let now = new Date();
+    res.render( 'data.html' , {
+        data: data.combinedData,
+        updated: scraper.updated(),
+        source: wikipediaPage
+    });
+    
+    if(now.getTime() - scraper.updated().getTime() >= 60000){
 		return data = scraper.updateData(wikipediaPage);
 	}
 });

@@ -1,0 +1,57 @@
+<html>
+    <head> 
+        <title>Brexit polling table</title>
+        <style>
+            body{
+                font-family: sans-serif;
+            }
+            tr{
+                background-color: #FDF8F2;
+            }
+            tr:nth-child(even) {
+                background: #FFF1E0;
+            }
+            .chart-cell{
+                width:600px;
+                height:100px;
+            }
+            table td, table td * {
+                vertical-align: top;
+            }
+            object{
+                overflow: hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Brexit polling data</h1>
+        <p>source: <a href="{{source}}">wikipedia</a></p>
+        <p>updated: {{updated}}</p>
+        <table>
+            <thead>
+                <th>start date</th>
+                <th>end date</th>
+                <th>pollster</th>
+                <th>remain</th>
+                <th>leave</th>
+                <th>undecided</th>
+                <th>sample</th>
+                <th>chart</th>
+            </thead>
+            <tbody>
+                {% for d in data %}
+                <tr>
+                <td>{{ d.startDate | isoShortFormat }}</td>
+                <td>{{ d.endDate | isoShortFormat }}</td>
+                <td>{{ d.pollster }}</td>
+                <td>{{ d.remain }}</td>
+                <td>{{ d.leave }}</td>
+                <td>{{ d.undecided }}</td>
+                <td>{{ d.sample }}</td>
+                <td class="chart-cell"><object width="600" height="100" data="/poll/{{ d.pollster }},{{ d.startDate | isoShortFormat }}/600-x-100.svg" type="image/svg+xml"></object></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
