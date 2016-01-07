@@ -125,12 +125,15 @@ function singlePollLayout(width, height, data, metricEmbed){
 		width:width,
 		height:height,
 		fontColour:colour.font,
-		titleSize:'17',
 		metricEmbed: metricEmbed,
+		titleSize:'17',
 		titleOffset:{
 			x:0,y:-5
 		},
 		valueLabelSize:Math.min(barHeight, 60),
+        valueLabelOffset:{
+            x:10,y:-10
+        },
 		leave:{
 			title:'Go',
 			width:scale(data.leave),
