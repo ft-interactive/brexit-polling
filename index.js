@@ -4,50 +4,46 @@ const express = require('express'),
 	scraper = require('./scraper.js'),
 	layout = require('./visualization-layout.js'),
 	nunjucks = require('nunjucks'),
+    memjs = require('memjs'),
+
+    memcache = memjs.Client.create(),
 	isoShortFormat = require('d3-time-format').format('%Y-%m-%d');
 
-const wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
+const dataSource = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
 
 const app = express();
-
 
 nunjucks.configure('views', {
     autoescape: true,
     express: app
 }).addFilter('isoShortFormat',isoShortFormat);
 
-let data = scraper.updateData( wikipediaPage ); 
+let data = scraper.updateData( dataSource ); 
 
 app.get('/',function(req, res){
-	res.send( {
-		error: 'nothing to see',
-		updated: new Date()
-	});
+    memcache.get('0', function(err, value) {
+        if(value){
+            res.send(value);
+        }else{
+            value = {
+                error: 'nothing to see',
+                updated: new Date() };
+            memcache.set('0',  value);
+            res.send(value);
+        }
+    })
+
 });
 
-app.get('/:data.json', function (req, res) {
-	if(scraper.tableKeys.indexOf(req.params.data) > -1){
-		res.send( {
-			data: data[req.params.data],
-			updated: scraper.updated()
-		} );
-	}else if(req.params.data === 'data'){
-		res.send( {
-			data: data.combinedData,
-			updated: scraper.updated(),
-			source: wikipediaPage
-		} );
-	}else{
-		res.send( {
-			error: 'no data found for ' + req.params.data,
-			updated: scraper.updated(),
-			source: wikipediaPage
-		} );
-	}
-
+app.get('/data.json', function (req, res) {
+    res.send( {
+        data: data.combinedData,
+        updated: scraper.updated(),
+        source: dataSource
+    } );
 	let now = new Date();
 	if(now.getTime() - scraper.updated().getTime() >= 60000){
-		return data = scraper.updateData(wikipediaPage);
+		return data = scraper.updateData(dataSource);
 	}
 });
 
@@ -56,11 +52,11 @@ app.get('/data.html', function (req, res) {
     res.render( 'data.html' , {
         data: data.combinedData,
         updated: scraper.updated(),
-        source: wikipediaPage
+        source: dataSource
     });
     
     if(now.getTime() - scraper.updated().getTime() >= 60000){
-		return data = scraper.updateData(wikipediaPage);
+		return data = scraper.updateData(dataSource);
 	}
 });
 
@@ -80,7 +76,7 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
 	res.render( 'single-poll.svg' , layout.singlePoll(req.params.width, req.params.height, d, true) );
 	
 	if(now.getTime() - scraper.updated().getTime() >= 60000){
-		return data = scraper.updateData(wikipediaPage);
+		return data = scraper.updateData(dataSource);
 	}
 });
 
@@ -94,7 +90,7 @@ app.get('/lastmonth/:width-x-:height.svg', function (req, res) {
 	res.render( 'monthly.svg' , config );
 	
 	if(now.getTime() - scraper.updated().getTime() >= 60000){
-		return data = scraper.updateData(wikipediaPage);
+		return data = scraper.updateData(dataSource);
 	}
 });
 
