@@ -43,7 +43,7 @@ function updateData(pageURL){
 			updated = new Date();
 		})
 		.catch(function(reason){
-			console.log('Failed to get ' + pageURL, reason);
+			console.error('Failed to get ' + pageURL + ' - ' + reason + ' ' + new Date());
             data = backupData;
 		});
 		
