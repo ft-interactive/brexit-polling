@@ -1,6 +1,6 @@
 #Brexit polling data
 
-A web service scraping data from wikipedia's polling page (may change to another source)
+A web service scraping data from wikipedia's polling page (NOTE: may change to another source)
 
 An publishing it as machine readable JSON data or as SVG charts
 
@@ -17,7 +17,7 @@ pre-requisites
  * node
  * git
  
-clone the repo
+clone the repo and then ...
 
 ```npm install```
 ```node index.js```
