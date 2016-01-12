@@ -2,6 +2,7 @@
 const	request = require('request');
 const	cheerio = require('cheerio');
 const	csv = require('d3-dsv').csv;
+const   backupData = require('./failsafe.js');
 
 const tableKeys = [
 	'national-2015',
@@ -12,7 +13,7 @@ const tableKeys = [
 	'national-2010'
 ];
 
-let updated = null;
+let updated = new Date(2015,0,1);
 
 
 function updateData(pageURL){
@@ -43,6 +44,7 @@ function updateData(pageURL){
 		})
 		.catch(function(reason){
 			console.log('Failed to get ' + pageURL, reason);
+            data = backupData;
 		});
 		
 	return data;
@@ -61,17 +63,18 @@ function updateData(pageURL){
 
 function clean(datum, year){ //need to pass in the year as this isn't always in the date :()
 	//if there's no remain % then return null
+
 	let remain = 'Remain';
 	let leave = 'Leave';
 	let undecided = 'Undecided';
 	let pollster = 'Conducted by';
-	if(!datum[remain]) remain = 'stay';
+	if(!datum[remain]) remain = 'remain';
 	if(!datum[leave]) leave = 'leave';
 	if(!datum[undecided]) undecided = 'Unsure';
 	if(!datum[pollster]) pollster = 'Held by';
 
 
-	if(datum[remain].indexOf('%')<0) return null;
+	if(datum[remain].indexOf('%') < 0) return null;
 
 	let longMonths = [ 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december' ];
 	let shortMonths = [ 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec' ];
