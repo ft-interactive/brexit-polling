@@ -1,0 +1,11 @@
+{
+  "name": "brexit-polling",
+  "description": "collect and present brexit polling data",
+  "scripts": {
+  },
+  "env": {
+  },
+  "addons": [
+
+  ]
+}
