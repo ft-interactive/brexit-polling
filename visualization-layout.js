@@ -48,7 +48,6 @@ function simpleTimeSeries(width, height, dateDomain, data){
 	});
 	
 	let smoothFiltered = smoothedData.filter(function(d,i){
-		console.log(d);
 		let time = d.date.getTime();
 		return ( time <= dateDomain[1].getTime() && time >= dateDomain[0].getTime() );
 	});

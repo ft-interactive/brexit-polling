@@ -87,7 +87,6 @@ app.get('/lastmonth/:width-x-:height.svg', function (req, res) {
         startDate.setMonth(startDate.getMonth()-1 );
         let dateRange = [ startDate, now] // last month
         let config = layout.timeSeries(req.params.width, req.params.height, dateRange, data.combinedData);
-        console.log(config);
         res.render( 'monthly.svg' , config );
         checkData();
     }
