@@ -22,8 +22,10 @@
 			<rect x="0" y="0" width="{{ remain.width }}" height="{{ remain.height }}" fill="{{ remain.fill }}" class="remain"></rect>
 			<rect x="{{ (remain.width + undecided.width) }}" y="0" width="{{ leave.width }}" height="{{ leave.height }}" fill="{{ leave.fill }}" class="leave"></rect>
 			<rect x="{{ remain.width }}" y="0" width="{{ undecided.width }}" height="{{ undecided.height }}" fill="{{ undecided.fill }}" class="undecided"></rect>
-			<text y="{{ remain.height }}" dy="{{ valueLabelOffset.y }}" dx="{{ valueLabelOffset.x }}" font-size="{{ valueLabelSize }}" font-weight="800" fill="{{ fontColour }}">{{ remain.value }}%</text>
+			{% if not small %}
+            <text y="{{ remain.height }}" dy="{{ valueLabelOffset.y }}" dx="{{ valueLabelOffset.x }}" font-size="{{ valueLabelSize }}" font-weight="800" fill="{{ fontColour }}">{{ remain.value }}%</text>
 			<text y="{{ leave.height }}" dy="{{ valueLabelOffset.y }}" dx="-{{ valueLabelOffset.x }}" x="{{ width }}" text-anchor="end" font-size="{{ valueLabelSize }}" font-weight="800" fill="{{ fontColour }}">{{ leave.value }}%</text>
+            {% endif %}
 			<line x1="{{ width/2 }}" y1="0" x2="{{ width/2 }}" y2="{{ remain.height }}" stroke-width="2" stroke="#000" stroke-dasharray="2, 2"></line>
 		</g>
 	</g>
