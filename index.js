@@ -89,7 +89,7 @@ app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
         let endDate = isoShortFormat.parse( req.params.enddate );
         startDate.setMonth( startDate.getMonth()-1 );
         let dateRange = [ startDate, endDate ]
-        let config = layout.timeSeries(req.params.width, req.params.height, dateRange, data.combinedData);
+        let config = layout.timeSeries(req.params.width, req.params.height, dateRange, data);
         value = nunjucks.render( 'time-series.svg' , config );
         checkData();
     }

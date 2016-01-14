@@ -3,6 +3,7 @@ const	request = require('request');
 const	cheerio = require('cheerio');
 const	csv = require('d3-dsv').csv;
 const   backupData = require('./failsafe.js');
+const	d3Array = require('d3-array');
 
 const tableKeys = [
 	'national-2015',
@@ -39,15 +40,32 @@ function updateData(pageURL){
 			data.combinedData = tableKeys.reduce(function(previousValue, currentValue){
 				return previousValue.concat( data[currentValue] );
 			},[]);
+
+			data.smoothedData = smooth(data.combinedData);
 			
 			updated = new Date();
 		})
 		.catch(function(reason){
 			console.error('Failed to get ' + pageURL + ' - ' + reason + ' ' + new Date());
             data = backupData;
+			data.smoothedData = smooth(data.combinedData);
 		});
 		
 	return data;
+}
+
+function smooth(data){
+	let smoothedData = []; 
+	for(let i=0; i < data.length; i++){
+		let slice = data.slice(Math.max(0, i-7), i);
+		smoothedData.push({
+			remain: d3Array.mean(slice, (d) => d.remain ),
+			leave: d3Array.mean(slice, (d) => d.leave ),
+			undecided: d3Array.mean(slice, (d) => d.undecided ),
+			date: data[i].startDate
+		});
+	}
+	return smoothedData;
 }
 
 //	EXAMPLE MESS:

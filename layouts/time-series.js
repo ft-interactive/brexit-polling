@@ -20,7 +20,7 @@ function simpleTimeSeries(width, height, dateDomain, data){
 
 	//sort data oldest to newest
 
-	data = data.sort(function(a,b){
+	data = data.combinedData.sort(function(a,b){
 		return a.startDate.getTime() - b.startDate.getTime();
 	}).filter(function(d){
         return (d.undecided);
@@ -146,7 +146,7 @@ function simpleTimeSeries(width, height, dateDomain, data){
                     x:0,
                     fill:colour.leave,
                     y:yScale(lastSmoothedPoint.leave),
-                    label:'go ' + Math.round(lastSmoothedPoint.remain) +'%'
+                    label:'go ' + Math.round(lastSmoothedPoint.leave) +'%'
                 }
             ],
             rules:[
