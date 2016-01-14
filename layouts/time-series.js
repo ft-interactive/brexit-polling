@@ -50,7 +50,7 @@ function simpleTimeSeries(width, height, dateDomain, data){
 	let yScale = d3scale.linear()
 		.domain([100,0])
 		.range([0, height - (margin.top + margin.bottom)]);
-
+        
 	let xScale = d3scale.time()
 		.domain( dateDomain )
 		.range( [0, width - (margin.left + margin.right)] );
@@ -67,6 +67,8 @@ function simpleTimeSeries(width, height, dateDomain, data){
            }
        } 
     });
+    
+    let lastSmoothedPoint = smoothFiltered[ smoothFiltered.length-1 ]
     
 	// start date, end date, two/ three? lines, (final values & positions)
 	let config = {
@@ -128,17 +130,17 @@ function simpleTimeSeries(width, height, dateDomain, data){
             ticks:[
                 {
                     x:0,
-                    y:yScale(0),
+                    y:yScale(lastSmoothedPoint.undecided),
                     label:'undecided'
                 },
                 {
                     x:0,
-                    y:yScale(50),
+                    y:yScale(lastSmoothedPoint.remain),
                     label:'stay'
                 },
                 {
                     x:0,
-                    y:yScale(100),
+                    y:yScale(lastSmoothedPoint.leave),
                     label:'go'
                 }
             ],

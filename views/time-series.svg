@@ -1,5 +1,5 @@
 <svg width="{{width}}" height="{{height}}">
-<g class="polls">
+<g class="polls" transform="translate({{margin.left}},{{margin.top}})">
 {% for poll in data %}
     <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" r="{{pollStyle.radius}}" fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
     <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" r="{{pollStyle.radius}}" fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
@@ -7,7 +7,7 @@
 {% endfor %}
 </g>
 
-<g class="trends">
+<g class="trends" transform="translate({{margin.left}},{{margin.top}})">
     <path d="{{ line.remain.path }}" fill="none" stroke="{{line.remain.stroke}}" stroke-width="2" ></path>
     <path d="{{ line.leave.path }}" fill="none" stroke="{{line.leave.stroke}}" stroke-width="2"></path>
     <path d="{{ line.undecided.path }}" fill="none" stroke="{{line.undecided.stroke}}" stroke-width="2"></path>
@@ -23,7 +23,7 @@
 
 <g class="y axis" transform="translate( {{ width - margin.right }} , {{ margin.top }} )">
 {% for tick in yAxis.ticks %}
-    <g class="tick">
+    <g class="tick" transform="translate({{ tick.x }}, {{ tick.y }})">
         <text>{{tick.label}}</text>
     </g>
 {% endfor %}
