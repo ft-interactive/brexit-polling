@@ -2,7 +2,7 @@
 
 const express = require('express'),
 	scraper = require('./scraper.js'),
-	layout = require('./visualization-layout.js'),
+	layout = require('./layouts/index.js'),
 	nunjucks = require('nunjucks'),
     lru = require('lru-cache'),
 	isoShortFormat = require('d3-time-format').format('%Y-%m-%d');
@@ -25,6 +25,9 @@ nunjucks.configure('views', {
 
 checkData();
 
+//end of setup
+
+//routes
 app.get('/',function(req, res){
     res.send({
         error: 'nothing to see',
@@ -76,31 +79,33 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
         cache.set(req.path, value);
         checkData();
     }
-
     res.send(value)
 });
 
-app.get('/lastmonth/:width-x-:height.svg', function (req, res) {
+app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
     if(!value){
-        let startDate = new Date();
-        startDate.setMonth(startDate.getMonth()-1 );
-        let dateRange = [ startDate, now] // last month
+        let startDate = isoShortFormat.parse( req.params.startdate );
+        let endDate = isoShortFormat.parse( req.params.enddate );
+        startDate.setMonth( startDate.getMonth()-1 );
+        let dateRange = [ startDate, endDate ]
         let config = layout.timeSeries(req.params.width, req.params.height, dateRange, data.combinedData);
-        res.render( 'monthly.svg' , config );
+        value = nunjucks.render( 'time-series.svg' , config );
         checkData();
     }
     res.send(value)
 });
 
-function checkData(){
+//utility functions
+
+function checkData(){   //for getting the latest data 
     let now = new Date();
     if(now.getTime() - scraper.updated().getTime() >= 60000){
         data = scraper.updateData(wikipediaPage);
     }
 }
 
-function onDate(a,b){
+function onDate(a,b){ //for sorting on a date
 	return b.startDate.getTime() - a.startDate.getTime();
 }
 

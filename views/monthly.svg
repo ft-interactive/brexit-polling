@@ -1,8 +1,0 @@
-<svg>
-{% for poll in data %}
-<circle></circle>
-{% endfor %}
-<path d="{{ line.remain.path }}" fill="none" stroke="{{line.remain.stroke}}" stroke-width="2" ></path>
-<path d="{{ line.leave.path }}" fill="none" stroke="{{line.leave.stroke}}" stroke-width="2"></path>
-<path d="{{ line.undecided.path }}" fill="none" stroke="{{line.undecided.stroke}}" stroke-width="2"></path>
-</svg>

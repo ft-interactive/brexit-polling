@@ -1,0 +1,36 @@
+<svg width="{{width}}" height="{{height}}">
+<g class="polls">
+{% for poll in data %}
+    <circle></circle>
+{% endfor %}
+</g>
+
+<g class="trends">
+    <path d="{{ line.remain.path }}" fill="none" stroke="{{line.remain.stroke}}" stroke-width="2" ></path>
+    <path d="{{ line.leave.path }}" fill="none" stroke="{{line.leave.stroke}}" stroke-width="2"></path>
+    <path d="{{ line.undecided.path }}" fill="none" stroke="{{line.undecided.stroke}}" stroke-width="2"></path>
+</g>
+
+<g class="x axis">
+{% for tick in xAxis.ticks %}
+    <g class="tick">
+        <text>tick.label</text>
+    </g>
+{% endfor %}
+</g>
+
+<g class="y axis">
+{% for tick in yAxis.ticks %}
+    <g class="tick">
+        <text>{{tick.label}}</text>
+    </g>
+{% endfor %}
+
+{% for rule in yAxis.rules %}
+    <g class="rule">
+        <text>{{rule.label}}</text>
+        <line x1="{{rule.x1}}" y1="{{rule.y1}}" x2="{{rule.x2}}" y2="{{rule.y1}}" stroke="{{yAxis.ruleStroke}}" stroke-dashArray="{{yAxis.ruleStrokeDashArray}}" stroke-width="{{yAxis.ruleStrokeWidth}}"></line>
+    </g>
+{% endfor %}
+</g>
+</svg>
