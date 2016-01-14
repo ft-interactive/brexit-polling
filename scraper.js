@@ -50,11 +50,15 @@ function updateData(pageURL){
             data = backupData;
 			data.smoothedData = smooth(data.combinedData);
 		});
-		
 	return data;
 }
 
 function smooth(data){
+	//make sure the data is sorted oldest to newest
+	var sorted = data.sort(function(a,b){
+		return a.startDate.getTime() - b.startDate.getTime();
+	});
+
 	let smoothedData = []; 
 	for(let i=0; i < data.length; i++){
 		let slice = data.slice(Math.max(0, i-7), i);
@@ -65,7 +69,10 @@ function smooth(data){
 			date: data[i].startDate
 		});
 	}
-	return smoothedData;
+
+	return smoothedData.filter(function(d){
+		return d.undecided;
+	});
 }
 
 //	EXAMPLE MESS:

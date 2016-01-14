@@ -34,10 +34,10 @@
 {% endfor %}
 </g>
 
-<g class="y axis" font-family="MetricWeb" transform="translate( {{ width - margin.right }} , {{ margin.top }} )">
+<g class="y axis" font-family="MetricWeb" transform="translate( {{ margin.left }} , {{ margin.top }} )">
 {% for tick in yAxis.ticks %}
     <g class="tick" transform="translate({{ tick.x }}, {{ tick.y }})">
-        <text dy="4" fill="{{ tick.fill }}">{{tick.label}}</text>
+        <text dy="4" dx="4" fill="{{ tick.fill }}">{{tick.label}}</text>
     </g>
 {% endfor %}
 
@@ -47,7 +47,7 @@
         <line 
             x1="{{rule.x1}}" 
             y1="{{rule.y1}}" 
-            x2="-{{rule.x2}}" 
+            x2="{{rule.x2}}" 
             y2="{{rule.y1}}" 
             stroke="{{yAxis.ruleStroke}}" 
             stroke-dashArray="{{yAxis.ruleStrokeDashArray}}" 

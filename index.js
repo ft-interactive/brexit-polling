@@ -85,8 +85,11 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
 app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
     if(!value){
-        let startDate = isoShortFormat.parse( req.params.startdate );
         let endDate = isoShortFormat.parse( req.params.enddate );
+        if(req.params.enddate === 'now'){
+            endDate = new Date();
+        }
+        let startDate = isoShortFormat.parse( req.params.startdate );
         startDate.setMonth( startDate.getMonth()-1 );
         let dateRange = [ startDate, endDate ]
         let config = layout.timeSeries(req.params.width, req.params.height, dateRange, data);
