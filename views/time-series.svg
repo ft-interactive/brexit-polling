@@ -1,7 +1,9 @@
 <svg width="{{width}}" height="{{height}}">
 <g class="polls">
 {% for poll in data %}
-    <circle></circle>
+    <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" r="{{pollStyle.radius}}" fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+    <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" r="{{pollStyle.radius}}" fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+    <circle cx="{{poll.x}}" cy="{{poll.y.undecided}}" r="{{pollStyle.radius}}" fill="{{pollStyle.undecidedFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
 {% endfor %}
 </g>
 
@@ -19,7 +21,7 @@
 {% endfor %}
 </g>
 
-<g class="y axis">
+<g class="y axis" transform="translate( {{ width - margin.right }} , {{ margin.top }} )">
 {% for tick in yAxis.ticks %}
     <g class="tick">
         <text>{{tick.label}}</text>
@@ -29,7 +31,15 @@
 {% for rule in yAxis.rules %}
     <g class="rule">
         <text>{{rule.label}}</text>
-        <line x1="{{rule.x1}}" y1="{{rule.y1}}" x2="{{rule.x2}}" y2="{{rule.y1}}" stroke="{{yAxis.ruleStroke}}" stroke-dashArray="{{yAxis.ruleStrokeDashArray}}" stroke-width="{{yAxis.ruleStrokeWidth}}"></line>
+        <line 
+            x1="{{rule.x1}}" 
+            y1="{{rule.y1}}" 
+            x2="-{{rule.x2}}" 
+            y2="{{rule.y1}}" 
+            stroke="{{yAxis.ruleStroke}}" 
+            stroke-dashArray="{{yAxis.ruleStrokeDashArray}}" 
+            stroke-width="{{yAxis.ruleStrokeWidth}}">
+        </line>
     </g>
 {% endfor %}
 </g>

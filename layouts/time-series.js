@@ -19,11 +19,13 @@ function simpleTimeSeries(width, height, dateDomain, data){
 	};
 
 	//sort data oldest to newest
-	
+
 	data = data.sort(function(a,b){
 		return a.startDate.getTime() - b.startDate.getTime();
-	});
-	
+	}).filter(function(d){
+        return (d.undecided);
+    });
+
 	let smoothedData = []; 
 	for(let i=0; i < data.length; i++){
 		let slice = data.slice(Math.max(0, i-7), i);
@@ -34,26 +36,38 @@ function simpleTimeSeries(width, height, dateDomain, data){
 			date: data[i].startDate
 		});
 	}
-	
+
 	let filtered = data.filter(function(d,i){
 		let time = d.startDate.getTime();
 		return ( time <= dateDomain[1].getTime() && time >= dateDomain[0].getTime() );
 	});
-	
+
 	let smoothFiltered = smoothedData.filter(function(d,i){
 		let time = d.date.getTime();
 		return ( time <= dateDomain[1].getTime() && time >= dateDomain[0].getTime() );
 	});
-	
+
 	let yScale = d3scale.linear()
 		.domain([100,0])
 		.range([0, height - (margin.top + margin.bottom)]);
-		
+
 	let xScale = d3scale.time()
 		.domain( dateDomain )
 		.range( [0, width - (margin.left + margin.right)] );
-        
+
     //TODO: create X & Ys for circles on filtered data
+    filtered = filtered.map(function(d){
+       return {
+           data:d,
+           x:xScale(d.startDate),
+           y:{
+               remain:yScale(d.remain),
+               leave:yScale(d.leave),
+               undecided:yScale(d.undecided)
+           }
+       } 
+    });
+    
 	// start date, end date, two/ three? lines, (final values & positions)
 	let config = {
 		title:'',
@@ -63,6 +77,13 @@ function simpleTimeSeries(width, height, dateDomain, data){
 		height:height,
 		fontColour:colour.font,
 		data: filtered,
+        pollStyle: {
+            radius: 3,
+            leaveFill:colour.leave,
+            undecidedFill:colour.undecided,
+            remainFill:colour.remain,
+            fillOpacity:0.5
+        },
 		line: {
 			remain: {
 				path:d3Shape.line()
@@ -107,17 +128,17 @@ function simpleTimeSeries(width, height, dateDomain, data){
             ticks:[
                 {
                     x:0,
-                    y:yScale(),
+                    y:yScale(0),
                     label:'undecided'
                 },
                 {
                     x:0,
-                    y:yScale(),
+                    y:yScale(50),
                     label:'stay'
                 },
                 {
                     x:0,
-                    y:yScale(),
+                    y:yScale(100),
                     label:'go'
                 }
             ],
