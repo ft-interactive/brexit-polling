@@ -69,11 +69,13 @@ function simpleTimeSeries(width, height, dateDomain, data){
     });
     
     let lastSmoothedPoint = smoothFiltered[ smoothFiltered.length-1 ]
-    
+   
 	// start date, end date, two/ three? lines, (final values & positions)
 	let config = {
-		title:'',
+		title:'Polling movements over time',
+        titleSize:'20',
 		footer:'Source FT.com',
+        metricEmbed: true,
 		margin:margin,
 		width:width,
 		height:height,
@@ -112,14 +114,14 @@ function simpleTimeSeries(width, height, dateDomain, data){
         xAxis:{
             ticks:[
                 {
-                    x:0,
+                    x:xScale(dateDomain[0]),
                     y:0,
-                    label:dateDomain[0]
+                    label:isoShortFormat(dateDomain[0])
                 },
                 {
-                    x:xScale.range()[1],
+                    x:xScale(dateDomain[1]),
                     y:0,
-                    label:dateDomain[1]
+                    label:isoShortFormat(dateDomain[1])
                 }
             ]
         },
@@ -130,18 +132,21 @@ function simpleTimeSeries(width, height, dateDomain, data){
             ticks:[
                 {
                     x:0,
+                    fill:colour.undecided,
                     y:yScale(lastSmoothedPoint.undecided),
-                    label:'undecided'
+                    label:'undecided ' + Math.round(lastSmoothedPoint.undecided) +'%'
                 },
                 {
                     x:0,
+                    fill:colour.remain,
                     y:yScale(lastSmoothedPoint.remain),
-                    label:'stay'
+                    label:'stay ' + Math.round(lastSmoothedPoint.remain) +'%'
                 },
                 {
                     x:0,
+                    fill:colour.leave,
                     y:yScale(lastSmoothedPoint.leave),
-                    label:'go'
+                    label:'go ' + Math.round(lastSmoothedPoint.remain) +'%'
                 }
             ],
             rules:[
