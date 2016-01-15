@@ -66,21 +66,31 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
     if(!value){
         let d = data.combinedData.sort(onDate)[0];
-        if(req.params.id == 'latest'){
-            d = data.combinedData.sort(onDate)[0];
-        }else{
+        if(req.params.id != 'latest'){
             let parts = req.params.id.split(',');
             d = data.combinedData
                 .filter( e => (e.pollster == parts[0]) )
                 .filter( e => (isoShortFormat(e.startDate) == parts[1]) )[0];
         }
-        
         value = nunjucks.render( 'single-poll.svg' , layout.singlePoll(req.params.width, req.params.height, d, true) );
         cache.set(req.path, value);
         checkData();
     }
     res.send(value)
 });
+
+app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
+    let value = cache.get(req.path);
+    if(!value){
+        let d = data.smoothedData.sort(function (a,b){
+            return b.date.getTime() - a.date.getTime();
+        })[0];
+        value = nunjucks.render( 'single-poll.svg' , layout.singlePoll(req.params.width, req.params.height, d, true) );
+        cache.set(req.path, value);
+        checkData();
+    }
+    res.send(value);
+})
 
 app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
