@@ -5,17 +5,10 @@ const d3TimeFormat = require('d3-time-format');
 const d3Array = require('d3-array');
 const d3Shape = require('d3-shape');
 
-const colour = {
-	remain:'#8897ba', //'#d66d06',
-	leave:'#8eadab', //'#819e9a',//'#458b00',//'#2e6e9e',
-	undecided:'#e9decf',//'#e9decf',//'#cec69b',
-	ftPink:'#fff1e0',
-	font:'#333'
-};
+const colour = require('./colours.js');
 
 const isoShortFormat = d3TimeFormat.format('%Y-%m-%d');
 const ftDateFormat = d3TimeFormat.format('%e %b %Y');
-
 
 function singlePollLayout(width, height, data, metricEmbed){
     let small = true;

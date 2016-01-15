@@ -20,33 +20,22 @@ function simpleTimeSeries(width, height, dateDomain, data){
 
 	//sort data oldest to newest
 
-	data = data.sort(function(a,b){
+	let rawData = data.combinedData.sort(function(a,b){
 		return a.startDate.getTime() - b.startDate.getTime();
 	}).filter(function(d){
         return (d.undecided);
     });
 
-	let smoothedData = []; 
-	for(let i=0; i < data.length; i++){
-		let slice = data.slice(Math.max(0, i-7), i);
-		smoothedData.push({
-			remain: d3Array.mean(slice, (d) => d.remain ),
-			leave: d3Array.mean(slice, (d) => d.leave ),
-			undecided: d3Array.mean(slice, (d) => d.undecided ),
-			date: data[i].startDate
-		});
-	}
-
-	let filtered = data.filter(function(d,i){
+	let filtered = rawData.filter(function(d,i){
 		let time = d.startDate.getTime();
 		return ( time <= dateDomain[1].getTime() && time >= dateDomain[0].getTime() );
 	});
 
-	let smoothFiltered = smoothedData.filter(function(d,i){
+	let smoothFiltered = data.smoothedData.filter(function(d,i){
 		let time = d.date.getTime();
 		return ( time <= dateDomain[1].getTime() && time >= dateDomain[0].getTime() );
 	});
-
+    
 	let yScale = d3scale.linear()
 		.domain([100,0])
 		.range([0, height - (margin.top + margin.bottom)]);
@@ -116,12 +105,12 @@ function simpleTimeSeries(width, height, dateDomain, data){
                 {
                     x:xScale(dateDomain[0]),
                     y:0,
-                    label:isoShortFormat(dateDomain[0])
+                    label:ftDateFormat(dateDomain[0])
                 },
                 {
                     x:xScale(dateDomain[1]),
                     y:0,
-                    label:isoShortFormat(dateDomain[1])
+                    label:ftDateFormat(dateDomain[1])
                 }
             ]
         },
@@ -131,22 +120,22 @@ function simpleTimeSeries(width, height, dateDomain, data){
             ruleStrokeDashArray:"2 2",
             ticks:[
                 {
-                    x:0,
+                    x:xScale(lastSmoothedPoint.date),
                     fill:colour.undecided,
                     y:yScale(lastSmoothedPoint.undecided),
                     label:'undecided ' + Math.round(lastSmoothedPoint.undecided) +'%'
                 },
                 {
-                    x:0,
+                    x:xScale(lastSmoothedPoint.date),
                     fill:colour.remain,
                     y:yScale(lastSmoothedPoint.remain),
                     label:'stay ' + Math.round(lastSmoothedPoint.remain) +'%'
                 },
                 {
-                    x:0,
+                    x:xScale(lastSmoothedPoint.date),
                     fill:colour.leave,
                     y:yScale(lastSmoothedPoint.leave),
-                    label:'go ' + Math.round(lastSmoothedPoint.remain) +'%'
+                    label:'go ' + Math.round(lastSmoothedPoint.leave) +'%'
                 }
             ],
             rules:[
