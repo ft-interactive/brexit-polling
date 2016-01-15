@@ -82,9 +82,7 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
 app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
-        let d = data.smoothedData.sort(function (a,b){
-            return b.date.getTime() - a.date.getTime();
-        })[0];
+        let d = data.smoothedData.sort(onDate)[0];
         value = nunjucks.render( 'single-poll.svg' , layout.singlePoll(req.params.width, req.params.height, d, true) );
         cache.set(req.path, value);
         checkData();
@@ -119,7 +117,7 @@ function checkData(){   //for getting the latest data
 }
 
 function onDate(a,b){ //for sorting on a date
-	return b.startDate.getTime() - a.startDate.getTime();
+	return b.date.getTime() - a.date.getTime();
 }
 
 const server = app.listen(process.env.PORT || 5000, function () {
