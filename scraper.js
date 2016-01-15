@@ -6,6 +6,7 @@ const   backupData = require('./failsafe.js');
 const	d3Array = require('d3-array');
 
 const tableKeys = [
+    'national-2016',
 	'national-2015',
 	'national-2014',
 	'national-2013',

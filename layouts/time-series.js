@@ -35,9 +35,7 @@ function simpleTimeSeries(width, height, dateDomain, data){
 		let time = d.date.getTime();
 		return ( time <= dateDomain[1].getTime() && time >= dateDomain[0].getTime() );
 	});
-
-    console.log(smoothFiltered);
-
+    
 	let yScale = d3scale.linear()
 		.domain([100,0])
 		.range([0, height - (margin.top + margin.bottom)]);
