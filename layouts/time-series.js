@@ -21,13 +21,13 @@ function simpleTimeSeries(width, height, dateDomain, data){
 	//sort data oldest to newest
 
 	let rawData = data.combinedData.sort(function(a,b){
-		return a.startDate.getTime() - b.startDate.getTime();
+		return a.date.getTime() - b.date.getTime();
 	}).filter(function(d){
         return (d.undecided);
     });
 
 	let filtered = rawData.filter(function(d,i){
-		let time = d.startDate.getTime();
+		let time = d.date.getTime();
 		return ( time <= dateDomain[1].getTime() && time >= dateDomain[0].getTime() );
 	});
 
@@ -48,7 +48,7 @@ function simpleTimeSeries(width, height, dateDomain, data){
     filtered = filtered.map(function(d){
        return {
            data:d,
-           x:xScale(d.startDate),
+           x:xScale(d.date),
            y:{
                remain:yScale(d.remain),
                leave:yScale(d.leave),
