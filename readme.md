@@ -12,9 +12,11 @@ An publishing it as machine readable JSON data or as SVG charts
  * a particular poll at a specified size (eg) : https://ft-ig-brexit-polling.herokuapp.com/poll/ComRes,2015-12-11/600-x-100.svg
  * json data : https://ft-ig-brexit-polling.herokuapp.com/data.json
  * summary html table : https://ft-ig-brexit-polling.herokuapp.com/data.html
- * matime series : https://ft-ig-brexit-polling.herokuapp.com/lastmonth/600-x-100.svg (not much to see there)
+ * time series : https://ft-ig-brexit-polling.herokuapp.com/lastmonth/400-x-400.svg
+ * poll of polls : https://ft-ig-brexit-polling.herokuapp.com/poll-of-polls/600-x-100.svg
 
 ##running locally
+
 pre-requisites 
  * node
  * git
