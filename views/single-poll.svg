@@ -29,5 +29,4 @@
 			<line x1="{{ width/2 }}" y1="0" x2="{{ width/2 }}" y2="{{ remain.height }}" stroke-width="2" stroke="#000" stroke-dasharray="2, 2"></line>
 		</g>
 	</g>
-	<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="icons.svg#logo" class="chart-watermark" transform="translate(580,980) scale(0.2) "></use>	
 </svg>

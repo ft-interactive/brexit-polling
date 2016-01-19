@@ -29,10 +29,17 @@ checkData();
 
 //routes
 app.get('/',function(req, res){
-    res.send({
-        error: 'nothing to see',
-        updated: new Date()
-    });
+    let value = cache.get(req.path);
+    if(!value){
+        value = nunjucks.render( 'index.html' , {
+            data: data.combinedData,
+            updated: scraper.updated(),
+            source: wikipediaPage
+        });
+        cache.set(req.path, value);
+        checkData();
+    }
+    res.send(value);
 });
 
 app.get('/data.json', function (req, res) {
