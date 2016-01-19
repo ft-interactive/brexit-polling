@@ -101,17 +101,28 @@ app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
     if(!value){
         let endDate = isoShortFormat.parse( req.params.enddate );
+        let startDate = isoShortFormat.parse( req.params.startdate );
         if(req.params.enddate === 'now'){
             endDate = new Date();
         }
-        let startDate = isoShortFormat.parse( req.params.startdate );
-        startDate.setMonth( startDate.getMonth()-1 );
+        if(req.params.startdate.indexOf('month') > 0){
+            startDate = new Date();
+            startDate.setMonth(startDate.getMonth()-1);
+        }
+        if(req.params.startdate === '6-months'){
+            startDate = new Date();
+            startDate.setMonth(startDate.getMonth()-6);
+        }
+        if(req.params.startdate === 'year'){
+            startDate = new Date();
+            startDate.setMonth(startDate.getMonth()-12);
+        }
         let dateRange = [ startDate, endDate ]
         let config = layout.timeSeries(req.params.width, req.params.height, dateRange, data);
         value = nunjucks.render( 'time-series.svg' , config );
         checkData();
     }
-    res.send(value)
+    res.send(value);
 });
 
 //utility functions
