@@ -102,23 +102,28 @@ app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     if(!value){
         let endDate = isoShortFormat.parse( req.params.enddate );
         let startDate = isoShortFormat.parse( req.params.startdate );
+        let titleOverride = null;
         if(req.params.enddate === 'now'){
             endDate = new Date();
+            if(req.params.startdate.indexOf('month') > 0){
+                startDate = new Date();
+                startDate.setMonth(startDate.getMonth()-1);
+                titleOverride = 'Polling movement over the last month';
+            }
+            if(req.params.startdate === '6-months'){
+                startDate = new Date();
+                startDate.setMonth(startDate.getMonth()-6);
+                titleOverride = 'Polling movement over the last months'
+            }
+            if(req.params.startdate === 'year'){
+                startDate = new Date();
+                startDate.setMonth(startDate.getMonth()-12);
+                titleOverride = 'Polling movement over the last year'
+            }
         }
-        if(req.params.startdate.indexOf('month') > 0){
-            startDate = new Date();
-            startDate.setMonth(startDate.getMonth()-1);
-        }
-        if(req.params.startdate === '6-months'){
-            startDate = new Date();
-            startDate.setMonth(startDate.getMonth()-6);
-        }
-        if(req.params.startdate === 'year'){
-            startDate = new Date();
-            startDate.setMonth(startDate.getMonth()-12);
-        }
+
         let dateRange = [ startDate, endDate ]
-        let config = layout.timeSeries(req.params.width, req.params.height, dateRange, data);
+        let config = layout.timeSeries(req.params.width, req.params.height, dateRange, data, titleOverride);
         value = nunjucks.render( 'time-series.svg' , config );
         checkData();
     }
