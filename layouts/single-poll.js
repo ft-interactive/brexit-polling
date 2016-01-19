@@ -77,7 +77,7 @@ function singlePollLayout(width, height, data, metricEmbed){
 			fill:colour.remain
 		},
 		undecided:{
-			title:small ? '' : '¯\\_(ツ)_/¯',
+			title:small ? '' : '',
 			width:scale(data.undecided),
 			height:barHeight,
 			value:data.undecided,

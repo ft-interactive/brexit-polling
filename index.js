@@ -29,10 +29,17 @@ checkData();
 
 //routes
 app.get('/',function(req, res){
-    res.send({
-        error: 'nothing to see',
-        updated: new Date()
-    });
+    let value = cache.get(req.path);
+    if(!value){
+        value = nunjucks.render( 'index.html' , {
+            data: data.combinedData,
+            updated: scraper.updated(),
+            source: wikipediaPage
+        });
+        cache.set(req.path, value);
+        checkData();
+    }
+    res.send(value);
 });
 
 app.get('/data.json', function (req, res) {
@@ -94,17 +101,33 @@ app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
     if(!value){
         let endDate = isoShortFormat.parse( req.params.enddate );
+        let startDate = isoShortFormat.parse( req.params.startdate );
+        let titleOverride = null;
         if(req.params.enddate === 'now'){
             endDate = new Date();
+            if(req.params.startdate.indexOf('month') > 0){
+                startDate = new Date();
+                startDate.setMonth(startDate.getMonth()-1);
+                titleOverride = 'Polling movement over the last month';
+            }
+            if(req.params.startdate === '6-months'){
+                startDate = new Date();
+                startDate.setMonth(startDate.getMonth()-6);
+                titleOverride = 'Polling movement over the last months'
+            }
+            if(req.params.startdate === 'year'){
+                startDate = new Date();
+                startDate.setMonth(startDate.getMonth()-12);
+                titleOverride = 'Polling movement over the last year'
+            }
         }
-        let startDate = isoShortFormat.parse( req.params.startdate );
-        startDate.setMonth( startDate.getMonth()-1 );
+
         let dateRange = [ startDate, endDate ]
-        let config = layout.timeSeries(req.params.width, req.params.height, dateRange, data);
+        let config = layout.timeSeries(req.params.width, req.params.height, dateRange, data, titleOverride);
         value = nunjucks.render( 'time-series.svg' , config );
         checkData();
     }
-    res.send(value)
+    res.send(value);
 });
 
 //utility functions

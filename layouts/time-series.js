@@ -10,7 +10,7 @@ const colour = require('./colours.js');
 const isoShortFormat = d3TimeFormat.format('%Y-%m-%d');
 const ftDateFormat = d3TimeFormat.format('%e %b %Y');
 
-function simpleTimeSeries(width, height, dateDomain, data){
+function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
 	let margin = {
 		top:20,
 		left:0,
@@ -61,7 +61,7 @@ function simpleTimeSeries(width, height, dateDomain, data){
    
 	// start date, end date, two/ three? lines, (final values & positions)
 	let config = {
-		title:'Polling movements over time',
+		title:titleOverride ? titleOverride : 'Polling movements over time',
         titleSize:'20',
 		footer:'Source FT.com',
         metricEmbed: true,

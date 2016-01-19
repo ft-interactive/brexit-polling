@@ -1,9 +1,10 @@
-<svg width="{{width}}" height="{{height}}">
+<svg width="{{ width }}" height="{{ height }}" viewBox="0 0 {{ width }} {{ height }}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 {% if metricEmbed %}
 <style>
 @font-face {
-    font-family: "MetricWeb-Semibold";
+    font-family: "MetricWeb";
     src: url("https://build.origami.ft.com/files/o-fonts-assets@1.2.0/MetricWeb-Semibold.woff");
+    font-weight: 800;
 }
 @font-face {
     font-family: "MetricWeb";
