@@ -29,5 +29,5 @@ clone the repo and then ...
 <!-- errors logged to team.interactive+brexit-polling-ops -->
 
 <!-- badge URLs -->
-[travis-url]: http://travis-ci.org/ft-interactive/starter-kit
-[travis-image]: https://img.shields.io/travis/ft-interactive/starter-kit.svg?style=flat-square
+[travis-url]: http://travis-ci.org/ft-interactive/brexit-polling
+[travis-image]: https://img.shields.io/travis/ft-interactive/brexit-polling.svg?style=flat-square
