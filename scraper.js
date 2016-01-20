@@ -62,6 +62,7 @@ function updateData(pageURL){
                 backupData = data;
             }
 			updated = new Date();
+           //
 		})
 		.catch(function(reason){
 			console.error('ERROR: Failed to get ' + pageURL + ' - ' + reason + ' ' + new Date()); //logentries pattern 'ERROR: Failed to get'
@@ -69,7 +70,8 @@ function updateData(pageURL){
             data.updated = backupData.updated;
 			data.smoothedData = smooth(data.combinedData);
 		});
-        
+
+    
 	return data;
 }
 

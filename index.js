@@ -72,7 +72,7 @@ app.get('/data.html', function (req, res) {
 app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
     if(!value){
-        let d = data.combinedData.sort(onDate)[0];
+        let d = data.combinedData[data.combinedData.length - 1];
         if(req.params.id != 'latest'){
             let parts = req.params.id.split(',');
             d = data.combinedData
@@ -89,13 +89,13 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
 app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
-        let d = data.smoothedData.sort(onDate)[0];
+        let d = data.smoothedData[data.smoothedData.length - 1];
         value = nunjucks.render( 'single-poll.svg' , layout.singlePoll(req.params.width, req.params.height, d, true) );
         cache.set(req.path, value);
         checkData();
     }
     res.send(value);
-})
+});
 
 app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
