@@ -62,6 +62,7 @@ function updateData(pageURL){
                 backupData = data;
             }
 			updated = new Date();
+           //
 		})
 		.catch(function(reason){
 			console.error('ERROR: Failed to get ' + pageURL + ' - ' + reason + ' ' + new Date()); //logentries pattern 'ERROR: Failed to get'
@@ -69,13 +70,13 @@ function updateData(pageURL){
             data.updated = backupData.updated;
 			data.smoothedData = smooth(data.combinedData);
 		});
-        
+
+    
 	return data;
 }
 
 function smooth(data){
 	//TODO: remove duplicate pollsters, remove outliers
-	//make sure the data is sorted oldest to newest
 	var sorted = data.sort(function(a,b){
 		return a.startDate.getTime() - b.startDate.getTime();
 	});

@@ -72,7 +72,7 @@ app.get('/data.html', function (req, res) {
 app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
     if(!value){
-        let d = data.combinedData.sort(onDate)[0];
+        let d = data.combinedData[data.combinedData.length - 1];
         if(req.params.id != 'latest'){
             let parts = req.params.id.split(',');
             d = data.combinedData
@@ -89,23 +89,25 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
 app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
-        let d = data.smoothedData.sort(onDate)[0];
+        let d = data.smoothedData[data.smoothedData.length - 1];
         value = nunjucks.render( 'single-poll.svg' , layout.singlePoll(req.params.width, req.params.height, d, true) );
         cache.set(req.path, value);
         checkData();
     }
     res.send(value);
-})
+});
 
 app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
-    if(!value){
+    
+    if(!value){        
         let endDate = isoShortFormat.parse( req.params.enddate );
         let startDate = isoShortFormat.parse( req.params.startdate );
         let titleOverride = null;
+
         if(req.params.enddate === 'now'){
             endDate = new Date();
-            if(req.params.startdate.indexOf('month') > 0){
+            if(req.params.startdate === 'month'){
                 startDate = new Date();
                 startDate.setMonth(startDate.getMonth()-1);
                 titleOverride = 'Polling movement over the last month';
