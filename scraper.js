@@ -43,7 +43,7 @@ function updateData(pageURL){
 			},[]);
 
 			data.smoothedData = smooth(data.combinedData);
-			if( data.combinedData.length < backupData.combinedData.length ){
+			if( data.combinedData.length < backupData.combinedData.length ){ //if there's less data than there used to be there's probably been a chnage to the wikipedia page layout/ format
                 console.error('ERROR: data length less than failsafe ' + data.combinedData.length + ' ' + new Date()); //logentries pattern 'ERROR: data length less than failsafe'
                 data = backupData;
             }else{
