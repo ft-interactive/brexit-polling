@@ -2,8 +2,20 @@
 const	request = require('request');
 const	cheerio = require('cheerio');
 const	csv = require('d3-dsv').csv;
-var   backupData = require('./failsafe.js');
+const   failsafe = require('./failsafe.js');
 const	d3Array = require('d3-array');
+
+failsafe.data = failsafe.data.map(function(d){
+    d.startDate = new Date(d.startDate);
+    d.endDate = new Date(d.endDate);
+    return d;
+})
+
+var backupData = {
+    combinedData: failsafe.data,
+    smoothedData: smooth(failsafe.data),
+    updated: failsafe.updated
+}
 
 const tableKeys = [ //need one of these for each table in the page
     'national-2016',
@@ -42,12 +54,11 @@ function updateData(pageURL){
 				return previousValue.concat( data[currentValue] );
 			},[]);
 
-			if( data.combinedData.length < backupData.data.length ){ //if there's less data than there used to be there's probably been a chnage to the wikipedia page layout/ format
+			if( data.combinedData.length < backupData.combinedData.length ){ //if there's less data than there used to be there's probably been a chnage to the wikipedia page layout/ format
                 console.error('ERROR: data length less than failsafe ' + data.combinedData.length + ' ' + new Date()); //logentries pattern 'ERROR: data length less than failsafe'
-                data.combinedData = backupData.data;
-                data.updated = backupData.updated;
-                data.smoothedData = smooth(data.combinedData);
+                data = backupData;
             }else{
+                data.smoothedData = smooth(data.combinedData);
                 backupData = data;
             }
 			updated = new Date();
