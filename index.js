@@ -99,13 +99,15 @@ app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
 
 app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
-    if(!value){
+    
+    if(!value){        
         let endDate = isoShortFormat.parse( req.params.enddate );
         let startDate = isoShortFormat.parse( req.params.startdate );
         let titleOverride = null;
+
         if(req.params.enddate === 'now'){
             endDate = new Date();
-            if(req.params.startdate.indexOf('month') > 0){
+            if(req.params.startdate === 'month'){
                 startDate = new Date();
                 startDate.setMonth(startDate.getMonth()-1);
                 titleOverride = 'Polling movement over the last month';
