@@ -47,7 +47,7 @@ function updateData(pageURL){
 			updated = new Date();
 		})
 		.catch(function(reason){
-			console.error('Failed to get ' + pageURL + ' - ' + reason + ' ' + new Date());
+			console.error('ERROR: Failed to get ' + pageURL + ' - ' + reason + ' ' + new Date());
             data = backupData;
 			data.smoothedData = smooth(data.combinedData);
 		});
