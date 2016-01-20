@@ -43,14 +43,20 @@ function updateData(pageURL){
 			},[]);
 
 			data.smoothedData = smooth(data.combinedData);
-			
+			if( data.combinedData.length < backupData.combinedData.length ){
+                console.error('ERROR: data length less than failsafe ' + data.combinedData.length + ' ' + new Date()); //logentries pattern 'ERROR: data length less than failsafe'
+                data = backupData;
+            }else{
+                backupData = data;
+            }
 			updated = new Date();
 		})
 		.catch(function(reason){
-			console.error('ERROR: Failed to get ' + pageURL + ' - ' + reason + ' ' + new Date());
+			console.error('ERROR: Failed to get ' + pageURL + ' - ' + reason + ' ' + new Date()); //logentries pattern 'ERROR: Failed to get'
             data = backupData;
 			data.smoothedData = smooth(data.combinedData);
 		});
+        
 	return data;
 }
 

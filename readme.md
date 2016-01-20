@@ -26,6 +26,8 @@ clone the repo and then ...
 ```npm install```
 ```node index.js```
 
+<!-- errors logged to team.interactive+brexit-polling-ops -->
+
 <!-- badge URLs -->
 [travis-url]: http://travis-ci.org/ft-interactive/starter-kit
 [travis-image]: https://img.shields.io/travis/ft-interactive/starter-kit.svg?style=flat-square
