@@ -1,10 +1,10 @@
 {
-  "name": "table-scraper",
+  "name": "ft-brexit-data",
   "engines": {
-      "node":"5.2.x"
+      "node":"5"
   },
   "version": "1.0.0",
-  "description": "scrape brexit polls from wikipedia page",
+  "description": "scrape brexit polls from wikipedia page then present it in some ways",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
