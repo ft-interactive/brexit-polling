@@ -11,6 +11,8 @@ const isoShortFormat = d3TimeFormat.format('%Y-%m-%d');
 const ftDateFormat = d3TimeFormat.format('%e %b %Y');
 
 function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
+    let labelCenterSpacing = 15;
+    
 	let margin = {
 		top:20,
 		left:0,
@@ -19,7 +21,6 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
 	};
 
 	//sort data oldest to newest
-
 	let rawData = data.combinedData.sort(function(a,b){
 		return a.date.getTime() - b.date.getTime();
 	}).filter(function(d){
@@ -38,7 +39,7 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
     
 	let yScale = d3scale.linear()
 		.domain([100,0])
-		.range([0, height - (margin.top + margin.bottom)]);
+		.range([0, height - (margin.top + margin.bottom)]) ;
         
 	let xScale = d3scale.time()
 		.domain( dateDomain )
@@ -59,92 +60,110 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
     
     let lastSmoothedPoint = smoothFiltered[ smoothFiltered.length-1 ]
    
+    //line label positioning
+    //first, don't let 'remain' and 'leave' overlap
+    let labelYUndecided = yScale(lastSmoothedPoint.undecided);
+    let labelYRemain = yScale(lastSmoothedPoint.remain);
+    let labelYLeave = yScale(lastSmoothedPoint.leave);
+    let spacing = Math.abs(labelYRemain - labelYLeave);
+    if(spacing < labelCenterSpacing){
+        let dy = (labelCenterSpacing - spacing) / 2;
+        //move the lower down and the upper up
+        if(labelYRemain > labelYLeave){
+            labelYRemain += dy;
+            labelYLeave -= dy;
+        }else{
+            labelYRemain -= dy;
+            labelYLeave += dy;
+        }
+    }
+   
 	// start date, end date, two/ three? lines, (final values & positions)
 	let config = {
-		title:titleOverride ? titleOverride : 'Polling movements over time',
-        titleSize:'20',
-		footer:'Source FT.com',
+		title: titleOverride ? titleOverride : 'Polling movements over time',
+        titleSize: '20',
+		footer: 'Source FT.com',
         metricEmbed: true,
-		margin:margin,
-		width:width,
-		height:height,
-		fontColour:colour.font,
+		margin: margin,
+		width: width,
+		height: height,
+		fontColour: colour.font,
 		data: filtered,
         pollStyle: {
             radius: 3,
-            leaveFill:colour.leave,
-            undecidedFill:colour.undecided,
-            remainFill:colour.remain,
-            fillOpacity:0.5
+            leaveFill: colour.leave,
+            undecidedFill: colour.undecided,
+            remainFill: colour.remain,
+            fillOpacity: 0.5
         },
 		line: {
 			remain: {
-				path:d3Shape.line()
+				path: d3Shape.line()
 					.x((d) => xScale(d.date) )
 					.y((d) => yScale(d.remain) )
 					(smoothFiltered),
 				stroke:colour.remain
 			},
 			leave: {
-				path:d3Shape.line()
+				path: d3Shape.line()
 					.x((d) => xScale(d.date) )
 					.y((d) => yScale(d.leave) )
 					(smoothFiltered),
 				stroke:colour.leave
 			},
 			undecided: {
-				path:d3Shape.line()
+				path: d3Shape.line()
 					.x((d) => xScale(d.date) )
 					.y((d) => yScale(d.undecided) )
 					(smoothFiltered),
-				stroke:colour.undecided
+				stroke: colour.undecided
 			}
 		},
-        xAxis:{
-            ticks:[
+        xAxis: {
+            ticks: [
                 {
-                    x:xScale(dateDomain[0]),
-                    y:0,
-                    label:ftDateFormat(dateDomain[0])
+                    x: xScale(dateDomain[0]),
+                    y: 0,
+                    label: ftDateFormat(dateDomain[0])
                 },
                 {
-                    x:xScale(dateDomain[1]),
-                    y:0,
-                    label:ftDateFormat(dateDomain[1])
+                    x: xScale(dateDomain[1]),
+                    y: 0,
+                    label: ftDateFormat(dateDomain[1])
                 }
             ]
         },
-        yAxis:{
-            ruleStroke:colour.font,
-            ruleStrokeWidth:2,
-            ruleStrokeDashArray:"2 2",
-            ticks:[
+        yAxis: {
+            ruleStroke: colour.font,
+            ruleStrokeWidth: 2,
+            ruleStrokeDashArray: '2 2',
+            ticks: [
                 {
-                    x:xScale(lastSmoothedPoint.date),
-                    fill:colour.undecided,
-                    y:yScale(lastSmoothedPoint.undecided),
-                    label:'undecided ' + Math.round(lastSmoothedPoint.undecided) +'%'
+                    x: xScale(lastSmoothedPoint.date),
+                    fill: colour.undecided,
+                    y: labelYUndecided,
+                    label: 'undecided ' + Math.round(lastSmoothedPoint.undecided) +'%'
                 },
                 {
-                    x:xScale(lastSmoothedPoint.date),
-                    fill:colour.remain,
-                    y:yScale(lastSmoothedPoint.remain),
-                    label:'stay ' + Math.round(lastSmoothedPoint.remain) +'%'
+                    x: xScale(lastSmoothedPoint.date),
+                    fill: colour.remain,
+                    y: labelYRemain,
+                    label: 'stay ' + Math.round(lastSmoothedPoint.remain) +'%'
                 },
                 {
-                    x:xScale(lastSmoothedPoint.date),
-                    fill:colour.leave,
-                    y:yScale(lastSmoothedPoint.leave),
-                    label:'go ' + Math.round(lastSmoothedPoint.leave) +'%'
+                    x: xScale(lastSmoothedPoint.date),
+                    fill: colour.leave,
+                    y: labelYLeave,
+                    label: 'go ' + Math.round(lastSmoothedPoint.leave) +'%'
                 }
             ],
-            rules:[
+            rules: [
                 {
-                    x1:0,
-                    y1:yScale(50),
-                    x2:xScale.range()[1],
-                    y2:yScale(50),
-                    label:''
+                    x1: 0,
+                    y1: yScale(50),
+                    x2: xScale.range()[1],
+                    y2: yScale(50),
+                    label: ''
                 }
             ]
         }
