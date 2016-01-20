@@ -39,7 +39,7 @@ function singlePollLayout(width, height, data, metricEmbed){
 	let barHeight = height - (margin.top + margin.bottom);
 
     let footer  = small ? '' : `${data.pollster} polling from ${ftDateFormat(data.startDate)} to ${ftDateFormat(data.endDate)}. ${sampleString}`;
-    console.log(data.pollOfPolls)
+
     if(data.pollOfPolls){
         footer = 'FT poll of polls. ' + ftDateFormat(data.date);
     }
