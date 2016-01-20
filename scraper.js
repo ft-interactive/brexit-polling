@@ -77,7 +77,6 @@ function updateData(pageURL){
 
 function smooth(data){
 	//TODO: remove duplicate pollsters, remove outliers
-	//make sure the data is sorted oldest to newest
 	var sorted = data.sort(function(a,b){
 		return a.startDate.getTime() - b.startDate.getTime();
 	});
