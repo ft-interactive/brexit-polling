@@ -51,7 +51,7 @@
             x2="{{rule.x2}}" 
             y2="{{rule.y1}}" 
             stroke="{{yAxis.ruleStroke}}" 
-            stroke-dashArray="{{yAxis.ruleStrokeDashArray}}" 
+            stroke-dasharray="{{yAxis.ruleStrokeDashArray}}" 
             stroke-width="{{yAxis.ruleStrokeWidth}}">
         </line>
     </g>
