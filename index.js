@@ -135,6 +135,19 @@ app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     res.send(value);
 });
 
+app.get('/polls/medium-term/:width-x-:height.svg', function(req, res){
+    let value = cache.get(req.path);
+    if(!value){
+        value = nunjucks.render( 'medium-term.svg', { 
+            text: 'text',
+            width: '500',
+            height: '500'
+        })
+    }
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.send(value);
+});
+
 //utility functions
 
 function checkData(){   //for getting the latest data 
