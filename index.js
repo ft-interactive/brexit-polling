@@ -138,11 +138,7 @@ app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
 app.get('/polls/medium-term/:width-x-:height.svg', function(req, res){
     let value = cache.get(req.path);
     if(!value){
-        value = nunjucks.render( 'medium-term.svg', { 
-            text: 'text',
-            width: '500',
-            height: '500'
-        })
+        value = nunjucks.render( 'medium-term.svg', layout.mediumTerm(data, req.params.width, req.params.height) )
     }
     res.setHeader('Content-Type', 'image/svg+xml');
     res.send(value);
