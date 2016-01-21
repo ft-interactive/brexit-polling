@@ -62,6 +62,7 @@ function singlePollLayout(width, height, data, metricEmbed){
         valueLabelOffset:{
             x:10,y:-10
         },
+        valueLabelColour: colour.lightFont,
 		leave:{
 			title:small ? 'Go - ' + data.leave + '%' : 'Go',
 			width:scale(data.leave),
