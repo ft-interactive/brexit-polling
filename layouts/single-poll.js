@@ -25,7 +25,7 @@ function singlePollLayout(width, height, data, metricEmbed){
         margin.top = 15;
         margin.bottom = 0;
     }
-
+    
 	let scale = d3scale.linear()
 		.domain( [0, data.leave + data.remain + data.undecided] )		//we can't rely on the pollsters numbers to add up to 100 so...
 		.range( [0, width - (margin.left + margin.right)] );
@@ -62,6 +62,7 @@ function singlePollLayout(width, height, data, metricEmbed){
         valueLabelOffset:{
             x:10,y:-10
         },
+        valueLabelColour: colour.lightFont,
 		leave:{
 			title:small ? 'Go - ' + data.leave + '%' : 'Go',
 			width:scale(data.leave),

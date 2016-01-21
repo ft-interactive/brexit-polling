@@ -36,7 +36,7 @@ function updateData(pageURL){
 	getPage(pageURL)
 		.then(function(page){
 			let tables = cheerio.load(page)('table')
-				
+	
 			tables.each(function(i,t){
 				if( i>=tableKeys.length ) return;
 
