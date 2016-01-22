@@ -24,8 +24,8 @@ nunjucks.configure('views', {
 }).addFilter('isoShortFormat',isoShortFormat);
 
 checkData();
-
 //end of setup
+
 
 //routes
 app.get('/',function(req, res){

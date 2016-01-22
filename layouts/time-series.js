@@ -1,6 +1,6 @@
 'use strict'
 
-const d3scale = require('d3-scale');
+const d3Scale = require('d3-scale');
 const d3TimeFormat = require('d3-time-format');
 const d3Array = require('d3-array');
 const d3Shape = require('d3-shape');
@@ -37,11 +37,11 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
 		return ( time <= dateDomain[1].getTime() && time >= dateDomain[0].getTime() );
 	});
     
-	let yScale = d3scale.linear()
+	let yScale = d3Scale.linear()
 		.domain([100,0])
 		.range([0, height - (margin.top + margin.bottom)]) ;
         
-	let xScale = d3scale.time()
+	let xScale = d3Scale.time()
 		.domain( dateDomain )
 		.range( [0, width - (margin.left + margin.right)] );
 
