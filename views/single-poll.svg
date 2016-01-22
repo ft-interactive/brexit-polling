@@ -32,7 +32,7 @@
             <text y="{{ remain.height }}" dy="{{ valueLabelOffset.y }}" dx="{{ valueLabelOffset.x }}" font-weight="600" font-size="{{ valueLabelSize }}" font-family="MetricWeb,sans-serif" fill="{{ valueLabelColour }}">{{ remain.value }}%</text>
 			<text y="{{ leave.height }}" x="{{ width }}" dy="{{ valueLabelOffset.y }}" dx="-{{ valueLabelOffset.x }}" font-weight="600" text-anchor="end" font-size="{{ valueLabelSize }}" font-family="MetricWeb,sans-serif" fill="{{ valueLabelColour }}">{{ leave.value }}%</text>
             {% endif %}
-			<line x1="{{ width/2 }}" y1="0" x2="{{ width/2 }}" y2="{{ remain.height }}" stroke-width="2" stroke="#000" stroke-dasharray="2, 2"></line>
+			<line x1="{{ width/2 }}" y1="-5" x2="{{ width/2 }}" y2="{{ remain.height + 5 }}" stroke-width="2" stroke="#000" stroke-dasharray="2, 2"></line>
 		</g>
 	</g>
 </svg>

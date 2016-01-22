@@ -15,6 +15,24 @@ function mediumTermLayout(data, width, height){
     
     console.log(dateDomain);
     
+    //sort and filter
+    let rawData = data.combinedData.sort(function(a,b){
+		return a.date.getTime() - b.date.getTime();
+	}).filter(function(d){
+        return (d.undecided);
+    });
+
+	let filtered = rawData.filter(function(d,i){
+		let time = d.date.getTime();
+		return ( time <= dateDomain[1].getTime() && time >= dateDomain[0].getTime() );
+	});
+
+	let smoothFiltered = data.smoothedData.filter(function(d,i){
+		let time = d.date.getTime();
+		return ( time <= dateDomain[1].getTime() && time >= dateDomain[0].getTime() );
+	});
+    
+    
     let margin = {
         top:10,
         bottom:10,
@@ -33,6 +51,7 @@ function mediumTermLayout(data, width, height){
     return {
         width: width,
         height: height,
+        margin: margin,
         text: 'text ' + Object.keys(data).join(', ')
     };
 }
