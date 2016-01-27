@@ -1,3 +1,12 @@
 <svg width="{{ width }}" height="{{ height }}" viewBox="0 0 {{ width }} {{ height }}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
 <text>{{ text }}</text>
+<g transform="translate( {{ margin.left }}, {{margin.top}} )">
+{% for poll in data %}
+    <g transform="translate(0,{{ poll.y }})">
+        <rect x="{{ poll.remainX }}" y="0" height="{{ barHeight}}" width="{{ poll.remainWidth }}"></rect>
+        <rect x="{{ poll.leaveX}}" y="0" height="{{ barHeight}}" width="{{ poll.leaveWidth }}"></rect>
+    </g>
+{% endfor %}
+</g>
 </svg>

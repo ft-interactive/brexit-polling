@@ -11,7 +11,7 @@ function mediumTermLayout(data, width, height){
     let now = new Date();
     let lastMonth = new Date();
     lastMonth.setMonth( now.getMonth()-1 );
-    let dateDomain = [now, lastMonth];
+    let dateDomain = [lastMonth, now];
     
     console.log(dateDomain);
     
@@ -24,6 +24,8 @@ function mediumTermLayout(data, width, height){
 
 	let filtered = rawData.filter(function(d,i){
 		let time = d.date.getTime();
+        console.log(dateDomain[1])
+        console.log (d.date , ( time <= dateDomain[1].getTime() && time >= dateDomain[0].getTime() ))
 		return ( time <= dateDomain[1].getTime() && time >= dateDomain[0].getTime() );
 	});
 
@@ -40,6 +42,7 @@ function mediumTermLayout(data, width, height){
         right:10  
     };
     
+    
     var yScale = d3Scale.time()
 		.domain( dateDomain )
 		.range( [0, height - (margin.top + margin.bottom)] );
@@ -47,12 +50,25 @@ function mediumTermLayout(data, width, height){
     var xScale = d3Scale.linear()
         .domain( [0, 100] )
         .range( [0, width - (margin.left + margin.right) ] );
+        
+    filtered = filtered.map(function(d){
+        return {
+            remainX:0,
+            remainWidth:xScale(d.remain),
+            leaveX:xScale(d.remain) + xScale(d.undecided),
+            leaveWidth:xScale(d.leave),
+            y:yScale(d.date),
+            data:d
+        }
+    })
     
     return {
         width: width,
         height: height,
         margin: margin,
-        text: 'text ' + Object.keys(data).join(', ')
+        barHeight:10,
+        text: 'text ' + Object.keys(data).join(', '),
+        data: filtered
     };
 }
 
