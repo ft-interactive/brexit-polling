@@ -84,11 +84,15 @@ function smooth(data){
 	let smoothedData = []; 
 	for(let i=0; i < data.length; i++){
 		let slice = data.slice(Math.max(0, i-7), i);
+        let date = data[i].startDate;
+        if(data[i].endDate){
+            date = data[i].endDate;
+        }
 		smoothedData.push({
 			remain: Math.round( d3Array.mean(slice, (d) => d.remain ) ),
 			leave: Math.round( d3Array.mean(slice, (d) => d.leave ) ),
 			undecided: Math.round( d3Array.mean(slice, (d) => d.undecided ) ),
-			date: data[i].startDate,
+			date: date,
             pollOfPolls: true
 		});
 	}
@@ -166,9 +170,12 @@ function clean(datum, year){ //need to pass in the year as this isn't always in 
 			endDate = new Date(year, month-1, day);
 		}
 	});
-
+    let canonicalDate = startDate;
+    if(endDate){
+        canonicalDate = endDate;
+    }
 	return {
-        'date':startDate,
+        'date':canonicalDate,
 		'startDate':startDate,
 		'endDate':endDate,
 		'remain':Number(datum[remain].replace('%','')),
