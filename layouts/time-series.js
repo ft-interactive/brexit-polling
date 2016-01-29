@@ -136,7 +136,7 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
         yAxis: {
             ruleStroke: colour.font,
             ruleStrokeWidth: 2,
-            ruleStrokeDashArray: '2 2',
+            ruleStrokeDashArray: '2, 2',
             ticks: [
                 {
                     x: xScale(lastSmoothedPoint.date),

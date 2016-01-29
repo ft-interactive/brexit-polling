@@ -8,6 +8,11 @@
 }
 @font-face {
     font-family: "MetricWeb";
+    src: url("https://build.origami.ft.com/files/o-fonts-assets@1.2.0/MetricWeb-Medium.woff");
+    font-weight: 600;
+}
+@font-face {
+    font-family: "MetricWeb";
     src: url("https://build.origami.ft.com/files/o-fonts-assets@1.2.0/MetricWeb-Regular.woff");
 }
 </style>
@@ -24,8 +29,8 @@
 			<rect x="{{ (remain.width + undecided.width) }}" y="0" width="{{ leave.width }}" height="{{ leave.height }}" fill="{{ leave.fill }}" class="leave"></rect>
 			<rect x="{{ remain.width }}" y="0" width="{{ undecided.width }}" height="{{ undecided.height }}" fill="{{ undecided.fill }}" class="undecided"></rect>
 			{% if not small %}
-            <text y="{{ remain.height }}" dy="{{ valueLabelOffset.y }}" dx="{{ valueLabelOffset.x }}" font-weight="800" font-size="{{ valueLabelSize }}" font-family="MetricWeb,sans-serif" fill="{{ fontColour }}">{{ remain.value }}%</text>
-			<text y="{{ leave.height }}" x="{{ width }}" dy="{{ valueLabelOffset.y }}" dx="-{{ valueLabelOffset.x }}" font-weight="800" text-anchor="end" font-size="{{ valueLabelSize }}" font-family="MetricWeb,sans-serif" fill="{{ fontColour }}">{{ leave.value }}%</text>
+            <text y="{{ remain.height }}" dy="{{ valueLabelOffset.y }}" dx="{{ valueLabelOffset.x }}" font-weight="600" font-size="{{ valueLabelSize }}" font-family="MetricWeb,sans-serif" fill="{{ valueLabelColour }}">{{ remain.value }}%</text>
+			<text y="{{ leave.height }}" x="{{ width }}" dy="{{ valueLabelOffset.y }}" dx="-{{ valueLabelOffset.x }}" font-weight="600" text-anchor="end" font-size="{{ valueLabelSize }}" font-family="MetricWeb,sans-serif" fill="{{ valueLabelColour }}">{{ leave.value }}%</text>
             {% endif %}
 			<line x1="{{ width/2 }}" y1="0" x2="{{ width/2 }}" y2="{{ remain.height }}" stroke-width="2" stroke="#000" stroke-dasharray="2, 2"></line>
 		</g>

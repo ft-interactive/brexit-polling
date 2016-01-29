@@ -83,6 +83,7 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
         cache.set(req.path, value);
         checkData();
     }
+    res.setHeader('Content-Type', 'image/svg+xml');
     res.send(value)
 });
 
@@ -94,6 +95,7 @@ app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
         cache.set(req.path, value);
         checkData();
     }
+    res.setHeader('Content-Type', 'image/svg+xml');
     res.send(value);
 });
 
@@ -129,6 +131,7 @@ app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
         value = nunjucks.render( 'time-series.svg' , config );
         checkData();
     }
+    res.setHeader('Content-Type', 'image/svg+xml');
     res.send(value);
 });
 
