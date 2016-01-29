@@ -78,15 +78,17 @@ function updateData(pageURL){
 function smooth(data){
 	//TODO: remove duplicate pollsters, remove outliers
 	var sorted = data.sort(function(a,b){
-		return a.startDate.getTime() - b.startDate.getTime();
+        let aDate = new Date(a.date);
+        let bDate = new Date(b.date);
+		return aDate.getTime() - bDate.getTime();
 	});
 
 	let smoothedData = []; 
 	for(let i=0; i < data.length; i++){
 		let slice = data.slice(Math.max(0, i-7), i);
-        let date = data[i].startDate;
-        if(data[i].endDate){
-            date = data[i].endDate;
+        let date = data[i].date;
+        if(data[i].date){
+            date = data[i].date;
         }
 		smoothedData.push({
 			remain: Math.round( d3Array.mean(slice, (d) => d.remain ) ),
@@ -182,7 +184,7 @@ function clean(datum, year){ //need to pass in the year as this isn't always in 
 		'leave':Number(datum[leave].replace('%','')),
 		'undecided':Number(datum[undecided].replace('%','')),
 		'sample':Number(datum['Sample'].replace(/,/g,'')),
-		'pollster':datum[pollster],
+		'pollster':datum[pollster].replace(/\[.*\]/g,''),
 		'notes':datum["Notes"]
 	};
 }

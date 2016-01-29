@@ -5,7 +5,9 @@ const express = require('express'),
 	layout = require('./layouts/index.js'),
 	nunjucks = require('nunjucks'),
     lru = require('lru-cache'),
-	isoShortFormat = require('d3-time-format').format('%Y-%m-%d');
+    d3TimeFormat = require('d3-time-format').format,
+	isoShortFormat = d3TimeFormat('%Y-%m-%d'),
+    ftDateFormat = d3TimeFormat('%e %b %Y');
 
 const wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
 
@@ -21,7 +23,18 @@ const app = express();
 nunjucks.configure('views', {
     autoescape: true,
     express: app
-}).addFilter('isoShortFormat',isoShortFormat);
+})
+.addFilter('isoShortFormat',isoShortFormat)
+.addFilter('ftDateFormat',ftDateFormat)
+.addFilter('replaceNaN', function(n){
+    if(n=='NaN' || isNaN(n)){
+        return '-';
+    }
+    return n;
+})
+.addFilter('commas', function (n) {
+    return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+});
 
 checkData();
 //end of setup
@@ -70,7 +83,6 @@ app.get('/data.html', function (req, res) {
     }
     res.send(value);
 });
-
 
 app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
@@ -148,7 +160,6 @@ app.get('/polls/medium-term/:width-x-:height.svg', function(req, res){
 });
 
 //utility functions
-
 function checkData(){   //for getting the latest data 
     let now = new Date();
     if(now.getTime() - scraper.updated().getTime() >= 60000){
