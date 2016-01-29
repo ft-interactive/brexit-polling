@@ -1,6 +1,6 @@
 'use strict'
 
-const d3scale = require('d3-scale');
+const d3Scale = require('d3-scale');
 const d3TimeFormat = require('d3-time-format');
 const d3Array = require('d3-array');
 const d3Shape = require('d3-shape');
@@ -11,6 +11,7 @@ const isoShortFormat = d3TimeFormat.format('%Y-%m-%d');
 const ftDateFormat = d3TimeFormat.format('%e %b %Y');
 
 function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
+    let maxPct = 75;
     let labelCenterSpacing = 15;
     
 	let margin = {
@@ -37,15 +38,14 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
 		return ( time <= dateDomain[1].getTime() && time >= dateDomain[0].getTime() );
 	});
     
-	let yScale = d3scale.linear()
-		.domain([100,0])
+	let yScale = d3Scale.linear()
+		.domain([maxPct,0])
 		.range([0, height - (margin.top + margin.bottom)]) ;
         
-	let xScale = d3scale.time()
+	let xScale = d3Scale.time()
 		.domain( dateDomain )
 		.range( [0, width - (margin.left + margin.right)] );
 
-    //TODO: create X & Ys for circles on filtered data
     filtered = filtered.map(function(d){
        return {
            data:d,
@@ -163,7 +163,7 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
                     y1: yScale(50),
                     x2: xScale.range()[1],
                     y2: yScale(50),
-                    label: ''
+                    label: '50%'
                 }
             ]
         }

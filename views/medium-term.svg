@@ -1,0 +1,48 @@
+<svg width="{{ width }}" height="{{ height }}" viewBox="0 0 {{ width }} {{ height }}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+{% if metricEmbed %}
+<style>
+@font-face {
+    font-family: "MetricWeb";
+    src: url("https://build.origami.ft.com/files/o-fonts-assets@1.2.0/MetricWeb-Semibold.woff");
+    font-weight: 800;
+}
+@font-face {
+    font-family: "MetricWeb";
+    src: url("https://build.origami.ft.com/files/o-fonts-assets@1.2.0/MetricWeb-Medium.woff");
+    font-weight: 600;
+}
+@font-face {
+    font-family: "MetricWeb";
+    src: url("https://build.origami.ft.com/files/o-fonts-assets@1.2.0/MetricWeb-Regular.woff");
+}
+</style>
+{% endif %}
+<text>{{ text }}</text>
+<g transform="translate( {{ margin.left }}, {{margin.top}} )">
+{% for tick in verticalTicks %}
+    <g class="pct-tick" transform="translate({{tick.value}},0)" >
+    
+        <line shape-rendering="crispEdges" stroke="#000" stroke-dasharray="5,5" stroke-width="1" x1="0" x2="0" y1="0" y2="{{ height - (margin.top+margin.bottom) }}" ></line>
+    
+    </g>
+{% endfor %}
+
+{% for tick in horizontalTicks %}
+    <g class="date-tick" transform="translate(0,{{tick.value}})" >
+    {% if tick.major %}
+        <line shape-rendering="crispEdges" stroke="#000" stroke-dasharray="5,5" stroke-width="1" x1="0" x2="{{ width - (margin.left + margin.right) }}" y1="0" y2="0" ></line>
+    {% endif %}
+    <text x="{{ (width-(margin.left + margin.right))/2 }}" font-family="MetricWeb" font-weight="400" font-size="10" text-anchor="middle">
+        {{ tick.label }}
+    </text>
+    </g>
+{% endfor %}
+
+{% for poll in data %}
+    <g transform="translate(0,{{ poll.y }})">
+        <rect fill="{{ remainFill }}" x="{{ poll.remainX }}" y="0" height="{{ barHeight}}" width="{{ poll.remainWidth }}"></rect>
+        <rect fill="{{ leaveFill }}" x="{{ poll.leaveX}}" y="0" height="{{ barHeight}}" width="{{ poll.leaveWidth }}"></rect>
+    </g>
+{% endfor %}
+</g>
+</svg>
