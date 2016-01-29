@@ -15,7 +15,7 @@
     <link rel="shortcut icon" href="https://ig.ft.com/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="//im.ft-static.com/m/icons/apple-touch-icon.png">
 
-    <title>FT.com</title>
+    <title>Brexit Polling Data - FT.com</title>
 
 
     <script src="scripts/top.js"></script>
@@ -83,6 +83,78 @@ body {
 .site-header > a { opacity: 0.75; }
 .site-header > a:hover {  opacity: 1; }
 .masthead {  height: 18px; }
+
+h1{
+    font-size:2.5em;
+    max-width:600px;
+    margin-left:auto;
+    margin-right:auto;
+    /*margin:auto;*/
+}
+
+h1,h2,h3{
+    font-weight:500;
+    color:#43423e;
+    font-family: "FinancierDisplayWeb",serif;
+}
+
+
+main{
+    margin:0 auto;
+    max-width:800px;
+    text-align:center;
+}
+main p{
+    text-align:left;
+    margin-left:auto;
+    margin-right:auto;
+    max-width:600px;
+}
+
+table{
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+th {
+    border: 0px;
+    border-bottom: solid 1px #1d1d1d;
+    min-width:50px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+td{
+    font-size: 0.9rem;
+    text-align: left;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+td.lead{
+    font-weight: 800;
+}
+
+td.numeric{
+    text-align: right;
+}
+
+td.leave.lead{
+    background: {{ leave.tint }};
+}
+
+td.remain.lead{
+    background: {{ remain.tint }};
+}
+
+.key{
+    text-align: left;
+}
+
+.source{
+    text-align: right;
+}
     </style>
 
     <link rel="stylesheet" href="styles/top.css">
@@ -126,15 +198,18 @@ body {
 
     <main role="main">
         <h1>Brexit polling</h1>
+        <p class="intro">The UK is to hold a referendum by the end of 2017 to decide whther to remain in the European Union this page summarises opinion polling on the matter.<p>
+            <p><a href="">Latest Brexit coverage</a></p>
         <object width="650" type="image/svg+xml" data="/poll-of-polls/600-x-100.svg">Your browser does not support SVG</object>
         <object width="650" height="500" type="image/svg+xml" data="/polls/2014-10-1,now/600-x-400.svg">Your browser does not support SVG</object>
+        <p class="key"> Circle individual poll. Line rolling average*</p>
         <h2>Individual polls</h2>
         <table>
             <thead>
                 <tr>
-                    <th>{{ remain.label }}</th>
-                    <th>{{ leave.label }}</th>
-                    <th>{{ undecided.label }}</th>
+                    <th>{{ remain.label }} %</th>
+                    <th>{{ leave.label }} %</th>
+                    <th>{{ undecided.label }} %</th>
                     <th>Date</th>
                     <th>Pollster</th>
                     <th>Sample Size</th>
@@ -143,16 +218,23 @@ body {
             <tbody>
                 {% for poll in data %}
                 <tr>
-                    <td>{{ poll.remain }}</td>
-                    <td>{{ poll.leave }}</td>
-                    <td>{{ poll.undecided | replaceNaN }}</td>
-                    <td>{{ poll.date | ftDateFormat }}</td>
+                    <td class="numeric remain {{ poll | boldIfRemain }}">{{ poll.remain }}</td>
+                    <td class="numeric leave {{ poll | boldIfLeave }}">{{ poll.leave }}</td>
+                    <td class="numeric">{{ poll.undecided | replaceNaN }}</td>
+                    <td class="numeric">{{ poll.date | ftDateFormat }}</td>
                     <td>{{ poll.pollster }}</td>
-                    <td>{{ poll.sample | replaceNaN | commas }}</td>
+                    <td class="numeric">{{ poll.sample | replaceNaN | commas }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        
+
+            <p class="source">
+            Source : <a href="https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum">Wikipedia</a>
+            </p>
+             <p class="note">* FT poll of polls calcuated as the avereage of the last seven polls up to a given date<p>
+
     </main>
     <footer class="footer" role="contentinfo">
       <div class="o-footer o-footer--theme-light" data-o-component="o-footer">

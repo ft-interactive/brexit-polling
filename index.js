@@ -7,7 +7,8 @@ const express = require('express'),
     lru = require('lru-cache'),
     d3TimeFormat = require('d3-time-format').format,
 	isoShortFormat = d3TimeFormat('%Y-%m-%d'),
-    ftDateFormat = d3TimeFormat('%e %b %Y');
+    ftDateFormat = d3TimeFormat('%e %b %Y'),
+    colours = require('./layouts/colours.js');
 
 const wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
 
@@ -34,6 +35,13 @@ nunjucks.configure('views', {
 })
 .addFilter('commas', function (n) {
     return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+})
+.addFilter('boldIfRemain', function (poll) {
+    if(poll.remain >= poll.leave) return 'lead';
+    return '';
+}).addFilter('boldIfLeave', function (poll) {
+    if(poll.remain <= poll.leave) return 'lead';
+    return '';
 });
 
 checkData();
@@ -48,8 +56,8 @@ app.get('/',function(req, res){
             data: data.combinedData.reverse(),
             updated: scraper.updated(),
             source: wikipediaPage,
-            remain:{ label:'Stay' },
-            leave:{ label:'Go' },
+            remain:{ label:'Stay', tint:colours.remainTint },
+            leave:{ label:'Go', tint:colours.leaveTint  },
             undecided:{ label:'Undecided' }
         });
         cache.set(req.path, value);
