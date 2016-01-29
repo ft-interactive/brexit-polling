@@ -61,17 +61,23 @@ function mediumTermLayout(data, width, height){
     let hTicks = dateArray(dateDomain).map(function(d){
             if(d.getDate() == 1){
                 return {
-                    value:yScale(d),
-                    label:ftDateFormat(d),
-                    major:true
+                    value: yScale(d),
+                    label: ftDateFormat(d),
+                    major: true,
+                    date: d
                 }
             }
             return {
                 value: yScale(d),
                 label: d.getDate(),
-                major: false
+                major: false,
+                date: d
             }
+        })
+        .filter(function(d,i){
+            return (d.major || (d.date.getDate()%5 == 0))
         });
+        
     console.log(hTicks);
     return {
         metricEmbed:true,

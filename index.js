@@ -32,9 +32,12 @@ app.get('/',function(req, res){
     let value = cache.get(req.path);
     if(!value){
         value = nunjucks.render( 'index.html' , {
-            data: data.combinedData,
+            data: data.combinedData.reverse(),
             updated: scraper.updated(),
-            source: wikipediaPage
+            source: wikipediaPage,
+            remain:{ label:'Stay' },
+            leave:{ label:'Go' },
+            undecided:{ label:'Undecided' }
         });
         cache.set(req.path, value);
         checkData();
