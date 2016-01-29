@@ -1,6 +1,6 @@
 'use strict'
 
-const d3scale = require('d3-scale');
+const d3Scale = require('d3-scale');
 const d3TimeFormat = require('d3-time-format');
 const d3Array = require('d3-array');
 const d3Shape = require('d3-shape');
@@ -26,7 +26,7 @@ function singlePollLayout(width, height, data, metricEmbed){
         margin.bottom = 0;
     }
     
-	let scale = d3scale.linear()
+	let scale = d3Scale.linear()
 		.domain( [0, data.leave + data.remain + data.undecided] )		//we can't rely on the pollsters numbers to add up to 100 so...
 		.range( [0, width - (margin.left + margin.right)] );
 

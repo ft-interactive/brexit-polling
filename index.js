@@ -5,7 +5,10 @@ const express = require('express'),
 	layout = require('./layouts/index.js'),
 	nunjucks = require('nunjucks'),
     lru = require('lru-cache'),
-	isoShortFormat = require('d3-time-format').format('%Y-%m-%d');
+    d3TimeFormat = require('d3-time-format').format,
+	isoShortFormat = d3TimeFormat('%Y-%m-%d'),
+    ftDateFormat = d3TimeFormat('%e %b %Y'),
+    colours = require('./layouts/colours.js');
 
 const wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
 
@@ -21,20 +24,41 @@ const app = express();
 nunjucks.configure('views', {
     autoescape: true,
     express: app
-}).addFilter('isoShortFormat',isoShortFormat);
+})
+.addFilter('isoShortFormat',isoShortFormat)
+.addFilter('ftDateFormat',ftDateFormat)
+.addFilter('replaceNaN', function(n){
+    if(n=='NaN' || isNaN(n)){
+        return '-';
+    }
+    return n;
+})
+.addFilter('commas', function (n) {
+    return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+})
+.addFilter('boldIfRemain', function (poll) {
+    if(poll.remain >= poll.leave) return 'lead';
+    return '';
+}).addFilter('boldIfLeave', function (poll) {
+    if(poll.remain <= poll.leave) return 'lead';
+    return '';
+});
 
 checkData();
-
 //end of setup
+
 
 //routes
 app.get('/',function(req, res){
     let value = cache.get(req.path);
     if(!value){
         value = nunjucks.render( 'index.html' , {
-            data: data.combinedData,
+            data: data.combinedData.reverse(),
             updated: scraper.updated(),
-            source: wikipediaPage
+            source: wikipediaPage,
+            remain:{ label:'Stay', tint:colours.remainTint },
+            leave:{ label:'Go', tint:colours.leaveTint  },
+            undecided:{ label:'Undecided' }
         });
         cache.set(req.path, value);
         checkData();
@@ -67,7 +91,6 @@ app.get('/data.html', function (req, res) {
     }
     res.send(value);
 });
-
 
 app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
@@ -135,8 +158,16 @@ app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     res.send(value);
 });
 
-//utility functions
+app.get('/polls/medium-term/:width-x-:height.svg', function(req, res){
+    let value = cache.get(req.path);
+    if(!value){
+        value = nunjucks.render( 'medium-term.svg', layout.mediumTerm(data, req.params.width, req.params.height) )
+    }
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.send(value);
+});
 
+//utility functions
 function checkData(){   //for getting the latest data 
     let now = new Date();
     if(now.getTime() - scraper.updated().getTime() >= 60000){

@@ -78,17 +78,23 @@ function updateData(pageURL){
 function smooth(data){
 	//TODO: remove duplicate pollsters, remove outliers
 	var sorted = data.sort(function(a,b){
-		return a.startDate.getTime() - b.startDate.getTime();
+        let aDate = new Date(a.date);
+        let bDate = new Date(b.date);
+		return aDate.getTime() - bDate.getTime();
 	});
 
 	let smoothedData = []; 
 	for(let i=0; i < data.length; i++){
 		let slice = data.slice(Math.max(0, i-7), i);
+        let date = data[i].date;
+        if(data[i].date){
+            date = data[i].date;
+        }
 		smoothedData.push({
 			remain: Math.round( d3Array.mean(slice, (d) => d.remain ) ),
 			leave: Math.round( d3Array.mean(slice, (d) => d.leave ) ),
 			undecided: Math.round( d3Array.mean(slice, (d) => d.undecided ) ),
-			date: data[i].startDate,
+			date: date,
             pollOfPolls: true
 		});
 	}
@@ -166,16 +172,19 @@ function clean(datum, year){ //need to pass in the year as this isn't always in 
 			endDate = new Date(year, month-1, day);
 		}
 	});
-
+    let canonicalDate = startDate;
+    if(endDate){
+        canonicalDate = endDate;
+    }
 	return {
-        'date':startDate,
+        'date':canonicalDate,
 		'startDate':startDate,
 		'endDate':endDate,
 		'remain':Number(datum[remain].replace('%','')),
 		'leave':Number(datum[leave].replace('%','')),
 		'undecided':Number(datum[undecided].replace('%','')),
 		'sample':Number(datum['Sample'].replace(/,/g,'')),
-		'pollster':datum[pollster],
+		'pollster':datum[pollster].replace(/\[.*\]/g,''),
 		'notes':datum["Notes"]
 	};
 }
