@@ -52,13 +52,26 @@ checkData();
 app.get('/',function(req, res){
     let value = cache.get(req.path);
     if(!value){
+
+        let d = data.smoothedData[data.smoothedData.length - 1];
+        let single = nunjucks.render( 'single-poll.svg' , layout.singlePoll(600, 100, d, true) );
+
+        let endDate = new Date();
+        let startDate = new Date();
+        startDate.setYear( endDate.getFullYear()-1);
+        let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement over the last year');
+        let timeSeries = nunjucks.render( 'time-series.svg',  timeSeriesLayout);
+
         value = nunjucks.render( 'index.html' , {
+            title: 'Brexit Polling',
             data: data.combinedData.reverse(),
             updated: scraper.updated(),
             source: wikipediaPage,
             remain:{ label:'Stay', tint:colours.remainTint },
             leave:{ label:'Go', tint:colours.leaveTint  },
-            undecided:{ label:'Undecided' }
+            undecided:{ label:'Undecided' },
+            timeChart:timeSeries,
+            singleChart:single
         });
         cache.set(req.path, value);
         checkData();
@@ -149,7 +162,7 @@ app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
             }
         }
 
-        let dateRange = [ startDate, endDate ]
+        let dateRange = [ startDate, endDate ];
         let config = layout.timeSeries(req.params.width, req.params.height, dateRange, data, titleOverride);
         value = nunjucks.render( 'time-series.svg' , config );
         checkData();

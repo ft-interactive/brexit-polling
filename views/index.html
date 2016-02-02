@@ -15,7 +15,7 @@
     <link rel="shortcut icon" href="https://ig.ft.com/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="//im.ft-static.com/m/icons/apple-touch-icon.png">
 
-    <title>Brexit Polling Data - FT.com</title>
+    <title>{{ title }} &mdash; FT.com</title>
 
 
     <script src="scripts/top.js"></script>
@@ -106,8 +106,10 @@ h1,h2,h3{
 
 main{
     margin:0 auto;
-    max-width:800px;
+    max-width:600px;
     text-align:center;
+    padding-left:20px;
+    padding-right:20px;
 }
 main p{
     text-align:left;
@@ -116,7 +118,7 @@ main p{
     max-width:600px;
 }
 
-a {
+p a {
     color: #27757b;
     border-bottom: 1px dotted #27757b;
     text-decoration: none;
@@ -167,24 +169,20 @@ td.remain.lead{
     background: {{ remain.tint }};
 }
 
-.key{
-    text-align: left;
-}
 
 .source{
     text-align: right;
 }
 
-.chart{
-    max-width:800px;
+.chart svg{
+    width:100%;
+    height:100%;
 }
+
 
 @media (max-width: 600px) {
   .secondary {
     display: none;
-  }
-  .chart {
-      max-width: 100%;
   }
 }
 
@@ -230,19 +228,30 @@ td.remain.lead{
     </header>
 
     <main role="main">
-        <h1>Brexit polling</h1>
+        <h1>{{ title }}</h1>
         <p class="intro">The UK is to hold a referendum by the end of 2017 to decide whther to remain in the European Union this page summarises opinion polling on the matter.<p>
-            <p><a href="http://www.ft.com/eu-referendum/">Latest Brexit coverage</a></p>
-        
-        <object class="chart" type="image/svg+xml" data="/poll-of-polls/600-x-100.svg">Your browser does not support SVG</object>
-        <object class="chart" type="image/svg+xml" data="/polls/2014-10-1,now/600-x-400.svg">Your browser does not support SVG</object>
+            <p><a href="http://www.ft.com/eu-referendum/">Latest Brexit coverage</a>
+        </p>
         
         
-        <p class="key"> 
-            <span><svg class="key-item" width="16" height="12"><circle fill="#000" cx="6" cy="6" r="3" fill-opacity="0.5"></circle></svg>
-            Individual poll</span>
-            <span><svg class="key-item" width="16" height="12"><line stroke="#000" stroke-width="2" stroke-opacity="0.5" x1="2" y1="6" x2="14" y2="6"></line></svg>
-            Rolling average*</p></span>
+        <div class="chart">
+            {{ singleChart | safe }}
+        </div>
+        
+        <div class="chart">
+            {{ timeChart | safe }}
+        </div>
+        <div class="key"> 
+            <span>
+                <svg class="key-item" width="16" height="12"><circle fill="#000" cx="6" cy="6" r="3" fill-opacity="0.5"></circle></svg> Individual poll
+            </span>
+            <span>
+                <svg class="key-item" width="16" height="12"><line stroke="#000" stroke-width="2" stroke-opacity="0.5" x1="2" y1="6" x2="14" y2="6"></line></svg>Rolling average *</p>
+            </span>
+        </div>
+        
+        
+
         <h2>Individual polls</h2>
         <table>
             <thead>
