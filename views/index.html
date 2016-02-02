@@ -175,9 +175,16 @@ td.remain.lead{
     text-align: right;
 }
 
+.chart{
+    max-width:800px;
+}
+
 @media (max-width: 600px) {
   .secondary {
     display: none;
+  }
+  .chart {
+      max-width: 100%;
   }
 }
 
@@ -226,8 +233,11 @@ td.remain.lead{
         <h1>Brexit polling</h1>
         <p class="intro">The UK is to hold a referendum by the end of 2017 to decide whther to remain in the European Union this page summarises opinion polling on the matter.<p>
             <p><a href="http://www.ft.com/eu-referendum/">Latest Brexit coverage</a></p>
-        <object width="600" type="image/svg+xml" data="/poll-of-polls/600-x-100.svg">Your browser does not support SVG</object>
-        <object width="600" height="400" type="image/svg+xml" data="/polls/2014-10-1,now/600-x-400.svg">Your browser does not support SVG</object>
+        
+        <object class="chart" type="image/svg+xml" data="/poll-of-polls/600-x-100.svg">Your browser does not support SVG</object>
+        <object class="chart" type="image/svg+xml" data="/polls/2014-10-1,now/600-x-400.svg">Your browser does not support SVG</object>
+        
+        
         <p class="key"> 
             <span><svg class="key-item" width="16" height="12"><circle fill="#000" cx="6" cy="6" r="3" fill-opacity="0.5"></circle></svg>
             Individual poll</span>
