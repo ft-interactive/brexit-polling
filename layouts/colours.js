@@ -5,6 +5,6 @@ module.exports = {
 	leaveTint:'#d9e0b4',
 	undecided:'#CCC',
 	ftPink:'#fff1e0',
-	font:'#333',
+	font:'#43423e',
     lightFont:'#FFF'
 };

@@ -17,7 +17,7 @@
 </g>
     
 <g class="x axis" font-family="MetricWeb" transform="translate({{margin.left}},{{height-margin.bottom}})">
-    <g class="domain" transform="translate({{tick.x}},{{tick.y}})">
+    <g class="domain">
         <line x1="0" y1="0" x2="{{ width - (margin.left+margin.right)  }}" y2="0" stroke="{{fontColour}}" stroke-width="1" shape-rendering="crispEdges"></line>
     </g>
 {% for tick in xAxis.ticks %}
