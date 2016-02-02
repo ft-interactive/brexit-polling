@@ -1,4 +1,4 @@
-<svg width="{{ width }}" height="{{ height }}" viewBox="0 0 {{ width }} {{ height }}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg class="single-poll" width="{{ width }}" height="{{ height }}" viewBox="0 0 {{ width }} {{ height }}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 {% if metricEmbed %}
 <style>
 @font-face {
@@ -21,9 +21,9 @@
 	<text class="chart-title" font-family="MetricWeb,sans-serif" dy="20">{{ title }}</text>
 	<text class="chart-source" font-family="MetricWeb,sans-serif" dy="{{ (height - 2) }}" font-size="10px">{{ footer }}</text>
 	<g class="chart-plot" transform="translate({{ margin.left }},{{ margin.top }})">
-		<text text-anchor="start" font-family="MetricWeb,sans-serif" dy="{{titleOffset.y}}" font-size="{{titleSize}}px" fill="{{ fontColour }}">{{ remain.title }}</text>
-		<text text-anchor="end" font-family="MetricWeb,sans-serif" x="{{ width }}" dy="{{titleOffset.y}}" font-size="{{titleSize}}px" fill="{{ fontColour }}">{{ leave.title }}</text>
-		<text text-anchor="middle" font-family="MetricWeb,sans-serif" x="{{ (width/2) }}" dy="{{titleOffset.y}}" font-size="{{titleSize}}px" fill="{{ fontColour }}">{{ undecided.title }}</text>
+		<text text-anchor="start" class="heading" font-family="MetricWeb,sans-serif" dy="{{titleOffset.y}}" font-size="{{titleSize}}px" fill="{{ fontColour }}">{{ remain.title }}</text>
+		<text text-anchor="end" class="heading" font-family="MetricWeb,sans-serif" x="{{ width }}" dy="{{titleOffset.y}}" font-size="{{titleSize}}px" fill="{{ fontColour }}">{{ leave.title }}</text>
+		<text text-anchor="middle" class="heading" font-family="MetricWeb,sans-serif" x="{{ (width/2) }}" dy="{{titleOffset.y}}" font-size="{{titleSize}}px" fill="{{ fontColour }}">{{ undecided.title }}</text>
 		<g class="latest">
 			<rect x="0" y="0" width="{{ remain.width }}" height="{{ remain.height }}" fill="{{ remain.fill }}" class="remain"></rect>
 			<rect x="{{ (remain.width + undecided.width) }}" y="0" width="{{ leave.width }}" height="{{ leave.height }}" fill="{{ leave.fill }}" class="leave"></rect>
