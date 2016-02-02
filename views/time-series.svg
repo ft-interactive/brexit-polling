@@ -1,21 +1,21 @@
 <svg width="{{ width }}" height="{{ height }}" viewBox="0 0 {{ width }} {{ height }}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 {% if metricEmbed %}
 <style>
-@font-face {
-    font-family: "MetricWeb";
-    src: url("https://build.origami.ft.com/files/o-fonts-assets@1.2.0/MetricWeb-Semibold.woff");
-    font-weight: 800;
-}
-@font-face {
-    font-family: "MetricWeb";
-    src: url("https://build.origami.ft.com/files/o-fonts-assets@1.2.0/MetricWeb-Regular.woff");
-}
+    @font-face {
+        font-family: "MetricWeb";
+        src: url("https://build.origami.ft.com/files/o-fonts-assets@1.2.0/MetricWeb-Semibold.woff");
+        font-weight: 800;
+    }
+    @font-face {
+        font-family: "MetricWeb";
+        src: url("https://build.origami.ft.com/files/o-fonts-assets@1.2.0/MetricWeb-Regular.woff");
+    }
 </style>
 {% endif %}
-<g transform="translate(0,{{margin.top}})"><text font-family="MetricWeb" font-size="{{titleSize}}">{{title}}</text></g>
-
-
-
+<g transform="translate(0,{{margin.top}})">
+    <text font-family="MetricWeb" font-size="{{titleSize}}">{{title}}</text>
+</g>
+    
 <g class="x axis" font-family="MetricWeb" transform="translate({{margin.left}},{{height-margin.bottom}})">
 {% for tick in xAxis.ticks %}
     <g class="tick" transform="translate({{tick.x}},{{tick.y}})">
@@ -25,13 +25,13 @@
 </g>
 
 <g class="y axis" font-family="MetricWeb" transform="translate( {{ margin.left }} , {{ margin.top }} )">
-{% for tick in yAxis.ticks %}
+    {% for tick in yAxis.ticks %}
     <g class="tick" transform="translate({{ tick.x }}, {{ tick.y }})">
         <text dy="4" dx="4" fill="{{ tick.fill }}">{{tick.label}}</text>
     </g>
-{% endfor %}
+    {% endfor %}
 
-{% for rule in yAxis.rules %}
+    {% for rule in yAxis.rules %}
     <g class="rule">
         <text y="{{rule.y1}}" dy="-3">{{rule.label}}</text>
         <line 
@@ -44,21 +44,20 @@
             stroke-width="{{yAxis.ruleStrokeWidth}}">
         </line>
     </g>
-{% endfor %}
-
-    <g class="polls" transform="translate({{margin.left}},{{margin.top}})">
-    {% for poll in data %}
-        <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" r="{{pollStyle.radius}}" fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
-        <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" r="{{pollStyle.radius}}" fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
-        <circle cx="{{poll.x}}" cy="{{poll.y.undecided}}" r="{{pollStyle.radius}}" fill="{{pollStyle.undecidedFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
     {% endfor %}
-    </g>
+</g>
+    
+<g class="polls" transform="translate({{margin.left}},{{margin.top}})">
+{% for poll in data %}
+    <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" r="{{pollStyle.radius}}" fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+    <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" r="{{pollStyle.radius}}" fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+    <circle cx="{{poll.x}}" cy="{{poll.y.undecided}}" r="{{pollStyle.radius}}" fill="{{pollStyle.undecidedFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+{% endfor %}
+</g>
 
-    <g class="trends" transform="translate({{margin.left}},{{margin.top}})">
-        <path d="{{ line.remain.path }}" fill="none" stroke="{{line.remain.stroke}}" stroke-width="2" ></path>
-        <path d="{{ line.leave.path }}" fill="none" stroke="{{line.leave.stroke}}" stroke-width="2"></path>
-        <path d="{{ line.undecided.path }}" fill="none" stroke="{{line.undecided.stroke}}" stroke-width="2"></path>
-    </g>
-
+<g class="trends" transform="translate({{margin.left}},{{margin.top}})">
+    <path d="{{ line.remain.path }}" fill="none" stroke="{{line.remain.stroke}}" stroke-width="2" ></path>
+    <path d="{{ line.leave.path }}" fill="none" stroke="{{line.leave.stroke}}" stroke-width="2"></path>
+    <path d="{{ line.undecided.path }}" fill="none" stroke="{{line.undecided.stroke}}" stroke-width="2"></path>
 </g>
 </svg>

@@ -66,17 +66,17 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
     let labelYRemain = yScale(lastSmoothedPoint.remain);
     let labelYLeave = yScale(lastSmoothedPoint.leave);
     let spacing = Math.abs(labelYRemain - labelYLeave);
-    if(spacing < labelCenterSpacing){
-        let dy = (labelCenterSpacing - spacing) / 2;
-        //move the lower down and the upper up
-        if(labelYRemain > labelYLeave){
-            labelYRemain += dy;
-            labelYLeave -= dy;
-        }else{
-            labelYRemain -= dy;
-            labelYLeave += dy;
-        }
-    }
+    // if(spacing < labelCenterSpacing){
+    //     let dy = (labelCenterSpacing - spacing) / 2;
+    //     //move the lower down and the upper up
+    //     if(labelYRemain > labelYLeave){
+    //         labelYRemain += dy;
+    //         labelYLeave -= dy;
+    //     }else{
+    //         labelYRemain -= dy;
+    //         labelYLeave += dy;
+    //     }
+    // }
    
 	// start date, end date, two/ three? lines, (final values & positions)
 	let config = {
