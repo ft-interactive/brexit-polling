@@ -15,9 +15,9 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
     let labelCenterSpacing = 15;
     
 	let margin = {
-		top:20,
-		left:0,
-		bottom:20,
+		top:30,
+		left:1,
+		bottom:30,
 		right:100
 	};
 
@@ -66,17 +66,17 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
     let labelYRemain = yScale(lastSmoothedPoint.remain);
     let labelYLeave = yScale(lastSmoothedPoint.leave);
     let spacing = Math.abs(labelYRemain - labelYLeave);
-    // if(spacing < labelCenterSpacing){
-    //     let dy = (labelCenterSpacing - spacing) / 2;
-    //     //move the lower down and the upper up
-    //     if(labelYRemain > labelYLeave){
-    //         labelYRemain += dy;
-    //         labelYLeave -= dy;
-    //     }else{
-    //         labelYRemain -= dy;
-    //         labelYLeave += dy;
-    //     }
-    // }
+    if(spacing < labelCenterSpacing){
+        let dy = (labelCenterSpacing - spacing) / 2;
+        //move the lower down and the upper up
+        if(labelYRemain > labelYLeave){
+            labelYRemain += dy;
+            labelYLeave -= dy;
+        }else{
+            labelYRemain -= dy;
+            labelYLeave += dy;
+        }
+    }
    
 	// start date, end date, two/ three? lines, (final values & positions)
 	let config = {
@@ -122,12 +122,12 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
         xAxis: {
             ticks: [
                 {
-                    x: xScale(dateDomain[0]),
+                    x: Math.round(xScale(dateDomain[0])),
                     y: 0,
                     label: ftDateFormat(dateDomain[0])
                 },
                 {
-                    x: xScale(dateDomain[1]),
+                    x: Math.round(xScale(dateDomain[1])),
                     y: 0,
                     label: ftDateFormat(dateDomain[1])
                 }
