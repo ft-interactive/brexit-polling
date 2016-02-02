@@ -52,6 +52,10 @@ textarea {
   margin: 0;
 }
 
+.key span{
+    margin-left: 20px;
+}
+
 button {
   overflow: visible; 
 }
@@ -151,6 +155,10 @@ td.numeric{
     text-align: right;
 }
 
+td.date{
+    min-width: 70px;
+}
+
 td.leave.lead{
     background: {{ leave.tint }};
 }
@@ -166,6 +174,13 @@ td.remain.lead{
 .source{
     text-align: right;
 }
+
+@media (max-width: 600px) {
+  .secondary {
+    display: none;
+  }
+}
+
     </style>
 
     <link rel="stylesheet" href="styles/top.css">
@@ -213,17 +228,21 @@ td.remain.lead{
             <p><a href="http://www.ft.com/eu-referendum/">Latest Brexit coverage</a></p>
         <object width="600" type="image/svg+xml" data="/poll-of-polls/600-x-100.svg">Your browser does not support SVG</object>
         <object width="600" height="400" type="image/svg+xml" data="/polls/2014-10-1,now/600-x-400.svg">Your browser does not support SVG</object>
-        <p class="key"> Circle individual poll. Line rolling average*</p>
+        <p class="key"> 
+            <span><svg class="key-item" width="16" height="12"><circle fill="#000" cx="6" cy="6" r="3" fill-opacity="0.5"></circle></svg>
+            Individual poll</span>
+            <span><svg class="key-item" width="16" height="12"><line stroke="#000" stroke-width="2" stroke-opacity="0.5" x1="2" y1="6" x2="14" y2="6"></line></svg>
+            Rolling average*</p></span>
         <h2>Individual polls</h2>
         <table>
             <thead>
                 <tr>
-                    <th>{{ remain.label }} %</th>
-                    <th>{{ leave.label }} %</th>
-                    <th>{{ undecided.label }} %</th>
+                    <th>{{ remain.label }}&nbsp;%</th>
+                    <th>{{ leave.label }}&nbsp;%</th>
+                    <th>{{ undecided.label }}&nbsp;%</th>
                     <th>Date</th>
-                    <th>Pollster</th>
-                    <th>Sample Size</th>
+                    <th class="secondary">Pollster</th>
+                    <th class="secondary">Sample Size</th>
                 </tr>
             </thead>
             <tbody>
@@ -232,9 +251,9 @@ td.remain.lead{
                     <td class="numeric remain {{ poll | boldIfRemain }}">{{ poll.remain }}</td>
                     <td class="numeric leave {{ poll | boldIfLeave }}">{{ poll.leave }}</td>
                     <td class="numeric">{{ poll.undecided | replaceNaN }}</td>
-                    <td class="numeric">{{ poll.date | ftDateFormat }}</td>
-                    <td>{{ poll.pollster }}</td>
-                    <td class="numeric">{{ poll.sample | replaceNaN | commas }}</td>
+                    <td class="numeric date">{{ poll.date | ftDateFormat }}</td>
+                    <td class="secondary">{{ poll.pollster }}</td>
+                    <td class="numeric secondary">{{ poll.sample | replaceNaN | commas }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
