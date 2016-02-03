@@ -48,7 +48,7 @@
                 <td>{{ d.leave }}</td>
                 <td>{{ d.undecided }}</td>
                 <td>{{ d.sample }}</td>
-                <td class="chart-cell"><object width="600" height="100" data="/poll/{{ d.pollster }},{{ d.startDate | isoShortFormat }}/600-x-100.svg" type="image/svg+xml"></object></td>
+                <td class="chart-cell"><object width="600" height="100" data="/poll/{{ d.pollster }},{{ d.date | isoShortFormat }}/600-x-100.svg" type="image/svg+xml"></object></td>
                 </tr>
                 {% endfor %}
             </tbody>
