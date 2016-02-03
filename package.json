@@ -1,7 +1,7 @@
 {
   "name": "ft-brexit-data",
   "engines": {
-      "node":"5"
+    "node": "5"
   },
   "version": "1.0.0",
   "description": "scrape brexit polls from wikipedia page then present it in some ways",
@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "node test.js",
-    "dev":"nodemon -e js,html,svg"
+    "dev": "nodemon -e js,html,svg"
   },
   "author": "tom.pearson@ft.com",
   "license": "ISC",
@@ -19,6 +19,7 @@
     "d3-dsv": "^0.1.12",
     "d3-scale": "^0.2.0",
     "d3-shape": "^0.3.0",
+    "d3-time": "^0.2.1",
     "express": "^4.13.3",
     "lru-cache": "^4.0.0",
     "nunjucks": "^2.2.0",

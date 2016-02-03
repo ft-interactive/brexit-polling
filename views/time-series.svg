@@ -20,6 +20,11 @@
     <g class="domain">
         <line x1="0" y1="0" x2="{{ width - (margin.left+margin.right)  }}" y2="0" stroke="{{fontColour}}" stroke-width="1" shape-rendering="crispEdges"></line>
     </g>
+{% for tick in xAxis.secondaryTicks %}
+    <g class="tick" transform="translate({{tick.x}},{{tick.y}})">
+        <line x1="0" y1="0" x2="0" y2="5" stroke="{{fontColour}}" stroke-width="1" shape-rendering="crispEdges"></line>
+    </g>
+{% endfor %}
 {% for tick in xAxis.ticks %}
     <g class="tick" transform="translate({{tick.x}},{{tick.y}})">
         <line x1="0" y1="0" x2="0" y2="5" stroke="{{fontColour}}" stroke-width="1" shape-rendering="crispEdges"></line>

@@ -4,7 +4,7 @@ const d3Scale = require('d3-scale');
 const d3TimeFormat = require('d3-time-format');
 const d3Array = require('d3-array');
 const d3Shape = require('d3-shape');
-
+const d3Time = require('d3-time');
 const colour = require('./colours.js');
 
 const isoShortFormat = d3TimeFormat.format('%Y-%m-%d');
@@ -131,7 +131,8 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
                     y: 0,
                     label: ftDateFormat(dateDomain[1])
                 }
-            ]
+            ],
+            secondaryTicks: d3Time.timeMonth.range(dateDomain[0], dateDomain[1], 1).map((d) => ({ x:xScale(d), y:0 }) )
         },
         yAxis: {
             ruleStroke: colour.font,
@@ -171,5 +172,6 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
 	
 	return config;
 }
+
 
 module.exports = simpleTimeSeries;
