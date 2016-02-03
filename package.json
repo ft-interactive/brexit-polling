@@ -23,6 +23,6 @@
     "express": "^4.13.3",
     "lru-cache": "^4.0.0",
     "nunjucks": "^2.2.0",
-    "request": "^2.67.0"
+    "request": "^2.69.0"
   }
 }
