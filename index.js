@@ -80,15 +80,18 @@ app.get('/',function(req, res){
 });
 
 app.get('/data.json', function (req, res) {
-    res.send({
-        data: data.combinedData,
-        updated: scraper.updated(),
-        source: wikipediaPage
-    });
-	let now = new Date();
-	if(now.getTime() - scraper.updated().getTime() >= 60000){
-		return data = scraper.updateData(wikipediaPage);
-	}
+    let value = cache.get(req.path);
+    if (!value){
+        value = {
+            data: data.combinedData,
+            updated: scraper.updated(),
+            source: wikipediaPage
+        }
+        cache.set(req.path, value);
+        checkData();
+    }
+    res.header('Access-Control-Allow-Origin', '*');
+    res.send(value);
 });
 
 app.get('/data.html', function (req, res) {
