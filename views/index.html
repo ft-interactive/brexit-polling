@@ -17,11 +17,7 @@
 
     <title>{{ title }} &mdash; FT.com</title>
 
-
-    <script src="scripts/top.js"></script>
-
-
-    <link rel="stylesheet" href="https://h2.ft.com/build/v2/bundles/css?modules=o-footer@^4,o-fonts@^2,o-grid@^4">
+    <link rel="stylesheet" href="https://h2.ft.com/build/v2/bundles/css?modules=o-footer@^4,o-fonts@^2">
 
     <style>
 .core .o--if-js,
@@ -184,16 +180,22 @@ td.remain.lead{
   .secondary {
     display: none;
   }
+  .chart-plot .heading{
+      font-size: 24px;
+  }
+}
+
+@media (max-width: 500px) {
+  .x.axis{
+     font-size: 24px; 
+  }
+  
+  .y.axis{
+      font-size:24px;
+  }
 }
 
     </style>
-
-    <link rel="stylesheet" href="styles/top.css">
-
-
-    <!-- build:css styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
 
     <link href="https://plus.google.com/113457471429583444041/" rel="publisher" />
     <meta property="fb:page_id" content="8860325749" />
