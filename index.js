@@ -116,7 +116,7 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
             let parts = req.params.id.split(',');
             d = data.combinedData
                 .filter( e => (e.pollster == parts[0]) )
-                .filter( e => (isoShortFormat(e.startDate) == parts[1]) )[0];
+                .filter( e => (isoShortFormat(e.date) == parts[1]) )[0];
         }
         value = nunjucks.render( 'single-poll.svg' , layout.singlePoll(req.params.width, req.params.height, d, true) );
         cache.set(req.path, value);
