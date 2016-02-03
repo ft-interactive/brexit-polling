@@ -8,7 +8,8 @@ const express = require('express'),
     d3TimeFormat = require('d3-time-format').format,
 	isoShortFormat = d3TimeFormat('%Y-%m-%d'),
     ftDateFormat = d3TimeFormat('%e %b %Y'),
-    colours = require('./layouts/colours.js');
+    colours = require('./layouts/colours.js'),
+    request = require('request');
 
 const wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
 
@@ -77,6 +78,12 @@ app.get('/',function(req, res){
         checkData();
     }
     res.send(value);
+});
+
+app.get('/card',function(req, res){
+    request('http://ig.ft.com/sites/2016/brexit-card/', function (error, response, body) {
+        res.send(body);
+    });
 });
 
 app.get('/data.json', function (req, res) {
