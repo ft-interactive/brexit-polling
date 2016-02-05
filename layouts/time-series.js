@@ -81,9 +81,10 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
     let tickDates = dateDomain.slice(0); //clone the array
     // add years
     
-    d3Time.timeYear.range(dateDomain[0], dateDomain[1], 1).forEach(function(d){
-        tickDates.push(d)
-    });
+    //TODO, yearly ticks
+    // d3Time.timeYear.range(dateDomain[0], dateDomain[1], 1).forEach(function(d){
+    //     tickDates.push(d)
+    // });
     
     let primaryTicks = tickDates.map(function(d){
         return { 
