@@ -27,8 +27,8 @@
 {% endfor %}
 {% for tick in xAxis.ticks %}
     <g class="tick" transform="translate({{tick.x}},{{tick.y}})">
-        <line x1="0" y1="0" x2="0" y2="5" stroke="{{fontColour}}" stroke-width="1" shape-rendering="crispEdges"></line>
-        <text dy="20">{{tick.label}}</text>
+        <line x1="0" y1="0" x2="0" y2="5" stroke="{{ fontColour }}" stroke-width="1" shape-rendering="crispEdges"></line>
+        <text fill="{{ fontColour }}" dy="20">{{tick.label}}</text>
     </g>
 {% endfor %}
 </g>
@@ -42,7 +42,7 @@
 
     {% for rule in yAxis.rules %}
     <g class="rule">
-        <text y="{{rule.y1}}" dy="-3">{{rule.label}}</text>
+        <text y="{{rule.y1}}" dy="-3" fill="{{ yAxis.ruleStroke }}" >{{rule.label}}</text>
         <line 
             x1="{{rule.x1}}" 
             y1="{{rule.y1}}" 

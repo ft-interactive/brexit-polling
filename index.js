@@ -66,7 +66,7 @@ app.get('/',function(req, res){
         let timeSeries = nunjucks.render( 'time-series.svg',  timeSeriesLayout);
 
         value = nunjucks.render( 'index.html' , {
-            title: 'Brexit Polling',
+            title: 'Brexit poll tracker',
             data: data.combinedData.reverse(),
             updated: scraper.updated(),
             source: wikipediaPage,
