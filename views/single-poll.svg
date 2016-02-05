@@ -1,38 +1,35 @@
 <svg class="single-poll" width="{{ width }}" height="{{ height }}" viewBox="0 0 {{ width }} {{ height }}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMinYMin meet">
 {% if metricEmbed %}
 <style>
-@font-face {
-    font-family: "MetricWeb";
-    src: url("https://build.origami.ft.com/files/o-fonts-assets@1.2.0/MetricWeb-Semibold.woff");
-    font-weight: 800;
-}
-@font-face {
-    font-family: "MetricWeb";
-    src: url("https://build.origami.ft.com/files/o-fonts-assets@1.2.0/MetricWeb-Medium.woff");
-    font-weight: 600;
-}
-@font-face {
-    font-family: "MetricWeb";
-    src: url("https://build.origami.ft.com/files/o-fonts-assets@1.2.0/MetricWeb-Regular.woff");
-}
+
+@font-face{src:url("https://build.origami.ft.com/files/o-fonts-assets@1.3.0/MetricWeb-Thin.woff?#iefix") format("woff");font-family:MetricWeb;font-weight:100;font-style:normal}@font-face{src:url(//build.origami.ft.com/files/o-fonts-assets@1.3.0/MetricWeb-Light.woff?#iefix) format("woff");font-family:MetricWeb;font-weight:200;font-style:normal}
+
+@font-face{src:url("https://build.origami.ft.com/files/o-fonts-assets@1.3.0/MetricWeb-LightItalic.woff?#iefix") format("woff");font-family:MetricWeb;font-weight:200;font-style:italic}@font-face{src:url(//build.origami.ft.com/files/o-fonts-assets@1.3.0/MetricWeb-Regular.woff?#iefix) format("woff");font-family:MetricWeb;font-weight:400;font-style:normal}
+
+@font-face{src:url("https://build.origami.ft.com/files/o-fonts-assets@1.3.0/MetricWeb-RegularItalic.woff?#iefix") format("woff");font-family:MetricWeb;font-weight:400;font-style:italic}@font-face{src:url(//build.origami.ft.com/files/o-fonts-assets@1.3.0/MetricWeb-Medium.woff?#iefix) format("woff");font-family:MetricWeb;font-weight:500;font-style:normal}
+
+@font-face{src:url("https://build.origami.ft.com/files/o-fonts-assets@1.3.0/MetricWeb-Semibold.woff?#iefix") format("woff");font-family:MetricWeb;font-weight:600;font-style:normal}@font-face{src:url(//build.origami.ft.com/files/o-fonts-assets@1.3.0/MetricWeb-Bold.woff?#iefix) format("woff");font-family:MetricWeb;font-weight:700;font-style:normal}
+
+@font-face{src:url("https://build.origami.ft.com/files/o-fonts-assets@1.3.0/MetricWeb-BoldItalic.woff?#iefix") format("woff");font-family:MetricWeb;font-weight:700;font-style:italic}@font-face{src:url(//build.origami.ft.com/files/o-fonts-assets@1.3.0/FinancierDisplayWeb-LightItalic.woff?#iefix) format("woff");font-family:FinancierDisplayWeb;font-weight:200;font-style:italic}
+
 </style>
 {% endif %}
 	<title>{{ title }}</title>
 	<text class="chart-title" font-family="MetricWeb,sans-serif" dy="20">{{ title }}</text>
-	<text class="chart-source" font-family="MetricWeb,sans-serif" dy="{{ (height - 2) }}" font-size="12px">{{ footer }}</text>
+	<text class="chart-source" fill="{{ fontColour }}" font-family="MetricWeb,sans-serif" dy="{{ (height - 2) }}" font-size="14px">{{ footer }}</text>
 	<g class="chart-plot" transform="translate({{ margin.left }},{{ margin.top }})">
-		<text text-anchor="start" class="heading" font-family="MetricWeb,sans-serif" dy="{{titleOffset.y}}" font-weight="bold" font-size="{{titleSize}}px" fill="{{ remain.fill }}">{{ remain.title | upper}}</text>
-		<text text-anchor="end" class="heading" font-family="MetricWeb,sans-serif" x="{{ width }}" dy="{{titleOffset.y}}" font-weight="bold" font-size="{{titleSize}}px" fill="{{ leave.fill }}">{{ leave.title | upper}}</text>
+		<text text-anchor="start" class="heading" font-family="MetricWeb,sans-serif" dy="{{titleOffset.y}}" font-weight="800" font-size="{{titleSize}}px" fill="{{ remain.fill }}">{{ remain.title | upper}}</text>
+		<text text-anchor="end" class="heading" font-family="MetricWeb,sans-serif" x="{{ width }}" dy="{{titleOffset.y}}" font-weight="800" font-size="{{titleSize}}px" fill="{{ leave.fill }}">{{ leave.title | upper}}</text>
 		<text text-anchor="middle" class="heading" font-family="MetricWeb,sans-serif" x="{{ (width/2) }}" dy="{{titleOffset.y}}" font-size="{{titleSize}}px" fill="{{ fontColour }}">{{ undecided.title | upper}}</text>
 		<g class="latest" transform="translate(0, {{ plotHeight }})">
 			<rect x="0" y="0" width="{{ remain.width }}" height="{{ remain.height }}" fill="{{ remain.fill }}" class="remain"></rect>
 			<rect x="{{ (remain.width + undecided.width) }}" y="0" width="{{ leave.width }}" height="{{ leave.height }}" fill="{{ leave.fill }}" class="leave"></rect>
 			<rect x="{{ remain.width }}" y="0" width="{{ undecided.width }}" height="{{ undecided.height }}" fill="{{ undecided.fill }}" class="undecided"></rect>
 			{% if not small %}
-            <text y="{{ remain.height }}" x="{{ remain.labelPosition }}" dy="{{ valueLabelOffset.y }}" dx="-{{ valueLabelOffset.x }}" text-anchor="end" font-size="{{ valueLabelSize }}" font-family="MetricWeb,sans-serif" fill="{{ remain.fill }}">{{ remain.value }}%</text>
-			<text y="{{ leave.height }}" x="{{ leave.labelPosition }}" dy="{{ valueLabelOffset.y }}" dx="{{ valueLabelOffset.x }}"  font-size="{{ valueLabelSize }}" font-family="MetricWeb,sans-serif" fill="{{ leave.fill }}">{{ leave.value }}%</text>
+            <text font-weight="100" y="{{ remain.height }}" x="{{ remain.labelPosition }}" dy="{{ valueLabelOffset.y }}" dx="-{{ valueLabelOffset.x }}" text-anchor="end" font-size="{{ valueLabelSize }}" font-family="MetricWeb,sans-serif" fill="{{ remain.fill }}">{{ remain.value }}%</text>
+			<text font-weight="100" y="{{ leave.height }}" x="{{ leave.labelPosition }}" dy="{{ valueLabelOffset.y }}" dx="{{ valueLabelOffset.x }}"  font-size="{{ valueLabelSize }}" font-family="MetricWeb,sans-serif" fill="{{ leave.fill }}">{{ leave.value }}%</text>
             {% endif %}
-			<line x1="{{ width/2 }}" y1="-3" x2="{{ width/2 }}" y2="{{ remain.height + 2 }}" stroke-width="2" stroke="#000" stroke-dasharray="2, 2"></line>
+			<line x1="{{ width/2 }}" y1="-3" x2="{{ width/2 }}" y2="{{ remain.height + 2 }}" stroke-width="2" stroke="{{ fontColour }}" stroke-dasharray="2, 2"></line>
 		</g>
 	</g>
 </svg>

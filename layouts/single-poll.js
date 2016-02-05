@@ -69,7 +69,7 @@ function singlePollLayout(width, height, data, metricEmbed){
         },
         valueLabelColour: colour.lightFont,
 		leave:{
-			title:small ? 'Leave - ' + data.leave + '%' : 'Leave',
+			title:small ? 'Go - ' + data.leave + '%' : 'Go',
 			width:scale(data.leave),
 			height:barHeight,
 			value:data.leave,
@@ -77,7 +77,7 @@ function singlePollLayout(width, height, data, metricEmbed){
             labelPosition:plotWidth-scale(data.leave)
 		},
 		remain:{
-			title:small ? 'Remain - ' + data.remain + '%' : 'Remain',
+			title:small ? 'Stay - ' + data.remain + '%' : 'Stay',
 			width:scale(data.remain),
 			height:barHeight,
 			value:data.remain,
