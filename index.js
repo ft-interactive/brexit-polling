@@ -43,6 +43,8 @@ nunjucks.configure('views', {
 }).addFilter('boldIfLeave', function (poll) {
     if(poll.remain <= poll.leave) return 'lead';
     return '';
+}).addFilter('urlFragmentSanitize', function(fragment){
+    return fragment.replace(/\//g,'-');
 });
 
 checkData();
@@ -122,7 +124,7 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
         if(req.params.id != 'latest'){
             let parts = req.params.id.split(',');
             d = data.combinedData
-                .filter( e => (e.pollster == parts[0]) )
+                .filter( e => (e.pollster == parts[0].replace(/-/g,'/')) )
                 .filter( e => (isoShortFormat(e.date) == parts[1]) )[0];
         }
         value = nunjucks.render( 'single-poll.svg' , layout.singlePoll(req.params.width, req.params.height, d, true) );
