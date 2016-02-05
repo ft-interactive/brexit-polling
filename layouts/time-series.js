@@ -76,7 +76,23 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
             labelYRemain -= dy;
             labelYLeave += dy;
         }
-    }
+    } 
+    
+    let tickDates = dateDomain.slice(0); //clone the array
+    // add years
+    
+    //TODO, yearly ticks
+    // d3Time.timeYear.range(dateDomain[0], dateDomain[1], 1).forEach(function(d){
+    //     tickDates.push(d)
+    // });
+    
+    let primaryTicks = tickDates.map(function(d){
+        return { 
+            x: Math.round(xScale(d)),
+            y: 0,
+            label: (function(date){ return ftDateFormat(date) })(d)
+        }
+    });
    
 	// start date, end date, two/ three? lines, (final values & positions)
 	let config = {
@@ -120,18 +136,7 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
 			}
 		},
         xAxis: {
-            ticks: [
-                {
-                    x: Math.round(xScale(dateDomain[0])),
-                    y: 0,
-                    label: ftDateFormat(dateDomain[0])
-                },
-                {
-                    x: Math.round(xScale(dateDomain[1])),
-                    y: 0,
-                    label: ftDateFormat(dateDomain[1])
-                }
-            ],
+            ticks: primaryTicks,
             secondaryTicks: d3Time.timeMonth.range(dateDomain[0], dateDomain[1], 1).map((d) => ({ x:xScale(d), y:0 }) )
         },
         yAxis: {

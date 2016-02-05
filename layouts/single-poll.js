@@ -9,6 +9,7 @@ const colour = require('./colours.js');
 
 const isoShortFormat = d3TimeFormat.format('%Y-%m-%d');
 const ftDateFormat = d3TimeFormat.format('%e %b %Y');
+const ftTruncatedDateFormat = d3TimeFormat.format('%e %b');
 
 function singlePollLayout(width, height, data, metricEmbed){
     let small = true;
@@ -33,12 +34,12 @@ function singlePollLayout(width, height, data, metricEmbed){
 	let sampleString = '';
 
 	if (data.sample) {
-		sampleString = `Sample size ${data.sample}`;
+		sampleString = `Sample ${Number(data.sample).toLocaleString()}`;
 	}
 
 	let barHeight = 7;
 
-    let footer  = small ? '' : `${data.pollster} polling from ${ftDateFormat(data.startDate)} to ${ftDateFormat(data.endDate)}. ${sampleString}`;
+    let footer  = small ? '' : `${data.pollster}. ${ftTruncatedDateFormat(data.startDate)} - ${ftDateFormat(data.endDate)}. ${sampleString}`;
 
     if(data.pollOfPolls){
         footer = 'FT poll of polls. ' + ftDateFormat(data.date);
@@ -63,9 +64,9 @@ function singlePollLayout(width, height, data, metricEmbed){
 			x:0,
             y:15
 		},
-		valueLabelSize:Math.min(height-barHeight, 60),
+		valueLabelSize: Math.min(plotHeight, 60),
         valueLabelOffset:{
-            x:5,y:-barHeight*3
+            x:5,y:-19
         },
         valueLabelColour: colour.lightFont,
 		leave:{
