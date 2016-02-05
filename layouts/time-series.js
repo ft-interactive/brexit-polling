@@ -92,7 +92,7 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
         pollStyle: {
             radius: 3,
             leaveFill: colour.leave,
-            undecidedFill: colour.undecided,
+            undecidedFill: colour.undecidedDark,
             remainFill: colour.remain,
             fillOpacity: 0.5
         },
@@ -116,7 +116,7 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
 					.x((d) => xScale(d.date) )
 					.y((d) => yScale(d.undecided) )
 					(smoothFiltered),
-				stroke: colour.undecided
+				stroke: colour.undecidedDark
 			}
 		},
         xAxis: {
@@ -141,21 +141,21 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
             ticks: [
                 {
                     x: xScale(lastSmoothedPoint.date),
-                    fill: colour.undecided,
+                    fill: colour.undecidedDark,
                     y: labelYUndecided,
-                    label: 'undecided ' + Math.round(lastSmoothedPoint.undecided) +'%'
+                    label: 'Undecided ' + Math.round(lastSmoothedPoint.undecided) +'%'
                 },
                 {
                     x: xScale(lastSmoothedPoint.date),
-                    fill: colour.remain,
+                    fill: colour.remainDark,
                     y: labelYRemain,
-                    label: 'stay ' + Math.round(lastSmoothedPoint.remain) +'%'
+                    label: 'Stay ' + Math.round(lastSmoothedPoint.remain) +'%'
                 },
                 {
                     x: xScale(lastSmoothedPoint.date),
-                    fill: colour.leave,
+                    fill: colour.leaveDark,
                     y: labelYLeave,
-                    label: 'go ' + Math.round(lastSmoothedPoint.leave) +'%'
+                    label: 'Go ' + Math.round(lastSmoothedPoint.leave) +'%'
                 }
             ],
             rules: [

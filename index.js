@@ -57,7 +57,7 @@ app.get('/',function(req, res){
     if(!value){
 
         let d = data.smoothedData[data.smoothedData.length - 1];
-        let single = nunjucks.render( 'single-poll.svg' , layout.singlePoll(600, 100, d, true) );
+        let single = nunjucks.render( 'single-poll.svg' , layout.singlePoll(600, 85, d, true) );
 
         let endDate = new Date();
         let startDate = new Date();
@@ -66,7 +66,7 @@ app.get('/',function(req, res){
         let timeSeries = nunjucks.render( 'time-series.svg',  timeSeriesLayout);
 
         value = nunjucks.render( 'index.html' , {
-            title: 'Brexit Polling',
+            title: 'Brexit poll tracker',
             data: data.combinedData.reverse(),
             updated: scraper.updated(),
             source: wikipediaPage,
