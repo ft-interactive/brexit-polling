@@ -57,7 +57,7 @@ app.get('/',function(req, res){
     if(!value){
 
         let d = data.smoothedData[data.smoothedData.length - 1];
-        let single = nunjucks.render( 'single-poll.svg' , layout.singlePoll(600, 85, d, true) );
+        let single = nunjucks.render( 'single-poll.svg' , layout.singlePoll(600, 75, d, true) );
 
         let endDate = new Date();
         let startDate = new Date();
