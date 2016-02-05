@@ -12,12 +12,12 @@ const ftDateFormat = d3TimeFormat.format('%e %b %Y');
 
 function singlePollLayout(width, height, data, metricEmbed){
     let small = true;
-    if(height>=90) small = false;
+    if(height>=70) small = false;
     
 	let margin = {
-			top:20,
+			top:0,
 			left:0,
-			bottom:20,
+			bottom:27,
 			right:0
 		};
         
@@ -36,13 +36,16 @@ function singlePollLayout(width, height, data, metricEmbed){
 		sampleString = `Sample size ${data.sample}`;
 	}
 
-	let barHeight = height - (margin.top + margin.bottom);
+	let barHeight = 7;
 
     let footer  = small ? '' : `${data.pollster} polling from ${ftDateFormat(data.startDate)} to ${ftDateFormat(data.endDate)}. ${sampleString}`;
 
     if(data.pollOfPolls){
         footer = 'FT poll of polls. ' + ftDateFormat(data.date);
     }
+
+    let plotHeight=height-(margin.top+margin.bottom);
+    let plotWidth=width-(margin.left+margin.right);
 
 	let config = {
 		title:'',
@@ -53,29 +56,33 @@ function singlePollLayout(width, height, data, metricEmbed){
 		height:height,
 		fontColour:colour.font,
 		metricEmbed: metricEmbed,
-		titleSize:'14',
+        plotHeight:plotHeight,
+        plotWidth:plotWidth,
+		titleSize:'15',
 		titleOffset:{
 			x:0,
-            y:small ? -3 : -5
+            y:15
 		},
-		valueLabelSize:Math.min(barHeight, 60),
+		valueLabelSize:Math.min(height-barHeight, 60),
         valueLabelOffset:{
-            x:10,y:-10
+            x:5,y:-barHeight*3
         },
         valueLabelColour: colour.lightFont,
 		leave:{
-			title:small ? 'Go - ' + data.leave + '%' : 'Go',
+			title:small ? 'Leave - ' + data.leave + '%' : 'Leave',
 			width:scale(data.leave),
 			height:barHeight,
 			value:data.leave,
-			fill:colour.leave
+			fill:colour.leave,
+            labelPosition:plotWidth-scale(data.leave)
 		},
 		remain:{
-			title:small ? 'Stay - ' + data.remain + '%' : 'Stay',
+			title:small ? 'Remain - ' + data.remain + '%' : 'Remain',
 			width:scale(data.remain),
 			height:barHeight,
 			value:data.remain,
-			fill:colour.remain
+			fill:colour.remain,
+            labelPosition:scale(data.remain)
 		},
 		undecided:{
 			title:small ? '' : '',
@@ -86,6 +93,10 @@ function singlePollLayout(width, height, data, metricEmbed){
 		}
 	};
 	return config;
+}
+
+function clamp(value, extent){
+    
 }
 
 module.exports = singlePollLayout;

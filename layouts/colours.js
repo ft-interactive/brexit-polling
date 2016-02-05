@@ -1,8 +1,8 @@
 module.exports = {
-	remain:'#5988a1', 
-	leave:'#88bd57',
-	remainTint:'#cacfcc', 
-	leaveTint:'#d9e0b4',
+	remain:'#b9b081', 
+	leave:'#df64a7',
+	remainTint:'#dfd4b5', 
+	leaveTint:'#f1b1c6',
 	undecided:'#CCC',
 	ftPink:'#fff1e0',
 	font:'#43423e',

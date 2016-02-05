@@ -19,20 +19,20 @@
 {% endif %}
 	<title>{{ title }}</title>
 	<text class="chart-title" font-family="MetricWeb,sans-serif" dy="20">{{ title }}</text>
-	<text class="chart-source" font-family="MetricWeb,sans-serif" dy="{{ (height - 2) }}" font-size="10px">{{ footer }}</text>
+	<text class="chart-source" font-family="MetricWeb,sans-serif" dy="{{ (height - 2) }}" font-size="12px">{{ footer }}</text>
 	<g class="chart-plot" transform="translate({{ margin.left }},{{ margin.top }})">
-		<text text-anchor="start" class="heading" font-family="MetricWeb,sans-serif" dy="{{titleOffset.y}}" font-size="{{titleSize}}px" fill="{{ fontColour }}">{{ remain.title }}</text>
-		<text text-anchor="end" class="heading" font-family="MetricWeb,sans-serif" x="{{ width }}" dy="{{titleOffset.y}}" font-size="{{titleSize}}px" fill="{{ fontColour }}">{{ leave.title }}</text>
-		<text text-anchor="middle" class="heading" font-family="MetricWeb,sans-serif" x="{{ (width/2) }}" dy="{{titleOffset.y}}" font-size="{{titleSize}}px" fill="{{ fontColour }}">{{ undecided.title }}</text>
-		<g class="latest">
+		<text text-anchor="start" class="heading" font-family="MetricWeb,sans-serif" dy="{{titleOffset.y}}" font-weight="bold" font-size="{{titleSize}}px" fill="{{ remain.fill }}">{{ remain.title | upper}}</text>
+		<text text-anchor="end" class="heading" font-family="MetricWeb,sans-serif" x="{{ width }}" dy="{{titleOffset.y}}" font-weight="bold" font-size="{{titleSize}}px" fill="{{ leave.fill }}">{{ leave.title | upper}}</text>
+		<text text-anchor="middle" class="heading" font-family="MetricWeb,sans-serif" x="{{ (width/2) }}" dy="{{titleOffset.y}}" font-size="{{titleSize}}px" fill="{{ fontColour }}">{{ undecided.title | upper}}</text>
+		<g class="latest" transform="translate(0, {{ plotHeight }})">
 			<rect x="0" y="0" width="{{ remain.width }}" height="{{ remain.height }}" fill="{{ remain.fill }}" class="remain"></rect>
 			<rect x="{{ (remain.width + undecided.width) }}" y="0" width="{{ leave.width }}" height="{{ leave.height }}" fill="{{ leave.fill }}" class="leave"></rect>
 			<rect x="{{ remain.width }}" y="0" width="{{ undecided.width }}" height="{{ undecided.height }}" fill="{{ undecided.fill }}" class="undecided"></rect>
 			{% if not small %}
-            <text y="{{ remain.height }}" dy="{{ valueLabelOffset.y }}" dx="{{ valueLabelOffset.x }}" font-weight="600" font-size="{{ valueLabelSize }}" font-family="MetricWeb,sans-serif" fill="{{ valueLabelColour }}">{{ remain.value }}%</text>
-			<text y="{{ leave.height }}" x="{{ width }}" dy="{{ valueLabelOffset.y }}" dx="-{{ valueLabelOffset.x }}" font-weight="600" text-anchor="end" font-size="{{ valueLabelSize }}" font-family="MetricWeb,sans-serif" fill="{{ valueLabelColour }}">{{ leave.value }}%</text>
+            <text y="{{ remain.height }}" x="{{ remain.labelPosition }}" dy="{{ valueLabelOffset.y }}" dx="-{{ valueLabelOffset.x }}" text-anchor="end" font-size="{{ valueLabelSize }}" font-family="MetricWeb,sans-serif" fill="{{ remain.fill }}">{{ remain.value }}%</text>
+			<text y="{{ leave.height }}" x="{{ leave.labelPosition }}" dy="{{ valueLabelOffset.y }}" dx="{{ valueLabelOffset.x }}"  font-size="{{ valueLabelSize }}" font-family="MetricWeb,sans-serif" fill="{{ leave.fill }}">{{ leave.value }}%</text>
             {% endif %}
-			<line x1="{{ width/2 }}" y1="-5" x2="{{ width/2 }}" y2="{{ remain.height + 5 }}" stroke-width="2" stroke="#000" stroke-dasharray="2, 2"></line>
+			<line x1="{{ width/2 }}" y1="-3" x2="{{ width/2 }}" y2="{{ remain.height + 2 }}" stroke-width="2" stroke="#000" stroke-dasharray="2, 2"></line>
 		</g>
 	</g>
 </svg>

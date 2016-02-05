@@ -149,13 +149,13 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
                     x: xScale(lastSmoothedPoint.date),
                     fill: colour.remain,
                     y: labelYRemain,
-                    label: 'stay ' + Math.round(lastSmoothedPoint.remain) +'%'
+                    label: 'remain ' + Math.round(lastSmoothedPoint.remain) +'%'
                 },
                 {
                     x: xScale(lastSmoothedPoint.date),
                     fill: colour.leave,
                     y: labelYLeave,
-                    label: 'go ' + Math.round(lastSmoothedPoint.leave) +'%'
+                    label: 'leave ' + Math.round(lastSmoothedPoint.leave) +'%'
                 }
             ],
             rules: [
