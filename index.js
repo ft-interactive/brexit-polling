@@ -117,17 +117,14 @@ app.get('/data.html', function (req, res) {
     res.send(value);
 });
 
-app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
+//graphics
+
+app.get('/poll/:id/:width-x-:height-:background.svg', function(req,res){
     let value = cache.get(req.path);
     if(!value){
-        let d = data.combinedData[data.combinedData.length - 1];
-        if(req.params.id != 'latest'){
-            let parts = req.params.id.split(',');
-            d = data.combinedData
-                .filter( e => (e.pollster == parts[0].replace(/-/g,'/')) )
-                .filter( e => (isoShortFormat(e.date) == parts[1]) )[0];
-        }
-        value = nunjucks.render( 'single-poll.svg' , layout.singlePoll(req.params.width, req.params.height, d, true) );
+        let chartLayout = layout.singlePoll(req.params.width, req.params.height, getDataByID( req.params.id ), true);
+        chartLayout.background = '#' + req.params.background;
+        value = nunjucks.render( 'single-poll.svg' ,  chartLayout);
         cache.set(req.path, value);
         checkData();
     }
@@ -136,12 +133,57 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
     res.send(value)
 });
 
+app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
+    let value = cache.get(req.path);
+    if(!value){
+        let chartLayout = layout.singlePoll(req.params.width, req.params.height, getDataByID( req.params.id ), true);
+        value = nunjucks.render( 'single-poll.svg' ,  chartLayout);
+        cache.set(req.path, value);
+        checkData();
+    }
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.send(value)
+});
+
+
+app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
+    let value = cache.get(req.path);
+    if(!value){
+        let d = data.smoothedData[data.smoothedData.length - 1];
+        let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, true);
+        chartLayout.background = '#' + req.params.background;
+        value = nunjucks.render( 'single-poll.svg', chartLayout );
+        cache.set(req.path, value);
+        checkData();
+    }
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.send(value);
+});
+
 app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
         let d = data.smoothedData[data.smoothedData.length - 1];
-        value = nunjucks.render( 'single-poll.svg' , layout.singlePoll(req.params.width, req.params.height, d, true) );
+        let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, true);
+        value = nunjucks.render( 'single-poll.svg', chartLayout );
         cache.set(req.path, value);
+        checkData();
+    }
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.send(value);
+});
+
+app.get('/polls/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
+    let value = cache.get(req.path);
+    
+    if(!value){        
+        let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
+        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title);
+        chartLayout.background = '#' + req.params.background;
+        value = nunjucks.render( 'time-series.svg' , chartLayout );
         checkData();
     }
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -153,36 +195,9 @@ app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
     
     if(!value){        
-        let endDate = isoShortFormat.parse( req.params.enddate );
-        let startDate = isoShortFormat.parse( req.params.startdate );
-        let titleOverride = null;
-
-        if(req.params.enddate === 'now'){
-            endDate = new Date();
-            if(req.params.startdate === 'month'){
-                startDate = new Date();
-                startDate.setMonth(startDate.getMonth()-1);
-                titleOverride = 'Polling over the last month';
-            }
-            if(req.params.startdate === '6-months'){
-                startDate = new Date();
-                startDate.setMonth(startDate.getMonth()-6);
-                titleOverride = 'Polling over the last six months'
-            }
-            if(req.params.startdate === 'election-2015'){
-                startDate = new Date(2015, 4, 7);
-                titleOverride = 'Polling since the 2015 election'
-            }
-            if(req.params.startdate === 'year'){
-                startDate = new Date();
-                startDate.setMonth(startDate.getMonth()-12);
-                titleOverride = 'Polling over the last year'
-            }
-        }
-
-        let dateRange = [ startDate, endDate ];
-        let config = layout.timeSeries(req.params.width, req.params.height, dateRange, data, titleOverride);
-        value = nunjucks.render( 'time-series.svg' , config );
+        let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
+        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title);
+        value = nunjucks.render( 'time-series.svg' , chartLayout );
         checkData();
     }
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -201,6 +216,51 @@ app.get('/polls/medium-term/:width-x-:height.svg', function(req, res){
 });
 
 //utility functions
+
+function getDateDomain(start, end){
+    let endDate = isoShortFormat.parse( start );
+    let startDate = isoShortFormat.parse( end );
+    let titleOverride = null;
+
+    if(end === 'now'){
+        endDate = new Date();
+        if(start === 'month'){
+            startDate = new Date();
+            startDate.setMonth(startDate.getMonth()-1);
+            titleOverride = 'Polling over the last month';
+        }
+        if(start === '6-months'){
+            startDate = new Date();
+            startDate.setMonth(startDate.getMonth()-6);
+            titleOverride = 'Polling over the last six months'
+        }
+        if(start === 'election-2015'){
+            startDate = new Date(2015, 4, 7);
+            titleOverride = 'Polling since the 2015 election'
+        }
+        if(start === 'year'){
+            startDate = new Date();
+            startDate.setMonth(startDate.getMonth()-12);
+            titleOverride = 'Polling over the last year'
+        }
+    }
+    return {
+        domain:[startDate, endDate],
+        title:titleOverride
+    };
+}
+
+function getDataByID(id){
+    let d = data.combinedData[data.combinedData.length - 1];
+    if(id != 'latest'){
+        let parts = id.split(',');
+        d = data.combinedData
+            .filter( e => (e.pollster == parts[0].replace(/-/g,'/')) )
+            .filter( e => (isoShortFormat(e.date) == parts[1]) )[0];
+    }
+    return d;
+}
+
 function checkData(){   //for getting the latest data 
     let now = new Date();
     if(now.getTime() - scraper.updated().getTime() >= 60000){
