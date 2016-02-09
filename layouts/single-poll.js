@@ -47,7 +47,7 @@ function singlePollLayout(width, height, data, metricEmbed){
 
     let plotHeight = height-(margin.top+margin.bottom);
     let plotWidth = width-(margin.left+margin.right);
-    let labelBuffer = 125;
+    let labelBuffer = 130;
     
 	let config = {
 		title:'',
@@ -71,7 +71,7 @@ function singlePollLayout(width, height, data, metricEmbed){
         },
         valueLabelColour: colour.lightFont,
 		leave:{
-			title:small ? 'Go - ' + data.leave + '%' : 'Go',
+			title:small ? 'Leave - ' + data.leave + '%' : 'Leave',
 			width:scale(data.leave),
 			height:barHeight,
 			value:data.leave,

@@ -160,7 +160,7 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
                     x: xScale(lastSmoothedPoint.date),
                     fill: colour.leaveDark,
                     y: labelYLeave,
-                    label: 'Go ' + Math.round(lastSmoothedPoint.leave) +'%'
+                    label: 'Leave ' + Math.round(lastSmoothedPoint.leave) +'%'
                 }
             ],
             rules: [
