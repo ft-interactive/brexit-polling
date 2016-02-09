@@ -71,7 +71,7 @@ function singlePollLayout(width, height, data, metricEmbed){
         },
         valueLabelColour: colour.lightFont,
 		leave:{
-			title:small ? 'Go - ' + data.leave + '%' : 'Go',
+			title:small ? 'Leave - ' + data.leave + '%' : 'Leave',
 			width:scale(data.leave),
 			height:barHeight,
 			value:data.leave,
