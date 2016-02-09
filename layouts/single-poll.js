@@ -45,9 +45,10 @@ function singlePollLayout(width, height, data, metricEmbed){
         footer = 'FT poll of polls. ' + ftDateFormat(data.date);
     }
 
-    let plotHeight=height-(margin.top+margin.bottom);
-    let plotWidth=width-(margin.left+margin.right);
-
+    let plotHeight = height-(margin.top+margin.bottom);
+    let plotWidth = width-(margin.left+margin.right);
+    let labelBuffer = 125;
+    
 	let config = {
 		title:'',
         small:small,
@@ -75,7 +76,7 @@ function singlePollLayout(width, height, data, metricEmbed){
 			height:barHeight,
 			value:data.leave,
 			fill:colour.leave,
-            labelPosition:plotWidth-scale(data.leave)
+            labelPosition:Math.min((plotWidth-scale(data.leave)), (plotWidth-labelBuffer))
 		},
 		remain:{
 			title:small ? 'Stay - ' + data.remain + '%' : 'Stay',
@@ -83,7 +84,7 @@ function singlePollLayout(width, height, data, metricEmbed){
 			height:barHeight,
 			value:data.remain,
 			fill:colour.remain,
-            labelPosition:scale(data.remain)
+            labelPosition:Math.max( scale(data.remain), labelBuffer )
 		},
 		undecided:{
 			title:small ? '' : '',
