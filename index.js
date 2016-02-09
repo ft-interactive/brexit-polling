@@ -71,7 +71,7 @@ app.get('/',function(req, res){
             updated: scraper.updated(),
             source: wikipediaPage,
             remain:{ label:'Stay', tint:colours.remainTint },
-            leave:{ label:'Go', tint:colours.leaveTint  },
+            leave:{ label:'Leave', tint:colours.leaveTint  },
             undecided:{ label:'Undecided' },
             timeChart:timeSeries,
             singleChart:single
@@ -162,17 +162,21 @@ app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
             if(req.params.startdate === 'month'){
                 startDate = new Date();
                 startDate.setMonth(startDate.getMonth()-1);
-                titleOverride = 'Polling movement over the last month';
+                titleOverride = 'Polling over the last month';
             }
             if(req.params.startdate === '6-months'){
                 startDate = new Date();
                 startDate.setMonth(startDate.getMonth()-6);
-                titleOverride = 'Polling movement over the last months'
+                titleOverride = 'Polling over the last six months'
+            }
+            if(req.params.startdate === 'election-2015'){
+                startDate = new Date(2015, 4, 7);
+                titleOverride = 'Polling since the 2015 election'
             }
             if(req.params.startdate === 'year'){
                 startDate = new Date();
                 startDate.setMonth(startDate.getMonth()-12);
-                titleOverride = 'Polling movement over the last year'
+                titleOverride = 'Polling over the last year'
             }
         }
 
