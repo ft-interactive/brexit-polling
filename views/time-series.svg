@@ -12,6 +12,9 @@
 @font-face{src:url("https://build.origami.ft.com/files/o-fonts-assets@1.3.0/MetricWeb-BoldItalic.woff?#iefix") format("woff");font-family:MetricWeb;font-weight:700;font-style:italic}@font-face{src:url(//build.origami.ft.com/files/o-fonts-assets@1.3.0/FinancierDisplayWeb-LightItalic.woff?#iefix) format("woff");font-family:FinancierDisplayWeb;font-weight:200;font-style:italic}
 </style>
 {% endif %}
+{% if background %}
+<rect x="0" y="0" width="{{width}}" height="{{height}}" fill="{{background}}"></rect>
+{% endif %}
 <g transform="translate(0,{{margin.top}})">
     <text font-family="MetricWeb" font-size="{{titleSize}}">{{title}}</text>
 </g>
