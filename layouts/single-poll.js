@@ -47,7 +47,7 @@ function singlePollLayout(width, height, data, metricEmbed){
 
     let plotHeight = height-(margin.top+margin.bottom);
     let plotWidth = width-(margin.left+margin.right);
-    let labelBuffer = 125;
+    let labelBuffer = 130;
     
 	let config = {
 		title:'',
