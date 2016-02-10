@@ -21,8 +21,8 @@
 	<text class="chart-title" font-family="MetricWeb,sans-serif" dy="20">{{ title }}</text>
 	<text class="chart-source" fill="{{ fontColour }}" font-family="MetricWeb,sans-serif" dy="{{ (height - 2) }}" font-size="14px">{{ footer }}</text>
 	<g class="chart-plot" transform="translate({{ margin.left }},{{ margin.top }})">
-		<text text-anchor="start" class="heading" font-family="MetricWeb,sans-serif" dy="{{titleOffset.y}}" font-weight="800" font-size="{{titleSize}}px" fill="{{ remain.fill }}">{{ remain.title | upper}}</text>
-		<text text-anchor="end" class="heading" font-family="MetricWeb,sans-serif" x="{{ width }}" dy="{{titleOffset.y}}" font-weight="800" font-size="{{titleSize}}px" fill="{{ leave.fill }}">{{ leave.title | upper}}</text>
+		<text text-anchor="start" class="heading" font-family="MetricWeb,sans-serif" dy="{{titleOffset.y}}" font-weight="600" font-size="{{titleSize}}px" fill="{{ remain.fill }}">{{ remain.title | upper}}</text>
+		<text text-anchor="end" class="heading" font-family="MetricWeb,sans-serif" x="{{ width }}" dy="{{titleOffset.y}}" font-weight="600" font-size="{{titleSize}}px" fill="{{ leave.fill }}">{{ leave.title | upper}}</text>
 		<text text-anchor="middle" class="heading" font-family="MetricWeb,sans-serif" x="{{ (width/2) }}" dy="{{titleOffset.y}}" font-size="{{titleSize}}px" fill="{{ fontColour }}">{{ undecided.title | upper}}</text>
 		<g class="latest" transform="translate(0, {{ plotHeight }})">
 			<rect x="0" y="0" width="{{ remain.width }}" height="{{ remain.height }}" fill="{{ remain.fill }}" class="remain"></rect>
