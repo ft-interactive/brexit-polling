@@ -57,6 +57,20 @@
         </line>
     </g>
     {% endfor %}
+    {% for rule in yAxis.secondaryRules %}
+    <g class="rule">
+        <text y="{{rule.y1}}" dy="-3" fill="{{ yAxis.ruleStroke }}" >{{rule.label}}</text>
+        <line 
+            x1="{{rule.x1}}" 
+            y1="{{rule.y1}}" 
+            x2="{{rule.x2}}" 
+            y2="{{rule.y1}}" 
+            stroke="{{yAxis.ruleStroke}}" 
+            stroke-dasharray="{{yAxis.ruleStrokeDashArray}}" 
+            stroke-width="{{yAxis.ruleStrokeWidth}}">
+        </line>
+    </g>
+    {% endfor %}
 </g>
     
 <g class="polls" transform="translate({{margin.left}},{{margin.top}})">
@@ -68,8 +82,14 @@
 </g>
 
 <g class="trends" transform="translate({{margin.left}},{{margin.top}})">
-    <path d="{{ line.remain.path }}" fill="none" stroke="{{line.remain.stroke}}" stroke-width="2" ></path>
-    <path d="{{ line.leave.path }}" fill="none" stroke="{{line.leave.stroke}}" stroke-width="2"></path>
-    <path d="{{ line.undecided.path }}" fill="none" stroke="{{line.undecided.stroke}}" stroke-width="2"></path>
+    <path d="{{ line.remain.path }}" fill="none" stroke="#FFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="{{ line.leave.path }}" fill="none" stroke="#FFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="{{ line.undecided.path }}" fill="none" stroke="#FFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+</g>
+
+<g class="trends" transform="translate({{margin.left}},{{margin.top}})">
+    <path d="{{ line.remain.path }}" fill="none" stroke="{{line.remain.stroke}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="{{ line.leave.path }}" fill="none" stroke="{{line.leave.stroke}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="{{ line.undecided.path }}" fill="none" stroke="{{line.undecided.stroke}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
 </g>
 </svg>

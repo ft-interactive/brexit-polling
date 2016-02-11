@@ -11,7 +11,7 @@ const isoShortFormat = d3TimeFormat.format('%Y-%m-%d');
 const ftDateFormat = d3TimeFormat.format('%e %b %Y');
 
 function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
-    let maxPct = 75;
+    let maxPct = 60;
     let labelCenterSpacing = 15;
     
 	let margin = {
@@ -97,7 +97,7 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
 	// start date, end date, two/ three? lines, (final values & positions)
 	let config = {
 		title: titleOverride ? titleOverride : 'Polling movements over time',
-        titleSize: '20',
+        titleSize: '24',
 		footer: 'Source FT.com',
         metricEmbed: true,
 		margin: margin,
@@ -143,6 +143,9 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
             ruleStroke: colour.font,
             ruleStrokeWidth: 2,
             ruleStrokeDashArray: '2, 2',
+            secondaryRuleStrokeWidth: 1,
+            secondaryRuleStrokeDashArray: '1,4',
+            secondaryRuleStroke:colour.undecidedDark,
             ticks: [
                 {
                     x: xScale(lastSmoothedPoint.date),
@@ -171,7 +174,16 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
                     y2: yScale(50),
                     label: '50%'
                 }
-            ]
+            ],
+            secondaryRules: [25].map(function(d){
+                return {
+                    x1: 0,
+                    y1: yScale(d),
+                    x2: xScale.range()[1],
+                    y2: yScale(d),
+                    label: '25%'
+                }
+            })
         }
 	};
 	

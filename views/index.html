@@ -170,6 +170,14 @@ td.remain.lead{
     text-align: right;
 }
 
+.time.chart{
+    padding-top: 40px;
+}
+
+.single.chart{
+  padding-top: 10px;
+}
+
 .chart svg{
     width:100%;
     height:100%;
@@ -236,11 +244,11 @@ td.remain.lead{
         </p>
         
         
-        <div class="chart">
+        <div class="single chart">
             {{ singleChart | safe }}
         </div>
         
-        <div class="chart">
+        <div class="time chart">
             {{ timeChart | safe }}
         </div>
         <div class="key"> 
