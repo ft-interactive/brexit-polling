@@ -12,12 +12,12 @@ const express = require('express'),
     request = require('request');
 
 const wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
-
+const maxAge = 120; // for user agent caching purposes
 let data = [];
 
 const cache = lru({
     max: 500,
-    maxAge: 1000*60 //60 seconds
+    maxAge: 1000*60 // 60 seconds
 });
 
 const app = express();
@@ -51,7 +51,7 @@ checkData();
 //end of setup
 
 
-//routes
+// ROUTES
 app.get('/',function(req, res){
     let value = cache.get(req.path);
     if(!value){
@@ -79,11 +79,14 @@ app.get('/',function(req, res){
         cache.set(req.path, value);
         checkData();
     }
+    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
     res.send(value);
 });
 
 app.get('/card',function(req, res){
     request('http://ig.ft.com/sites/2016/brexit-card/', function (error, response, body) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
         res.send(body);
     });
 });
@@ -99,7 +102,8 @@ app.get('/data.json', function (req, res) {
         cache.set(req.path, value);
         checkData();
     }
-    res.header('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
     res.send(value);
 });
 
@@ -114,6 +118,7 @@ app.get('/data.html', function (req, res) {
         cache.set(req.path, value);
         checkData();
     }
+    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
     res.send(value);
 });
 
@@ -130,6 +135,7 @@ app.get('/poll/:id/:width-x-:height-:background.svg', function(req,res){
     }
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
     res.send(value)
 });
 
@@ -143,6 +149,7 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
     }
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
     res.send(value)
 });
 
@@ -159,6 +166,7 @@ app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
     }
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
     res.send(value);
 });
 
@@ -173,6 +181,7 @@ app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
     }
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
     res.send(value);
 });
 
@@ -188,6 +197,7 @@ app.get('/polls/:startdate,:enddate/:width-x-:height-:background.svg', function 
     }
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
     res.send(value);
 });
 
@@ -202,6 +212,7 @@ app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     }
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
     res.send(value);
 });
 
@@ -212,8 +223,11 @@ app.get('/polls/medium-term/:width-x-:height.svg', function(req, res){
     }
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
     res.send(value);
 });
+
+// END ROUTES
 
 //utility functions
 
