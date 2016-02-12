@@ -63,7 +63,7 @@ app.get('/',function(req, res){
         let endDate = new Date();
         let startDate = new Date();
         startDate.setYear( endDate.getFullYear()-1);
-        let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement over the last year');
+        let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement over the past year');
         let timeSeries = nunjucks.render( 'time-series.svg',  timeSeriesLayout);
 
         value = nunjucks.render( 'index.html' , {
