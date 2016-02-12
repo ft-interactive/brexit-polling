@@ -63,7 +63,7 @@ app.get('/',function(req, res){
         let endDate = new Date();
         let startDate = new Date();
         startDate.setYear( endDate.getFullYear()-1);
-        let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement over the last year');
+        let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement over the past year');
         let timeSeries = nunjucks.render( 'time-series.svg',  timeSeriesLayout);
 
         value = nunjucks.render( 'index.html' , {
@@ -242,12 +242,12 @@ function getDateDomain(start, end){
         if(start === 'month'){
             startDate = new Date();
             startDate.setMonth(startDate.getMonth()-1);
-            titleOverride = 'Polling over the last month';
+            titleOverride = 'Polling over the past month';
         }
         if(start === '6-months'){
             startDate = new Date();
             startDate.setMonth(startDate.getMonth()-6);
-            titleOverride = 'Polling over the last six months'
+            titleOverride = 'Polling over the past six months'
         }
         if(start === 'election-2015'){
             startDate = new Date(2015, 4, 7);
@@ -256,7 +256,7 @@ function getDateDomain(start, end){
         if(start === 'year'){
             startDate = new Date();
             startDate.setMonth(startDate.getMonth()-12);
-            titleOverride = 'Polling over the last year'
+            titleOverride = 'Polling over the past year'
         }
     }
     return {
