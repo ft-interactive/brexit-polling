@@ -21,6 +21,7 @@ const cache = lru({
 });
 
 const app = express();
+app.set('trust proxy', true);
 
 nunjucks.configure('views', {
     autoescape: true,
