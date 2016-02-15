@@ -68,6 +68,7 @@ app.get('/',function(req, res){
 
         value = nunjucks.render( 'index.html' , {
             title: 'EU referendum poll of polls',
+            headline: 'Brexit poll tracker',
             data: data.combinedData.reverse(),
             updated: scraper.updated(),
             source: wikipediaPage,
