@@ -18,6 +18,20 @@
 <g transform="translate(0,{{margin.top}})">
     <text font-family="MetricWeb" font-size="{{titleSize}}">{{title}}</text>
 </g>
+
+<g transform="translate(0,{{height - 5}})">
+    <g transform="translate(10, 0)">
+        <circle fill="#000" cx="6" cy="-6" r="3" fill-opacity="0.5"></circle>
+        <text font-family="MetricWeb" transform="translate(16,0)">Individual poll</text>
+    </g>
+    <g transform="translate(135, 0)">
+         <line stroke="#FFF" stroke-width="4" x1="0" y1="-6" x2="12" y2="-6">
+        </line>
+        <line stroke="#000" stroke-width="2" stroke-opacity="0.5" x1="0" y1="-6" x2="12" y2="-6">
+        </line>
+        <text font-family="MetricWeb" transform="translate(16, 0)">Rolling average</text>
+    </g>
+</g>
     
 <g class="x axis" font-family="MetricWeb" transform="translate({{margin.left}},{{height-margin.bottom}})">
     <g class="domain">

@@ -17,7 +17,7 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride){
 	let margin = {
 		top:30,
 		left:1,
-		bottom:30,
+		bottom:60,
 		right:100
 	};
 
