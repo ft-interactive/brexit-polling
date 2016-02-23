@@ -135,10 +135,7 @@ app.get('/poll/:id/:width-x-:height-:background.svg', function(req,res){
         cache.set(req.path, value);
         checkData();
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
-    res.send(value)
+    setSVGHeaders(res).send(value)
 });
 
 app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
@@ -149,10 +146,7 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
         cache.set(req.path, value);
         checkData();
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
-    res.send(value)
+    setSVGHeaders(res).send(value)
 });
 
 
@@ -166,10 +160,7 @@ app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
         cache.set(req.path, value);
         checkData();
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
-    res.send(value);
+    setSVGHeaders(res).send(value);
 });
 
 app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
@@ -181,10 +172,7 @@ app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
         cache.set(req.path, value);
         checkData();
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
-    res.send(value);
+    setSVGHeaders(res).send(value);
 });
 
 app.get('/polls/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
@@ -197,10 +185,7 @@ app.get('/polls/:startdate,:enddate/:width-x-:height-:background.svg', function 
         value = nunjucks.render( 'time-series.svg' , chartLayout );
         checkData();
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
-    res.send(value);
+    setSVGHeaders(res).send(value);
 });
 
 app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
@@ -212,26 +197,20 @@ app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
         value = nunjucks.render( 'time-series.svg' , chartLayout );
         checkData();
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
-    res.send(value);
-});
 
-app.get('/polls/medium-term/:width-x-:height.svg', function(req, res){
-    let value = cache.get(req.path);
-    if(!value){
-        value = nunjucks.render( 'medium-term.svg', layout.mediumTerm(data, req.params.width, req.params.height) )
-    }
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
     res.send(value);
 });
 
 // END ROUTES
 
 //utility functions
+
+function setSVGHeaders(res){
+    res.setHeader('Access-Control-Allow-Origin', '*');  
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
+    return res;
+}
 
 function getDateDomain(start, end){
     let endDate = isoShortFormat.parse( start );
