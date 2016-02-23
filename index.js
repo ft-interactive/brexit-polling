@@ -125,7 +125,7 @@ app.get('/data.html', function (req, res) {
 });
 
 //graphics
-
+//SINGLE POLL
 app.get('/poll/:id/:width-x-:height-:background.svg', function(req,res){
     let value = cache.get(req.path);
     if(!value){
@@ -149,7 +149,18 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
     setSVGHeaders(res).send(value)
 });
 
+app.get('/poll/fontless/:id/:width-x-:height.svg', function (req, res) {
+    let value = cache.get(req.path);
+    if(!value){
+        let chartLayout = layout.singlePoll(req.params.width, req.params.height, getDataByID( req.params.id ), false);
+        value = nunjucks.render( 'single-poll.svg' ,  chartLayout);
+        cache.set(req.path, value);
+        checkData();
+    }
+    setSVGHeaders(res).send(value)
+});
 
+//POLL OF POLLS
 app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
@@ -174,6 +185,20 @@ app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
     }
     setSVGHeaders(res).send(value);
 });
+
+app.get('/poll-of-polls/fontless/:width-x-:height.svg',function(req, res){
+    let value = cache.get(req.path);
+    if(!value){
+        let d = data.smoothedData[data.smoothedData.length - 1];
+        let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, false);
+        value = nunjucks.render( 'single-poll.svg', chartLayout );
+        cache.set(req.path, value);
+        checkData();
+    }
+    setSVGHeaders(res).send(value);
+});
+
+//TIME SERIES
 
 app.get('/polls/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
     let value = cache.get(req.path);
