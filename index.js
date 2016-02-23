@@ -58,12 +58,12 @@ app.get('/',function(req, res){
     if(!value){
 
         let d = data.smoothedData[data.smoothedData.length - 1];
-        let single = nunjucks.render( 'single-poll.svg' , layout.singlePoll(600, 75, d, true) );
+        let single = nunjucks.render( 'single-poll.svg' , layout.singlePoll(600, 75, d, false) );
 
         let endDate = new Date();
         let startDate = new Date();
         startDate.setYear( endDate.getFullYear()-1);
-        let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement over the past year');
+        let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement over the past year', false);
         let timeSeries = nunjucks.render( 'time-series.svg',  timeSeriesLayout);
 
         value = nunjucks.render( 'index.html' , {
@@ -202,10 +202,21 @@ app.get('/poll-of-polls/fontless/:width-x-:height.svg',function(req, res){
 
 app.get('/polls/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
     let value = cache.get(req.path);
-    
     if(!value){        
         let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
-        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title);
+        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, true);
+        chartLayout.background = '#' + req.params.background;
+        value = nunjucks.render( 'time-series.svg' , chartLayout );
+        checkData();
+    }
+    setSVGHeaders(res).send(value);
+});
+
+app.get('/polls/fontless/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
+    let value = cache.get(req.path);
+    if(!value){        
+        let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
+        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, false);
         chartLayout.background = '#' + req.params.background;
         value = nunjucks.render( 'time-series.svg' , chartLayout );
         checkData();
@@ -215,15 +226,24 @@ app.get('/polls/:startdate,:enddate/:width-x-:height-:background.svg', function 
 
 app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
-    
     if(!value){        
         let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
-        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title);
+        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, true);
         value = nunjucks.render( 'time-series.svg' , chartLayout );
         checkData();
     }
+    setSVGHeaders(res).send(value);
+});
 
-    res.send(value);
+app.get('/polls/fontless/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
+    let value = cache.get(req.path);
+    if(!value){        
+        let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
+        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, false);
+        value = nunjucks.render( 'time-series.svg' , chartLayout );
+        checkData();
+    }
+    setSVGHeaders(res).send(value);
 });
 
 // END ROUTES
