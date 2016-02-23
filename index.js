@@ -58,12 +58,12 @@ app.get('/',function(req, res){
     if(!value){
 
         let d = data.smoothedData[data.smoothedData.length - 1];
-        let single = nunjucks.render( 'single-poll.svg' , layout.singlePoll(600, 75, d, true) );
+        let single = nunjucks.render( 'single-poll.svg' , layout.singlePoll(600, 75, d, false) );
 
         let endDate = new Date();
         let startDate = new Date();
         startDate.setYear( endDate.getFullYear()-1);
-        let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement over the past year');
+        let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement over the past year', false);
         let timeSeries = nunjucks.render( 'time-series.svg',  timeSeriesLayout);
 
         value = nunjucks.render( 'index.html' , {
@@ -125,7 +125,7 @@ app.get('/data.html', function (req, res) {
 });
 
 //graphics
-
+//SINGLE POLL
 app.get('/poll/:id/:width-x-:height-:background.svg', function(req,res){
     let value = cache.get(req.path);
     if(!value){
@@ -135,10 +135,7 @@ app.get('/poll/:id/:width-x-:height-:background.svg', function(req,res){
         cache.set(req.path, value);
         checkData();
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
-    res.send(value)
+    setSVGHeaders(res).send(value)
 });
 
 app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
@@ -149,13 +146,21 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
         cache.set(req.path, value);
         checkData();
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
-    res.send(value)
+    setSVGHeaders(res).send(value)
 });
 
+app.get('/poll/fontless/:id/:width-x-:height.svg', function (req, res) {
+    let value = cache.get(req.path);
+    if(!value){
+        let chartLayout = layout.singlePoll(req.params.width, req.params.height, getDataByID( req.params.id ), false);
+        value = nunjucks.render( 'single-poll.svg' ,  chartLayout);
+        cache.set(req.path, value);
+        checkData();
+    }
+    setSVGHeaders(res).send(value)
+});
 
+//POLL OF POLLS
 app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
@@ -166,10 +171,7 @@ app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
         cache.set(req.path, value);
         checkData();
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
-    res.send(value);
+    setSVGHeaders(res).send(value);
 });
 
 app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
@@ -181,57 +183,79 @@ app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
         cache.set(req.path, value);
         checkData();
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
-    res.send(value);
+    setSVGHeaders(res).send(value);
 });
+
+app.get('/poll-of-polls/fontless/:width-x-:height.svg',function(req, res){
+    let value = cache.get(req.path);
+    if(!value){
+        let d = data.smoothedData[data.smoothedData.length - 1];
+        let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, false);
+        value = nunjucks.render( 'single-poll.svg', chartLayout );
+        cache.set(req.path, value);
+        checkData();
+    }
+    setSVGHeaders(res).send(value);
+});
+
+//TIME SERIES
 
 app.get('/polls/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
     let value = cache.get(req.path);
-    
     if(!value){        
         let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
-        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title);
+        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, true);
         chartLayout.background = '#' + req.params.background;
         value = nunjucks.render( 'time-series.svg' , chartLayout );
         checkData();
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
-    res.send(value);
+    setSVGHeaders(res).send(value);
+});
+
+app.get('/polls/fontless/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
+    let value = cache.get(req.path);
+    if(!value){        
+        let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
+        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, false);
+        chartLayout.background = '#' + req.params.background;
+        value = nunjucks.render( 'time-series.svg' , chartLayout );
+        checkData();
+    }
+    setSVGHeaders(res).send(value);
 });
 
 app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
-    
     if(!value){        
         let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
-        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title);
+        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, true);
         value = nunjucks.render( 'time-series.svg' , chartLayout );
         checkData();
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
-    res.send(value);
+    setSVGHeaders(res).send(value);
 });
 
-app.get('/polls/medium-term/:width-x-:height.svg', function(req, res){
+app.get('/polls/fontless/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
-    if(!value){
-        value = nunjucks.render( 'medium-term.svg', layout.mediumTerm(data, req.params.width, req.params.height) )
+    if(!value){        
+        let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
+        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, false);
+        value = nunjucks.render( 'time-series.svg' , chartLayout );
+        checkData();
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
-    res.send(value);
+    setSVGHeaders(res).send(value);
 });
 
 // END ROUTES
 
 //utility functions
+
+function setSVGHeaders(res){
+    res.setHeader('Access-Control-Allow-Origin', '*');  
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
+    return res;
+}
 
 function getDateDomain(start, end){
     let endDate = isoShortFormat.parse( start );
