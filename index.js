@@ -284,6 +284,25 @@ function getDateDomain(start, end){
             titleOverride = 'Polling over the past year'
         }
     }
+
+    if(end === 'referendum'){
+        endDate = new Date(2016, 5, 23);
+        if(start === '6-months'){
+            startDate = new Date();
+            startDate.setMonth(endDate.getMonth()-6);
+            titleOverride = 'Polling over the six months before the referendum'
+        }
+        if(start === 'election-2015'){
+            startDate = new Date(2015, 4, 7);
+            titleOverride = 'Polling since the 2015 election'
+        }
+        if(start === 'year'){
+            startDate = new Date();
+            startDate.setMonth(endDate.getMonth()-12);
+            titleOverride = 'Polling over the year before the referendum'
+        }
+    }
+
     return {
         domain:[startDate, endDate],
         title:titleOverride
