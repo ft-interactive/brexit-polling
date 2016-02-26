@@ -258,8 +258,8 @@ function setSVGHeaders(res){
 }
 
 function getDateDomain(start, end){
-    let endDate = isoShortFormat.parse( start );
-    let startDate = isoShortFormat.parse( end );
+    let endDate = isoShortFormat.parse( end );
+    let startDate = isoShortFormat.parse( start );
     let titleOverride = null;
 
     if(end === 'now'){
