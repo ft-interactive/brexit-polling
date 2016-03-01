@@ -20,7 +20,7 @@ let story = '';
 
 const cache = lru({
     max: 500,
-    maxAge: 1000*60 // 60 seconds
+    maxAge: 1000*1 // 60 seconds
 });
 
 const app = express();
@@ -59,7 +59,7 @@ checkData();
 app.get('/',function(req, res){
     let value = cache.get(req.path);
     if(!value){
-
+        let latestStory = 'Latest ' + story.latest;
         let d = data.smoothedData[data.smoothedData.length - 1];
         let single = nunjucks.render( 'single-poll.svg' , layout.singlePoll(600, 75, d, false) );
 
@@ -68,8 +68,6 @@ app.get('/',function(req, res){
         startDate.setYear( endDate.getFullYear()-1);
         let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement over the past year', false);
         let timeSeries = nunjucks.render( 'time-series.svg',  timeSeriesLayout);
-
-        console.log('s', story)
 
         value = nunjucks.render( 'index.html' , {
             title: 'EU referendum poll of polls',
@@ -82,7 +80,7 @@ app.get('/',function(req, res){
             undecided:{ label:'Undecided' },
             timeChart:timeSeries,
             singleChart:single,
-            latestStory:story
+            latestStory:latestStory
         });
         cache.set(req.path, value);
         checkData();
@@ -328,7 +326,6 @@ function getDataByID(id){
 
 function checkData(){   //for getting the latest data 
     let now = new Date();
-    console.log('check')
     if(now.getTime() - scraper.updated().getTime() >= 60000){
         data = scraper.updateData(wikipediaPage);
     }
