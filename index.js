@@ -2,6 +2,7 @@
 
 const express = require('express'),
 	scraper = require('./scraper.js'),
+    externalContent = require('./external-content.js'),
 	layout = require('./layouts/index.js'),
 	nunjucks = require('nunjucks'),
     lru = require('lru-cache'),
@@ -12,8 +13,10 @@ const express = require('express'),
     request = require('request');
 
 const wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
+const storyPage = 'https://ft-ig-brexit-stream-content.herokuapp.com/metacard/fragment.json';
 const maxAge = 120; // for user agent caching purposes
 let data = [];
+let story = '';
 
 const cache = lru({
     max: 500,
@@ -66,6 +69,8 @@ app.get('/',function(req, res){
         let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement over the past year', false);
         let timeSeries = nunjucks.render( 'time-series.svg',  timeSeriesLayout);
 
+        console.log('s', story)
+
         value = nunjucks.render( 'index.html' , {
             title: 'EU referendum poll of polls',
             headline: 'Brexit poll tracker',
@@ -76,7 +81,8 @@ app.get('/',function(req, res){
             leave:{ label:'Leave', tint:colours.leaveTint  },
             undecided:{ label:'Undecided' },
             timeChart:timeSeries,
-            singleChart:single
+            singleChart:single,
+            latestStory:story
         });
         cache.set(req.path, value);
         checkData();
@@ -322,8 +328,12 @@ function getDataByID(id){
 
 function checkData(){   //for getting the latest data 
     let now = new Date();
+    console.log('check')
     if(now.getTime() - scraper.updated().getTime() >= 60000){
         data = scraper.updateData(wikipediaPage);
+    }
+    if(now.getTime() - externalContent.updated().getTime() >= 60000){
+        story = externalContent.updateData(storyPage);
     }
 }
 

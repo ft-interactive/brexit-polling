@@ -1,7 +1,8 @@
 'use strict';
 
 const	request = require('request');
-let updated = new Date();
+let updated = new Date(2015,0,1);
+let data = '';
 
 module.exports = {
 	updated:function(){ return updated; },
@@ -9,9 +10,19 @@ module.exports = {
 };
 
 function updateData(pageURL){
-	updated = new Date();
 	console.log('check', pageURL);
-	return 'CARD DATA';
+	updated = new Date();
+
+	getPage(pageURL)
+		.then(function(page){
+			data = JSON.parse(page).fragment;
+			updated = new Date();
+		})
+		.catch(function(reason){
+			console.error('ERROR: Failed to get ' + pageURL + ' - ' + reason + ' ' + new Date()); //logentries pattern 'ERROR: Failed to get'
+		});
+    
+	return data;
 }
 
 function getPage(url) {
