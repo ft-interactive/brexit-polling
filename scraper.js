@@ -76,13 +76,12 @@ function updateData(pageURL){
 }
 
 function smooth(data){
-	//TODO:  remove outliers
-	let sorted = data.sort(function(a,b){
+	data.sort(function(a,b){
         let aDate = new Date(a.date);
         let bDate = new Date(b.date);
-		return aDate.getTime() - bDate.getTime();
+		return bDate.getTime() - aDate.getTime();
 	});
-
+	
 	let smoothedData = []; 
 	for(let i=0; i < data.length; i++){
 		let end = data.slice(i, data.length-1);
@@ -101,7 +100,8 @@ function smooth(data){
         }
 		smoothedData.push(calculateMeans( objectValues(basket), date) );
 	}
-
+	smoothedData.reverse();
+	
 	return smoothedData.filter(function(d){
 		return d.undecided;
 	});
