@@ -12,6 +12,7 @@ function updateData(pageURL){
 		.then(function(page){
 
 			story.data = JSON.parse(page);
+			story.data.text = story.data.text.replace(/\"\/content/g,'"//next.ft.com/content');
 			updated = new Date();
 			console.log('returning ', story);
 			return story;

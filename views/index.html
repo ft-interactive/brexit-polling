@@ -100,6 +100,12 @@ body {
     font-family: "FinancierDisplayWeb",serif;
 }
 
+.article__crosshead-alt {
+  font-family: MetricWeb, sans-serif;
+  color:#43423e;
+  font-weight: 400;
+  text-align: left;
+}
 
 .article {
     margin:0 auto;
@@ -173,7 +179,7 @@ td.remain.lead{
 }
 
 .time.chart{
-    padding-top: 40px;
+    padding-top: 20px;
 }
 
 .single.chart{
@@ -185,6 +191,20 @@ td.remain.lead{
     height:100%;
 }
 
+.intro{
+  font-size: 18px;
+  font-family: FinancierTextWeb, serif;
+  line-height: 1.5rem;
+}
+
+p.off-link{
+  text-align: right;
+  font-family: MetricWeb, sans-serif;
+}
+
+p.off-link a{
+  border: none;
+}
 
 @media (max-width: 600px) {
   .secondary {
@@ -242,22 +262,24 @@ td.remain.lead{
     <main class="article" role="main">
         <h1 class="article__headline">{{ headline }}</h1>
         <div class="intro">
-          <p>The UK will hold a referendum on June 23 to decide if it will stay in or leave the European Union. This page summarises the polling from a number of organisations, showing the latest situation, how public opinion has changed over time, and the result of each individual poll.</p>
+          <p>The UK will hold a referendum on June 23 to decide if it will stay in or leave the European Union. This page summarises the opinion polling on the matter.</p>
         </div>
         
-        <!--{{ latest.updated }}--><h2 class="article__crosshead">Latest Developments</h2>        
+        <!--{{ latest.updated }}--><h2 class="article__crosshead-alt">Latest Developments</h2>        
         <div class="single chart">
             {{ singleChart | safe }}
         </div>
         
- {{ latest.text | safe }}
-        <p><a href="http://www.ft.com/eu-referendum">Full Brexit coverage</a></p>
+        <div class="intro">
+        {{ latest.text | safe }}
+        <p class="off-link"><a href="http://www.ft.com/eu-referendum">Full Brexit coverage</a></p>
+        </div>
         <div class="time chart">
             {{ timeChart | safe }}
         </div>
         
 
-        <h2 class="article__crosshead">Individual polls</h2>
+        <h2 class="article__crosshead-alt">Full list of individual polls</h2>
         <table>
             <thead>
                 <tr>
