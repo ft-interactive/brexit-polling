@@ -8,7 +8,7 @@ const express = require('express'),
     lru = require('lru-cache'),
     d3TimeFormat = require('d3-time-format').format,
 	isoShortFormat = d3TimeFormat('%Y-%m-%d'),
-    ftDateFormat = d3TimeFormat('%e %b %Y'),
+    ftDateFormat = d3TimeFormat('%b %e, %Y'),
     colours = require('./layouts/colours.js'),
     request = require('request');
 
