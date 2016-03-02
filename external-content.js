@@ -14,13 +14,11 @@ function updateData(pageURL){
 			story.data = JSON.parse(page);
 			story.data.text = story.data.text.replace(/\"\/content/g,'"//next.ft.com/content');
 			updated = new Date();
-			console.log('returning ', story);
 			return story;
 		})
 		.catch(function(reason){
 			console.error('ERROR: Failed to get ' + pageURL + ' - ' + reason + ' ' + new Date()); //logentries pattern 'ERROR: Failed to get'
 		});
-    console.log('returning ', story);
 	return story;
 }
 

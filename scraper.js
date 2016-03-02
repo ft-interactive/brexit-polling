@@ -76,8 +76,8 @@ function updateData(pageURL){
 }
 
 function smooth(data){
-	//TODO: remove duplicate pollsters, remove outliers
-	var sorted = data.sort(function(a,b){
+	//TODO:  remove outliers
+	let sorted = data.sort(function(a,b){
         let aDate = new Date(a.date);
         let bDate = new Date(b.date);
 		return aDate.getTime() - bDate.getTime();
@@ -85,23 +85,46 @@ function smooth(data){
 
 	let smoothedData = []; 
 	for(let i=0; i < data.length; i++){
-		let slice = data.slice(Math.max(0, i-7), i);
+		let end = data.slice(i, data.length-1);
+		let basket = {};
+		let inc = 0;
+		while(Object.keys(basket).length < 8 && inc < end.length){
+			let pollster = end[inc].pollster;
+			if(Object.keys(basket).indexOf( pollster ) < 0){
+				basket[pollster] = end[inc];
+			}
+			inc++;
+		}
         let date = data[i].date;
         if(data[i].date){
             date = data[i].date;
         }
-		smoothedData.push({
-			remain: Math.round( d3Array.mean(slice, (d) => d.remain ) ),
-			leave: Math.round( d3Array.mean(slice, (d) => d.leave ) ),
-			undecided: Math.round( d3Array.mean(slice, (d) => d.undecided ) ),
-			date: date,
-            pollOfPolls: true
-		});
+		smoothedData.push(calculateMeans( objectValues(basket), date) );
 	}
 
 	return smoothedData.filter(function(d){
 		return d.undecided;
 	});
+}
+
+function objectValues(o){
+	let a = [];
+	for(let key in o ){
+		a.push(o[key]);
+	}
+	return a;
+}
+
+function calculateMeans(data, date){
+	data = data.sort(function(a,b){return b.remain - a.remain});
+	data = data.slice(Math.min(1,data.length-1),Math.min(6,data.length));
+	return{
+		remain: Math.round( d3Array.mean(data, (d) => d.remain ) ),
+		leave: Math.round( d3Array.mean(data, (d) => d.leave ) ),
+		undecided: Math.round( d3Array.mean(data, (d) => d.undecided ) ),
+		date: date,
+	    pollOfPolls: true
+	}
 }
 
 //	EXAMPLE MESS:
