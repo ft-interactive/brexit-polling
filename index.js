@@ -2,22 +2,25 @@
 
 const express = require('express'),
 	scraper = require('./scraper.js'),
+    externalContent = require('./external-content.js'),
 	layout = require('./layouts/index.js'),
 	nunjucks = require('nunjucks'),
     lru = require('lru-cache'),
     d3TimeFormat = require('d3-time-format').format,
 	isoShortFormat = d3TimeFormat('%Y-%m-%d'),
-    ftDateFormat = d3TimeFormat('%e %b %Y'),
+    ftDateFormat = d3TimeFormat('%b %e, %Y'),
     colours = require('./layouts/colours.js'),
     request = require('request');
 
 const wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
+const storyPage = 'https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json';
 const maxAge = 120; // for user agent caching purposes
 let data = [];
+let story = '';
 
 const cache = lru({
     max: 500,
-    maxAge: 1000*60 // 60 seconds
+    maxAge: 1000*1 // 60 seconds
 });
 
 const app = express();
@@ -56,7 +59,7 @@ checkData();
 app.get('/',function(req, res){
     let value = cache.get(req.path);
     if(!value){
-
+        let latest = story.data;
         let d = data.smoothedData[data.smoothedData.length - 1];
         let single = nunjucks.render( 'single-poll.svg' , layout.singlePoll(600, 75, d, false) );
 
@@ -76,7 +79,8 @@ app.get('/',function(req, res){
             leave:{ label:'Leave', tint:colours.leaveTint  },
             undecided:{ label:'Undecided' },
             timeChart:timeSeries,
-            singleChart:single
+            singleChart:single,
+            latest:latest
         });
         cache.set(req.path, value);
         checkData();
@@ -324,6 +328,9 @@ function checkData(){   //for getting the latest data
     let now = new Date();
     if(now.getTime() - scraper.updated().getTime() >= 60000){
         data = scraper.updateData(wikipediaPage);
+    }
+    if(now.getTime() - externalContent.updated().getTime() >= 60000){
+        story = externalContent.updateData(storyPage);
     }
 }
 

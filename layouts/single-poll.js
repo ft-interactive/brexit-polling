@@ -8,7 +8,7 @@ const d3Shape = require('d3-shape');
 const colour = require('./colours.js');
 
 const isoShortFormat = d3TimeFormat.format('%Y-%m-%d');
-const ftDateFormat = d3TimeFormat.format('%e %b %Y');
+const ftDateFormat = d3TimeFormat.format('%b %e, %Y');
 const ftTruncatedDateFormat = d3TimeFormat.format('%e %b');
 
 function singlePollLayout(width, height, data, metricEmbed){

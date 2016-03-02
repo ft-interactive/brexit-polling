@@ -8,7 +8,7 @@ const d3Time = require('d3-time');
 const colour = require('./colours.js');
 
 const isoShortFormat = d3TimeFormat.format('%Y-%m-%d');
-const ftDateFormat = d3TimeFormat.format('%e %b %Y');
+const ftDateFormat = d3TimeFormat.format('%b %e, %Y');
 
 function simpleTimeSeries(width, height, dateDomain, data, titleOverride, metricEmbed){
     let maxPct = 60;
