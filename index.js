@@ -13,7 +13,7 @@ const express = require('express'),
     request = require('request');
 
 const wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
-const storyPage = 'https://ft-ig-brexit-stream-content.herokuapp.com/metacard/fragment.json';
+const storyPage = 'https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json';
 const maxAge = 120; // for user agent caching purposes
 let data = [];
 let story = '';
@@ -59,7 +59,7 @@ checkData();
 app.get('/',function(req, res){
     let value = cache.get(req.path);
     if(!value){
-        let latestStory = 'Latest ' + story.latest;
+        let latest = story.data;
         let d = data.smoothedData[data.smoothedData.length - 1];
         let single = nunjucks.render( 'single-poll.svg' , layout.singlePoll(600, 75, d, false) );
 
@@ -80,7 +80,7 @@ app.get('/',function(req, res){
             undecided:{ label:'Undecided' },
             timeChart:timeSeries,
             singleChart:single,
-            latestStory:latestStory
+            latest:latest
         });
         cache.set(req.path, value);
         checkData();

@@ -242,18 +242,16 @@ td.remain.lead{
     <main class="article" role="main">
         <h1 class="article__headline">{{ headline }}</h1>
         <div class="intro">
-          <p>The UK is set to hold a referendum on June 23 to decide if it will stay in or leave the European Union. The issue has divided Britons. This page summarises polling from a number of organisations, showing the latest situation, how public opinion has changed over time, and the result of each individual poll.</p>
-          <p><a href="http://www.ft.com/eu-referendum">Latest Brexit coverage</a></p>
-          
+          <p>The UK will hold a referendum on June 23 to decide if it will stay in or leave the European Union. This page summarises the polling from a number of organisations, showing the latest situation, how public opinion has changed over time, and the result of each individual poll.</p>
         </div>
         
-        
+        <!--{{ latest.updated }}--><h2 class="article__crosshead">Latest Developments</h2>        
         <div class="single chart">
             {{ singleChart | safe }}
         </div>
         
-        Latest {{ latestStory }}
-
+ {{ latest.text | safe }}
+        <p><a href="http://www.ft.com/eu-referendum">Full Brexit coverage</a></p>
         <div class="time chart">
             {{ timeChart | safe }}
         </div>

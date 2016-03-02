@@ -11,7 +11,7 @@ function updateData(pageURL){
 	getPage(pageURL)
 		.then(function(page){
 
-			story.latest = JSON.parse(page).fragment;
+			story.data = JSON.parse(page);
 			updated = new Date();
 			console.log('returning ', story);
 			return story;
