@@ -76,6 +76,7 @@ function singlePollLayout(width, height, data, metricEmbed){
 			height:barHeight,
 			value:data.leave,
 			fill:colour.leave,
+			fontFill:colour.leaveDark,
             labelPosition:Math.min((plotWidth-scale(data.leave)), (plotWidth-labelBuffer))
 		},
 		remain:{
@@ -84,6 +85,7 @@ function singlePollLayout(width, height, data, metricEmbed){
 			height:barHeight,
 			value:data.remain,
 			fill:colour.remain,
+			fontFill:colour.remainDark,
             labelPosition:Math.max( scale(data.remain), labelBuffer )
 		},
 		undecided:{
