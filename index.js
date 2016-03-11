@@ -60,14 +60,13 @@ app.get('/',function(req, res){
     let value = cache.get(req.path);
     if(!value){
         let latest = story.data;
-        let d = data.smoothedData[data.smoothedData.length - 1];
-        let single = nunjucks.render( 'single-poll.svg' , layout.singlePoll(600, 75, d, false) );
+        let d = latestPollOfPollsData();
 
         let endDate = new Date();
         let startDate = new Date();
         startDate.setYear( endDate.getFullYear()-1);
         let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement over the past year', false);
-        let timeSeries = nunjucks.render( 'time-series.svg',  timeSeriesLayout);
+        let pollLayout = layout.singlePoll(600, 75, d, false);
 
         value = nunjucks.render( 'index.html' , {
             title: 'EU referendum poll of polls',
@@ -78,11 +77,11 @@ app.get('/',function(req, res){
             remain:{ label:'Stay', tint:colours.remainTint },
             leave:{ label:'Leave', tint:colours.leaveTint  },
             undecided:{ label:'Undecided' },
-            timeChart:timeSeries,
-            singleChart:single,
+            timeChart:nunjucks.render( 'time-series.svg',  timeSeriesLayout),
+            singleChart:nunjucks.render( 'single-poll.svg' ,  pollLayout),
             latest:latest
         });
-        cache.set(req.path, value);
+        if(!d.nocache) cache.set(req.path, value);
         checkData();
     }
     res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
@@ -168,11 +167,11 @@ app.get('/poll/fontless/:id/:width-x-:height.svg', function (req, res) {
 app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
-        let d = data.smoothedData[data.smoothedData.length - 1];
+        let d = latestPollOfPollsData();
         let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, true);
         chartLayout.background = '#' + req.params.background;
         value = nunjucks.render( 'single-poll.svg', chartLayout );
-        cache.set(req.path, value);
+        if(!d.nocache) cache.set(req.path, value);
         checkData();
     }
     setSVGHeaders(res).send(value);
@@ -181,10 +180,10 @@ app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
 app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
-        let d = data.smoothedData[data.smoothedData.length - 1];
+        let d = latestPollOfPollsData();
         let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, true);
         value = nunjucks.render( 'single-poll.svg', chartLayout );
-        cache.set(req.path, value);
+        if(!d.nocache) cache.set(req.path, value);
         checkData();
     }
     setSVGHeaders(res).send(value);
@@ -193,10 +192,10 @@ app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
 app.get('/poll-of-polls/fontless/:width-x-:height.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
-        let d = data.smoothedData[data.smoothedData.length - 1];
+        let d = latestPollOfPollsData();
         let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, false);
         value = nunjucks.render( 'single-poll.svg', chartLayout );
-        cache.set(req.path, value);
+        if(!d.nocache) cache.set(req.path, value);
         checkData();
     }
     setSVGHeaders(res).send(value);
@@ -253,6 +252,17 @@ app.get('/polls/fontless/:startdate,:enddate/:width-x-:height.svg', function (re
 // END ROUTES
 
 //utility functions
+
+function latestPollOfPollsData(){
+    let d = {};
+    if(Array.isArray(data.smoothedData)){
+        d = data.smoothedData[Math.max(data.smoothedData.length - 1, 0)];
+    }else{
+        console.log('smoothedData is not an array')
+        d.nocache = true;
+    }
+    return d;
+}
 
 function setSVGHeaders(res){
     res.setHeader('Access-Control-Allow-Origin', '*');  
