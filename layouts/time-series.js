@@ -19,12 +19,18 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride, metric
 		bottom:60,
 		right:100
 	};
+
+
 	//sort data oldest to newest
 	let rawData = data.combinedData.sort(function(a,b){
 		return a.date.getTime() - b.date.getTime();
 	}).filter(function(d){
         return (d.undecided);
     });
+
+    if(!Array.isArray(rawData)){
+        return {error:'no data in specified range'};
+    }
 
 	let filtered = rawData.filter(function(d,i){
 		let time = d.date.getTime();
