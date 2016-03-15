@@ -56,6 +56,15 @@ checkData();
 
 
 // ROUTES
+app.get('/__access_metadata',function(req, res){
+    let value = cache.get(req.path);
+    if(!value){
+        value = JSON.parse(nunjucks.render('access_metadata.json'));
+        cache.set(req.path, value);
+    }
+    res.send(value);
+});
+
 app.get('/',function(req, res){
     let value = cache.get(req.path);
     if(!value){
