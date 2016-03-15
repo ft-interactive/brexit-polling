@@ -66,6 +66,10 @@ app.get('/',function(req, res){
         let startDate = new Date();
         startDate.setYear( endDate.getFullYear()-1);
         let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement over the past year', false);
+        if(timeSeriesLayout.error){
+            console.log(timeSeriesLayout.error, startDate, endDate);
+            d.nocache = true;
+        }
         let pollLayout = layout.singlePoll(600, 75, d, false);
 
         value = nunjucks.render( 'index.html' , {
