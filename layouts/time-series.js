@@ -28,7 +28,7 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride, metric
         return (d.undecided);
     });
 
-    if(Array.isArray(rawData)){
+    if(!Array.isArray(rawData)){
         return {error:'no data in specified range'};
     }
 
