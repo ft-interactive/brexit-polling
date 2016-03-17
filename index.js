@@ -56,7 +56,7 @@ checkData();
 
 
 // ROUTES
-app.get('/__access_metadata',function(req, res){
+app.get('/__access_metadata', function(req, res){
     let value = cache.get(req.path);
     if(!value){
         value = JSON.parse(nunjucks.render('access_metadata.json'));
@@ -65,7 +65,11 @@ app.get('/__access_metadata',function(req, res){
     res.send(value);
 });
 
-app.get('/',function(req, res){
+app.get('/__gtg', function(req, res){
+    res.send('ok');
+});
+
+app.get('/', function(req, res){
     let value = cache.get(req.path);
     if(!value){
         let latest = story.data;
