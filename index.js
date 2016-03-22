@@ -20,7 +20,7 @@ let story = '';
 
 const cache = lru({
     max: 500,
-    maxAge: 1000*1 // 60 seconds
+    maxAge: 1000*10 // 60 seconds
 });
 
 const app = express();

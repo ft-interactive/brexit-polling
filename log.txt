@@ -1,0 +1,63 @@
+
+> ft-brexit-data@1.0.0 dev /Users/tom.pearson/Sites/brexit-polling-data
+> nodemon -e js,html,svg
+
+22 Mar 16:59:41 - [33m[nodemon] 1.7.1[39m
+22 Mar 16:59:41 - [33m[nodemon] to restart at any time, enter `rs`[39m
+22 Mar 16:59:41 - [33m[nodemon] watching: *.*[39m
+22 Mar 16:59:41 - [32m[nodemon] starting `node index.js`[39m
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+running :: 5000
+set backup data
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+set backup data
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+set backup data
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+set backup data
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+set backup data
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+set backup data
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+set backup data
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+set backup data
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+set backup data
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+set backup data
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+set backup data
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+set backup data
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+set backup data
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+set backup data
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+set backup data
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+set backup data
+22 Mar 17:15:46 - [32m[nodemon] restarting due to changes...[39m
+22 Mar 17:15:46 - [32m[nodemon] starting `node index.js`[39m
+updating... https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum
+updating... https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json
+running :: 5000
+set backup data
