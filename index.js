@@ -74,7 +74,6 @@ app.get('/', function(req, res){
     if(!value){
         let latest = story.data;
         let d = latestPollOfPollsData();
-
         let endDate = new Date();
         let startDate = new Date();
         startDate.setYear( endDate.getFullYear()-1);
@@ -98,7 +97,11 @@ app.get('/', function(req, res){
             singleChart:nunjucks.render( 'single-poll.svg' ,  pollLayout),
             latest:latest
         });
-        if(!d.nocache) cache.set(req.path, value);
+        if(!d.nocache){
+            cache.set(req.path, value)
+        }else{
+            scraper.invalidate();
+        }
         checkData();
     }
     res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
@@ -188,7 +191,11 @@ app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
         let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, true);
         chartLayout.background = '#' + req.params.background;
         value = nunjucks.render( 'single-poll.svg', chartLayout );
-        if(!d.nocache) cache.set(req.path, value);
+        if(!d.nocache){
+            cache.set(req.path, value);
+        }else{
+            scraper.invalidate();
+        }
         checkData();
     }
     setSVGHeaders(res).send(value);
@@ -200,7 +207,11 @@ app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
         let d = latestPollOfPollsData();
         let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, true);
         value = nunjucks.render( 'single-poll.svg', chartLayout );
-        if(!d.nocache) cache.set(req.path, value);
+        if(!d.nocache){
+            cache.set(req.path, value);
+        }else{
+            scraper.invalidate();
+        }
         checkData();
     }
     setSVGHeaders(res).send(value);
@@ -212,7 +223,11 @@ app.get('/poll-of-polls/fontless/:width-x-:height.svg',function(req, res){
         let d = latestPollOfPollsData();
         let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, false);
         value = nunjucks.render( 'single-poll.svg', chartLayout );
-        if(!d.nocache) cache.set(req.path, value);
+        if(!d.nocache){
+            cache.set(req.path, value);
+        }else{
+            scraper.invalidate();
+        }
         checkData();
     }
     setSVGHeaders(res).send(value);

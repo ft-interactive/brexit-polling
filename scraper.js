@@ -252,5 +252,8 @@ module.exports = {
 	updated:function(){
 		return updated
 	},
+	invalidate:function(){
+		updated = new Date(2015,0,1);
+	},
 	tableKeys:tableKeys
 };
