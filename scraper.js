@@ -44,8 +44,9 @@ function updateData(pageURL){
 				let year = Number(tableKeys[i].split('-')[1]);
 				
 				data[ tableKeys[i] ] = csv.parse( csv.formatRows(tableArray) )
-					.map(function(d){	
-						return clean(d, year); 
+					.map(function(d){
+						var cleaned = clean(d, year);
+						return cleaned; 
 					})
 					.filter(function(d){ return d; }); //filter out nulls
 			});
@@ -55,10 +56,13 @@ function updateData(pageURL){
 			},[]);
 
 			if( data.combinedData.length < backupData.combinedData.length ){ //if there's less data than there used to be there's probably been a chnage to the wikipedia page layout/ format
-                console.error('ERROR: data length less than failsafe ' + data.combinedData.length + ' ' + new Date()); //logentries pattern 'ERROR: data length less than failsafe'
-                data = backupData;
+                console.error('ERROR: data length less than failsafe ' + data.combinedData.length + ' ' + new Date()); //logentries pattern 'ERROR: data length less than failsafe'        
+                data.combinedData = backupData.combinedData;
+	            data.updated = backupData.updated;
+				data.smoothedData = smooth(data.combinedData);
             }else{
                 data.smoothedData = smooth(data.combinedData);
+                console.log('set backup data')
                 backupData = data;
             }
 			updated = new Date();
@@ -66,7 +70,7 @@ function updateData(pageURL){
 		})
 		.catch(function(reason){
 			console.error('ERROR: Failed to get ' + pageURL + ' - ' + reason + ' ' + new Date()); //logentries pattern 'ERROR: Failed to get'
-            data.combinedData = backupData.data;
+            data.combinedData = backupData.combinedData;
             data.updated = backupData.updated;
 			data.smoothedData = smooth(data.combinedData);
 		});
@@ -139,7 +143,7 @@ function calculateMeans(data, date){
 	//get rid of percentage signs and commas
 
 function clean(datum, year){ //need to pass in the year as this isn't always in the date :()
-	//if there's no remain % then return null
+	
 
 	let remain = 'Remain';
 	let leave = 'Leave';
@@ -151,7 +155,7 @@ function clean(datum, year){ //need to pass in the year as this isn't always in 
 	if(!datum[pollster]) pollster = 'Held by';
 
 
-	if(datum[remain].indexOf('%') < 0) return null;
+	if(datum[remain].indexOf('%') < 0) return null; //if there's no remain % then return null
 
 	let longMonths = [ 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december' ];
 	let shortMonths = [ 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec' ];
@@ -199,6 +203,7 @@ function clean(datum, year){ //need to pass in the year as this isn't always in 
     if(endDate){
         canonicalDate = endDate;
     }
+
 	return {
         'date':canonicalDate,
 		'startDate':startDate,
