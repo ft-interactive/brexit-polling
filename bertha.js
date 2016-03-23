@@ -19,7 +19,7 @@ function updateData(){
 		if (!error && response.statusCode == 200) {
 			let newData = JSON.parse(body).data;
 			if(newData.length >= data.combinedData.length){
-				data.combinedData = newData.map(fixDates);
+				data.combinedData = newData.map(fixDates).filter(function(d){ return ( d.undecided!==null )});
 				data.updated = new Date();
 				data.smoothedData = smooth(data.combinedData);			
 			}
