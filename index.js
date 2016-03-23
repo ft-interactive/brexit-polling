@@ -1,7 +1,6 @@
 'use strict';
 
 const express = require('express'),
-	scraper = require('./scraper.js'),
     bertha = require('./bertha.js'),
     externalContent = require('./external-content.js'),
 	layout = require('./layouts/index.js'),
@@ -13,7 +12,6 @@ const express = require('express'),
     colours = require('./layouts/colours.js'),
     request = require('request');
 
-const wikipediaPage = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum';
 const storyPage = 'https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json';
 const maxAge = 120; // for user agent caching purposes
 let data = [];
@@ -21,7 +19,7 @@ let story = '';
 
 const cache = lru({
     max: 500,
-    maxAge: 1000*10 // 60 seconds
+    maxAge: 1*10 // 60 seconds
 });
 
 const app = express();
@@ -89,8 +87,8 @@ app.get('/', function(req, res){
             title: 'EU referendum poll of polls',
             headline: 'Brexit poll tracker',
             data: data.combinedData.reverse(),
-            updated: scraper.updated(),
-            source: wikipediaPage,
+            updated: bertha.updated(),
+            source: 'FT Research',
             remain:{ label:'Stay', tint:colours.remainTint },
             leave:{ label:'Leave', tint:colours.leaveTint  },
             undecided:{ label:'Undecided' },
@@ -101,7 +99,7 @@ app.get('/', function(req, res){
         if(!d.nocache){
             cache.set(req.path, value)
         }else{
-            scraper.invalidate();
+            bertha.invalidate();
         }
         checkData();
     }
@@ -120,11 +118,12 @@ app.get('/card',function(req, res){
 app.get('/data.json', function (req, res) {
     let value = cache.get(req.path);
     if (!value){
-        value = {
-            data: data.combinedData,
-            updated: scraper.updated(),
-            source: wikipediaPage
-        }
+        value = data;
+        // value = {
+        //     data: data.combinedData,
+        //     updated: bertha.updated(),
+        //     source: 'FT research'
+        // };
         cache.set(req.path, value);
         checkData();
     }
@@ -138,8 +137,8 @@ app.get('/data.html', function (req, res) {
     if(!value){
         value = nunjucks.render( 'data.html' , {
             data: data.combinedData,
-            updated: scraper.updated(),
-            source: wikipediaPage
+            updated: bertha.updated(),
+            source: 'FT Research'
         });
         cache.set(req.path, value);
         checkData();
@@ -195,7 +194,7 @@ app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
         if(!d.nocache){
             cache.set(req.path, value);
         }else{
-            scraper.invalidate();
+            bertha.invalidate();
         }
         checkData();
     }
@@ -211,7 +210,7 @@ app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
         if(!d.nocache){
             cache.set(req.path, value);
         }else{
-            scraper.invalidate();
+            bertha.invalidate();
         }
         checkData();
     }
@@ -227,7 +226,7 @@ app.get('/poll-of-polls/fontless/:width-x-:height.svg',function(req, res){
         if(!d.nocache){
             cache.set(req.path, value);
         }else{
-            scraper.invalidate();
+            bertha.invalidate();
         }
         checkData();
     }
@@ -369,10 +368,8 @@ function getDataByID(id){
 
 function checkData(){   //for getting the latest data 
     let now = new Date();
-    //console.log('B-- ' +  bertha.updateData());
-    if(now.getTime() - scraper.updated().getTime() >= 60000){
-        data = scraper.updateData(wikipediaPage);
-        
+    if(now.getTime() - bertha.updated().getTime() >= 60000){
+        data = bertha.updateData();
     }
     if(now.getTime() - externalContent.updated().getTime() >= 60000){
         story = externalContent.updateData(storyPage);

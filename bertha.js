@@ -1,47 +1,41 @@
 'use strict';
 const	request = require('request');
-const	cheerio = require('cheerio');
-const	csv = require('d3-dsv').csv;
 const   failsafe = require('./failsafe.js');
-const	d3Array = require('d3-array');
+const   smooth = require('./smooth.js');
 
 let updated = new Date(2015,0,1);
 
 const berthaURL = 'http://bertha.ig.ft.com/republish/publish/ig/1-6KQk69BMeQP5MdjsrsbCrugWcDVZ-2mFKtpdr9-Riw/basic';
 
+failsafe.combinedData = failsafe.combinedData.map(fixDates)
+var data = failsafe;
 
-let data = {};
+updateData();
 
 function updateData(){
 	console.log('updating...', berthaURL);
 
-	getPage(berthaURL)
-		.then(function(page){
-			var newData = JSON.parse(page).data;
+	request(berthaURL, function (error, response, body) {
+		if (!error && response.statusCode == 200) {
+			let newData = JSON.parse(body).data;
 			if(newData.length >= data.combinedData.length){
-				data.combinedData = JSON.parse(page).data;
+				data.combinedData = newData.map(fixDates);
 				data.updated = new Date();
-				data.smoothedData = smooth(data.combinedData);				
+				data.smoothedData = smooth(data.combinedData);			
 			}
-		})
-		.catch(function(reason){
+		}else{
 			console.error('ERROR: Failed to get ' + pageURL + ' - ' + reason + ' ' + new Date()); //logentries pattern 'ERROR: Failed to get'    
-		});
+		}
+	});
 
 	return data;
 }
 
-function getPage(url) {
-	return new Promise(
-		function (resolve, reject) {
-			request(url, function (error, response, body) {
-				if (!error && response.statusCode == 200) {
-					resolve( body );
-				}else{
-					reject(' REJECTED ' + error);
-				}
-			})
-		});
+function fixDates(d){
+	d.date = new Date(d.date);
+	d.startdate = new Date(d.startdate);
+	d.enddate = new Date(d.enddate);
+	return d;
 }
 
 module.exports = {
