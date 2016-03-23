@@ -2,6 +2,7 @@
 
 const express = require('express'),
 	scraper = require('./scraper.js'),
+    bertha = require('./bertha.js'),
     externalContent = require('./external-content.js'),
 	layout = require('./layouts/index.js'),
 	nunjucks = require('nunjucks'),
@@ -368,8 +369,10 @@ function getDataByID(id){
 
 function checkData(){   //for getting the latest data 
     let now = new Date();
+    //console.log('B-- ' +  bertha.updateData());
     if(now.getTime() - scraper.updated().getTime() >= 60000){
         data = scraper.updateData(wikipediaPage);
+        
     }
     if(now.getTime() - externalContent.updated().getTime() >= 60000){
         story = externalContent.updateData(storyPage);
