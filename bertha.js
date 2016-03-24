@@ -7,7 +7,7 @@ let updated = new Date(2015,0,1);
 
 const berthaURL = 'http://bertha.ig.ft.com/republish/publish/ig/1-6KQk69BMeQP5MdjsrsbCrugWcDVZ-2mFKtpdr9-Riw/basic';
 
-failsafe.combinedData = failsafe.combinedData.map(fixDates)
+failsafe.combinedData = failsafe.combinedData.map(fixDates);
 var data = failsafe;
 
 updateData();

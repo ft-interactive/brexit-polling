@@ -32,7 +32,7 @@ nunjucks.configure('views', {
 .addFilter('isoShortFormat',isoShortFormat)
 .addFilter('ftDateFormat',ftDateFormat)
 .addFilter('replaceNaN', function(n){
-    if(n=='NaN' || isNaN(n)){
+    if(n=='NaN' || n==null || isNaN(n)){
         return '-';
     }
     return n;
@@ -70,6 +70,7 @@ app.get('/__gtg', function(req, res){
 
 app.get('/', function(req, res){
     let value = cache.get(req.path);
+    console.log(data.length);
     if(!value){
         let latest = story.data;
         let d = latestPollOfPollsData();

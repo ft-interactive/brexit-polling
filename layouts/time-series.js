@@ -20,10 +20,8 @@ function simpleTimeSeries(width, height, dateDomain, data, titleOverride, metric
 		right:100
 	};
 
-
 	//sort data oldest to newest
 	let rawData = data.combinedData.sort(function(a,b){
-        console.log(a);
 		return a.date.getTime() - b.date.getTime();
 	}).filter(function(d){
         return (d.undecided);
