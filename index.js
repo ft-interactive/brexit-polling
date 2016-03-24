@@ -2,6 +2,7 @@
 
 const express = require('express'),
     bertha = require('./bertha.js'),
+    //bertha = require('./scraper.js'),
     externalContent = require('./external-content.js'),
 	layout = require('./layouts/index.js'),
 	nunjucks = require('nunjucks'),
@@ -16,6 +17,7 @@ const storyPage = 'https://ft-ig-brexit-stream-content.herokuapp.com/metacard/da
 const maxAge = 120; // for user agent caching purposes
 let data = [];
 let story = '';
+
 
 const cache = lru({
     max: 500,
