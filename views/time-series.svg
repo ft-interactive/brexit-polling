@@ -21,10 +21,14 @@
 
 <g transform="translate(0,{{height - 5}})">
     <g transform="translate(10, 0)">
-        <circle fill="#000" cx="6" cy="-6" r="3" fill-opacity="0.5"></circle>
-        <text font-family="MetricWeb" transform="translate(16,0)">Individual poll</text>
+        <circle fill="#000" cx="6" cy="-6" r="4" fill-opacity="0.25"></circle>
+        <text font-family="MetricWeb" transform="translate(16,0)">Online poll</text>
     </g>
-    <g transform="translate(135, 0)">
+    <g transform="translate(115, 0)">
+        <circle fill="#000" cx="6" cy="-6" r="3" fill-opacity="0.1" stroke="#74736c"></circle>
+        <text font-family="MetricWeb" transform="translate(16,0)">Telephone poll</text>
+    </g>
+    <g transform="translate(245, 0)">
          <line stroke="#FFF" stroke-width="4" x1="0" y1="-6" x2="12" y2="-6">
         </line>
         <line stroke="#000" stroke-width="2" stroke-opacity="0.5" x1="0" y1="-6" x2="12" y2="-6">
@@ -89,9 +93,9 @@
     
 <g class="polls" transform="translate({{margin.left}},{{margin.top}})">
 {% for poll in data %}
-    <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" r="{{pollStyle.radius}}" fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
-    <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" r="{{pollStyle.radius}}" fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
-    <circle cx="{{poll.x}}" cy="{{poll.y.undecided}}" r="{{pollStyle.radius}}" fill="{{pollStyle.undecidedFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+    <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" {% if poll.data.method == 'Telephone Interviews' %} r="{{pollStyle.radius}}" stroke="#74736c" {% else %} r="{{pollStyle.radius+1}}" {% endif %} fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+    <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" {% if poll.data.method == 'Telephone Interviews' %} r="{{pollStyle.radius}}" stroke="#74736c" {% else %} r="{{pollStyle.radius+1}}" {% endif %} fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+    <circle cx="{{poll.x}}" cy="{{poll.y.undecided}}" {% if poll.data.method == 'Telephone Interviews' %} r="{{pollStyle.radius}}" stroke="#74736c" {% else %} r="{{pollStyle.radius+1}}" {% endif %} fill="{{pollStyle.undecidedFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
 {% endfor %}
 </g>
 
