@@ -77,8 +77,8 @@ app.get('/', function(req, res){
         let latest = story.data;
         let d = latestPollOfPollsData();
         let endDate = new Date();
-        let startDate = new Date();
-        startDate.setYear( endDate.getFullYear()-1);
+        let startDate = new Date(2015,8,1);
+        // startDate.setYear( endDate.getFullYear()-1);
         let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement over the past year', false);
         if(timeSeriesLayout.error){
             console.log(timeSeriesLayout.error, startDate, endDate);
