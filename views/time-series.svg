@@ -93,9 +93,9 @@
     
 <g class="polls" transform="translate({{margin.left}},{{margin.top}})">
 {% for poll in data %}
-        <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" {% if poll.data.method == 'Telephone Interviews' %} r="{{pollStyle.radius}}" {% else %} r="{{pollStyle.radius+1}}" {% endif %} fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}" {% if poll.data.method == 'Telephone Interviews' %} stroke="#74736c" {% endif %}></circle>
-        <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" {% if poll.data.method == 'Telephone Interviews' %} r="{{pollStyle.radius}}" {% else %} r="{{pollStyle.radius+1}}" {% endif %} fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}" {% if poll.data.method == 'Telephone Interviews' %} stroke="#74736c" {% endif %}></circle>
-        <circle cx="{{poll.x}}" cy="{{poll.y.undecided}}" {% if poll.data.method == 'Telephone Interviews' %} r="{{pollStyle.radius}}" {% else %} r="{{pollStyle.radius+1}}" {% endif %} fill="{{pollStyle.undecidedFill}}" fill-opacity="{{pollStyle.fillOpacity}}" {% if poll.data.method == 'Telephone Interviews' %} stroke="#74736c" {% endif %}></circle>
+    <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" {% if poll.data.method == 'Telephone Interviews' %} r="{{pollStyle.radius}}" stroke="#74736c" {% else %} r="{{pollStyle.radius+1}}" {% endif %} fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+    <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" {% if poll.data.method == 'Telephone Interviews' %} r="{{pollStyle.radius}}" stroke="#74736c" {% else %} r="{{pollStyle.radius+1}}" {% endif %} fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+    <circle cx="{{poll.x}}" cy="{{poll.y.undecided}}" {% if poll.data.method == 'Telephone Interviews' %} r="{{pollStyle.radius}}" stroke="#74736c" {% else %} r="{{pollStyle.radius+1}}" {% endif %} fill="{{pollStyle.undecidedFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
 {% endfor %}
 </g>
 
