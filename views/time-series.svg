@@ -21,7 +21,7 @@
 
 <g transform="translate(0,{{height - 5}})">
     <g transform="translate(10, 0)">
-        <circle fill="#000" cx="6" cy="-6" r="3" fill-opacity="0.25"></circle>
+        <circle fill="#000" cx="6" cy="-6" r="4" fill-opacity="0.25"></circle>
         <text font-family="MetricWeb" transform="translate(16,0)">Online poll</text>
     </g>
     <g transform="translate(115, 0)">
@@ -93,19 +93,9 @@
     
 <g class="polls" transform="translate({{margin.left}},{{margin.top}})">
 {% for poll in data %}
-    {% if poll.data.method == 'Telephone Interviews' %}
-        <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" r="{{pollStyle.radius}}" fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}" stroke="#74736c"></circle>
-        <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" r="{{pollStyle.radius}}" fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}" stroke="#74736c"></circle>
-        <circle cx="{{poll.x}}" cy="{{poll.y.undecided}}" r="{{pollStyle.radius}}" fill="{{pollStyle.undecidedFill}}" fill-opacity="{{pollStyle.fillOpacity}}" stroke="#74736c"></circle>
-    {% elif poll.data.method == 'Online' %}
-        <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" r="{{pollStyle.radius}}" fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
-        <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" r="{{pollStyle.radius}}" fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
-        <circle cx="{{poll.x}}" cy="{{poll.y.undecided}}" r="{{pollStyle.radius}}" fill="{{pollStyle.undecidedFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
-    {% else %}
-        <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" r="{{pollStyle.radius}}" fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
-        <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" r="{{pollStyle.radius}}" fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
-        <circle cx="{{poll.x}}" cy="{{poll.y.undecided}}" r="{{pollStyle.radius}}" fill="{{pollStyle.undecidedFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
-    {% endif %}
+        <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" {% if poll.data.method == 'Telephone Interviews' %} r="{{pollStyle.radius}}" {% else %} r="{{pollStyle.radius+1}}" {% endif %} fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}" {% if poll.data.method == 'Telephone Interviews' %} stroke="#74736c" {% endif %}></circle>
+        <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" {% if poll.data.method == 'Telephone Interviews' %} r="{{pollStyle.radius}}" {% else %} r="{{pollStyle.radius+1}}" {% endif %} fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}" {% if poll.data.method == 'Telephone Interviews' %} stroke="#74736c" {% endif %}></circle>
+        <circle cx="{{poll.x}}" cy="{{poll.y.undecided}}" {% if poll.data.method == 'Telephone Interviews' %} r="{{pollStyle.radius}}" {% else %} r="{{pollStyle.radius+1}}" {% endif %} fill="{{pollStyle.undecidedFill}}" fill-opacity="{{pollStyle.fillOpacity}}" {% if poll.data.method == 'Telephone Interviews' %} stroke="#74736c" {% endif %}></circle>
 {% endfor %}
 </g>
 

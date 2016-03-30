@@ -3,10 +3,6 @@ const	d3Array = require('d3-array');
 
 
 function calculateMeans(data, date){
-	// data.forEach(function(d,i){
-	// 	d.daysSince = Math.round((new Date - d.date)/(1000*60*60*24));
-	// 	d.weight = 100*Math.pow((1-0.1423041),d.daysSince);
-	// })
 	data = data.sort(function(a,b){return b.remain - a.remain});
 	data = data.slice(Math.min(1,data.length-1),Math.min(6,data.length));
 	data = data.sort(function(a,b){return b.date - a.date});
@@ -17,15 +13,6 @@ function calculateMeans(data, date){
 		d.leaveW = d.leave*d.weight;
 		d.undecidedW = d.undecided*d.weight;
 	});
-	// console.log(d3Array.sum(data, (d) => d.remainW) / d3Array.sum(data, (d) => d.weight));
-	// return{
-	// 	remain: Math.round( d3Array.mean(data, (d) => d.remain ) ),
-	// 	leave: Math.round( d3Array.mean(data, (d) => d.leave ) ),
-	// 	undecided: Math.round( d3Array.mean(data, (d) => d.undecided ) ),
-	// 	date: date,
-	// 	method: data[0].method,
-	//     pollOfPolls: true
-	// }
 	return{
 		remain: Math.round( d3Array.sum(data, (d) => d.remainW) / d3Array.sum(data, (d) => d.weight) ),
 		leave: Math.round( d3Array.sum(data, (d) => d.leaveW) / d3Array.sum(data, (d) => d.weight) ),
@@ -53,6 +40,7 @@ module.exports  = function (data){
 	});
 	
 	let smoothedData = []; 
+	// Doing data.length-1 because otherwise when we top-and-tail the polls in the smoothing function, we have an empty array for the oldest poll, which then borks things in the decay/weighting step
 	for(let i=0; i < data.length-1; i++){
 		let end = data.slice(i, data.length-1);
 		let basket = {};
