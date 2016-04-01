@@ -255,6 +255,14 @@ app.get('/polls/filtered/:filteredby/:startdate,:enddate/:width-x-:height-:backg
         let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
 
         //do something with data based on req.params.filteredby
+        if(req.params.filteredby == 'online'){
+            var filtered = data.combinedData.filter( // function(d){} //  )
+            var newData = {
+                combinedData: filtered,
+                smoothedData: smooth(filtered),
+                updated: data.updated
+            }
+        }
 
         let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, true);
         chartLayout.background = '#' + req.params.background;
