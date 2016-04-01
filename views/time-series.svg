@@ -20,6 +20,7 @@
 </g>
 
 <g transform="translate(0,{{height - 5}})">
+    {% if differentiateOnline %}
     <g transform="translate(10, 0)">
         <circle fill="#000" cx="6" cy="-6" r="4" fill-opacity="0.25"></circle>
         <text font-family="MetricWeb" transform="translate(16,0)">Online poll</text>
@@ -35,6 +36,19 @@
         </line>
         <text font-family="MetricWeb" transform="translate(16, 0)">Rolling average</text>
     </g>
+    {% else %}
+    <g transform="translate(10, 0)">
+        <circle fill="#000" cx="6" cy="-6" r="4" fill-opacity="0.25"></circle>
+        <text font-family="MetricWeb" transform="translate(16,0)">Individual poll</text>
+    </g>
+    <g transform="translate(135, 0)">
+         <line stroke="#FFF" stroke-width="4" x1="0" y1="-6" x2="12" y2="-6">
+        </line>
+        <line stroke="#000" stroke-width="2" stroke-opacity="0.5" x1="0" y1="-6" x2="12" y2="-6">
+        </line>
+        <text font-family="MetricWeb" transform="translate(16, 0)">Rolling average</text>
+    </g>
+    {% endif %}
 </g>
     
 <g class="x axis" font-family="MetricWeb" transform="translate({{margin.left}},{{height-margin.bottom}})">
@@ -93,9 +107,21 @@
     
 <g class="polls" transform="translate({{margin.left}},{{margin.top}})">
 {% for poll in data %}
-    <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" {% if poll.data.method == 'Telephone Interviews' %} r="{{pollStyle.radius}}" stroke="#74736c" {% else %} r="{{pollStyle.radius+1}}" {% endif %} fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
-    <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" {% if poll.data.method == 'Telephone Interviews' %} r="{{pollStyle.radius}}" stroke="#74736c" {% else %} r="{{pollStyle.radius+1}}" {% endif %} fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
-    <circle cx="{{poll.x}}" cy="{{poll.y.undecided}}" {% if poll.data.method == 'Telephone Interviews' %} r="{{pollStyle.radius}}" stroke="#74736c" {% else %} r="{{pollStyle.radius+1}}" {% endif %} fill="{{pollStyle.undecidedFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+    {% if differentiateOnline %}
+        {% if poll.data.method == 'Telephone Interviews' %}
+            <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" r="{{pollStyle.radius}}" stroke="#74736c" fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+            <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" r="{{pollStyle.radius}}" stroke="#74736c" fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+            <circle cx="{{poll.x}}" cy="{{poll.y.undecided}}" r="{{pollStyle.radius}}" stroke="#74736c" fill="{{pollStyle.undecidedFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+        {% elif poll.data.method == 'Online' %}
+            <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" r="{{pollStyle.radius + 1}}" stroke="none" fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+            <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" r="{{pollStyle.radius + 1}}" stroke="none" fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+            <circle cx="{{poll.x}}" cy="{{poll.y.undecided}}" r="{{pollStyle.radius + 1}}" stroke="none" fill="{{pollStyle.undecidedFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+        {% endif %}
+    {% else %}
+        <circle cx="{{poll.x}}" cy="{{poll.y.remain}}" r="{{pollStyle.radius}}" stroke="none" fill="{{pollStyle.remainFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+        <circle cx="{{poll.x}}" cy="{{poll.y.leave}}" r="{{pollStyle.radius}}" stroke="none" fill="{{pollStyle.leaveFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+        <circle cx="{{poll.x}}" cy="{{poll.y.undecided}}" r="{{pollStyle.radius}}" stroke="none" fill="{{pollStyle.undecidedFill}}" fill-opacity="{{pollStyle.fillOpacity}}"></circle>
+    {% endif %}
 {% endfor %}
 </g>
 

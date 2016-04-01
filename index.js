@@ -21,7 +21,7 @@ let story = '';
 
 const cache = lru({
     max: 500,
-    maxAge: 6*1000 // 60 seconds
+    maxAge: 60*1000 // 60 seconds
 });
 
 const app = express();
@@ -80,6 +80,8 @@ app.get('/', function(req, res){
         let startDate = new Date(2015,8,1);
         // startDate.setYear( endDate.getFullYear()-1);
         let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement since September 2015', false);
+        timeSeriesLayout.differentiateOnline = true;
+
         if(timeSeriesLayout.error){
             console.log(timeSeriesLayout.error, startDate, endDate);
             d.nocache = true;
@@ -96,7 +98,7 @@ app.get('/', function(req, res){
             leave:{ label:'Leave', tint:colours.leaveTint  },
             undecided:{ label:'Undecided' },
             timeChart:nunjucks.render( 'time-series.svg',  timeSeriesLayout),
-            singleChart:nunjucks.render( 'single-poll.svg' ,  pollLayout),
+            singleChart:nunjucks.render( 'single-poll.svg',  pollLayout),
             latest:latest
         });
         if(!d.nocache){
