@@ -124,11 +124,6 @@ app.get('/data.json', function (req, res) {
     let value = cache.get(req.path);
     if (!value){
         value = data;
-        // value = {
-        //     data: data.combinedData,
-        //     updated: bertha.updated(),
-        //     source: 'FT research'
-        // };
         cache.set(req.path, value);
         checkData();
     }
@@ -251,6 +246,24 @@ app.get('/polls/:startdate,:enddate/:width-x-:height-:background.svg', function 
     }
     setSVGHeaders(res).send(value);
 });
+
+//eg. /polls/filtered/online/year,now/600-x-400-fff.svg
+
+app.get('/polls/filtered/:filteredby/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
+    let value = cache.get(req.path);
+    if(!value){        
+        let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
+
+        //do something with data based on req.params.filteredby
+
+        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, true);
+        chartLayout.background = '#' + req.params.background;
+        value = nunjucks.render( 'time-series.svg' , chartLayout );
+        checkData();
+    }
+    setSVGHeaders(res).send(value);
+});
+
 
 app.get('/polls/fontless/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
     let value = cache.get(req.path);
