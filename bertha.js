@@ -24,6 +24,7 @@ function updateData(){
 		
 		if (response.statusCode >= 400) {
 			console.error('ERROR: Failed to get ' + berthaURL + 'status=' + response.statusCode);
+			return;
 		}
 
 		if (response.statusCode === 200) {
