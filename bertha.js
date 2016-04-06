@@ -16,15 +16,25 @@ function updateData(){
 	console.log('updating...', berthaURL);
 
 	request(berthaURL, function (error, response, body) {
-		if (!error && response.statusCode == 200) {
+		
+		if (error) {
+			console.error('ERROR: ' + error.message);
+			return;
+		}
+		
+		if (response.statusCode >= 400) {
+			console.error('ERROR: Failed to get ' + berthaURL + 'status=' + response.statusCode);
+		}
+
+		if (response.statusCode === 200) {
 			let newData = JSON.parse(body).data;
 			if(newData.length >= data.combinedData.length){
 				data.combinedData = newData.map(fixDates).filter(function(d){ return ( d.undecided!==null )});
 				data.updated = new Date();
 				data.smoothedData = smooth(data.combinedData);			
 			}
-		}else{
-			console.error('ERROR: Failed to get ' + pageURL + ' - ' + reason + ' ' + new Date()); //logentries pattern 'ERROR: Failed to get'    
+		} else {
+			console.error('ERROR: Failed to get ' + berthaURL + ' reason=unknown status=' + response.statusCode);
 		}
 	});
 
