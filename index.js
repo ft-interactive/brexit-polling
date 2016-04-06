@@ -13,7 +13,7 @@ const express = require('express'),
     colours = require('./layouts/colours.js'),
     request = require('request');
 
-const storyPage = 'https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json';
+const storyPage = 'https://ft-ig-stream-content.herokuapp.com/metacard/data.json';
 const maxAge = 120; // for user agent caching purposes
 let data = [];
 let story = '';
