@@ -75,7 +75,7 @@ app.get('/', function(req, res){
     console.log(data.length);
     if(!value){
         let latest = story.data;
-        let d = latestPollOfPollsData();
+        let d = pollOfPolls();
         let endDate = new Date();
         let startDate = new Date(2015,8,1);
         // startDate.setYear( endDate.getFullYear()-1);
@@ -192,7 +192,7 @@ app.get('/poll/fontless/:id/:width-x-:height.svg', function (req, res) {
 app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
-        let d = latestPollOfPollsData();
+        let d = pollOfPolls();
         let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, true);
         chartLayout.background = '#' + req.params.background;
         value = nunjucks.render( 'single-poll.svg', chartLayout );
@@ -209,7 +209,24 @@ app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
 app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
-        let d = latestPollOfPollsData();
+        let d = pollOfPolls();
+        let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, true);
+        value = nunjucks.render( 'single-poll.svg', chartLayout );
+        if(!d.nocache){
+            cache.set(req.path, value);
+        }else{
+            bertha.invalidate();
+        }
+        checkData();
+    }
+    setSVGHeaders(res).send(value);
+});
+
+app.get('/poll-of-polls/:date/:width-x-:height.svg',function(req, res){
+    console.log('poll of polls by date');
+    let value = cache.get(req.path);
+    if(!value){
+        let d = pollOfPolls( req.params.date );
         let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, true);
         value = nunjucks.render( 'single-poll.svg', chartLayout );
         if(!d.nocache){
@@ -225,7 +242,7 @@ app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
 app.get('/poll-of-polls/fontless/:width-x-:height.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
-        let d = latestPollOfPollsData();
+        let d = pollOfPolls();
         let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, false);
         value = nunjucks.render( 'single-poll.svg', chartLayout );
         if(!d.nocache){
@@ -290,15 +307,19 @@ app.get('/polls/fontless/:startdate,:enddate/:width-x-:height.svg', function (re
 
 //utility functions
 
-function latestPollOfPollsData(){
-    let d = {};
-    if(Array.isArray(data.smoothedData)){
-        d = data.smoothedData[Math.max(data.smoothedData.length - 1, 0)];
-    }else{
-        console.log('smoothedData is not an array')
-        d.nocache = true;
-    }
-    return d;
+function pollOfPolls(date){
+        let d = {};
+        if(Array.isArray(data.smoothedData)){
+            d = data.smoothedData[Math.max(data.smoothedData.length - 1, 0)];
+            if(date){
+                let polls = data.smoothedData.filter(function(p){ return isoShortFormat(p.date) == date });
+                if(polls.length >=1) d = polls[0];
+            }
+        }else{
+            console.log('smoothedData is not an array')
+            d.nocache = true;
+        }
+        return d;
 }
 
 function setSVGHeaders(res){
