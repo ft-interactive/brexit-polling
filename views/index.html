@@ -88,13 +88,14 @@ body {
 .article__headline{
     font-size:2.5em;
     max-width:600px;
-    margin-left:auto;
-    margin-right:auto;
+    margin-top: 0;
+    margin-bottom: 20px;
     /*margin:auto;*/
 }
 
 .article__headline,
 .article__crosshead {
+    text-align: left;
     font-weight:500;
     color:#43423e;
     font-family: "FinancierDisplayWeb",serif;
@@ -113,6 +114,7 @@ body {
     text-align:center;
     padding-left:20px;
     padding-right:20px;
+    padding-top: 20px;
 }
 
 .article p {
@@ -216,6 +218,25 @@ p.off-link a:after {
     margin: 6px 7px 8px 0;
 }
 
+.stand-first{
+  font-family: MetricWeb,sans-serif;
+  font-size: 20px;
+  margin-bottom: 40px;
+}
+
+.section-link{
+  color: #9e2f50;
+  font-family: MetricWeb,sans-serif;
+  font-size: 20px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom-color: transparent;
+  text-decoration: none;
+  font-style: normal;
+  display:block;
+  width:100%; 
+}
+
 @media (max-width: 600px) {
   .secondary {
     display: none;
@@ -261,8 +282,9 @@ p.off-link a:after {
     </header>
 
     <main class="article" role="main">
+          <a href="//www.ft.com/eu-referendum" class="section-link">UK's EU referendum</a>
         <h1 class="article__headline">{{ headline }}</h1>
-        <div class="intro">
+        <div class="stand-first">
           <p>The UK will hold a referendum on June 23 to decide if it will stay in or leave the European Union. This page summarises the opinion polling on the matter.</p>
         </div>
         
