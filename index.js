@@ -2,7 +2,7 @@
 
 const express = require('express'),
     bertha = require('./bertha.js'),
-    //bertha = require('./scraper.js'),
+    moreStories = require('./more-stories.js'),
     externalContent = require('./external-content.js'),
 	layout = require('./layouts/index.js'),
 	nunjucks = require('nunjucks'),
@@ -17,7 +17,7 @@ const storyPage = 'https://ft-ig-stream-content.herokuapp.com/metacard/data.json
 const maxAge = 120; // for user agent caching purposes
 let data = [];
 let story = '';
-
+let storyList;
 
 const cache = lru({
     max: 500,
@@ -87,6 +87,7 @@ app.get('/', function(req, res){
             d.nocache = true;
         }
         let pollLayout = layout.singlePoll(600, 75, d, false);
+        console.log('list', storyList);
 
         value = nunjucks.render( 'index.html' , {
             title: 'EU referendum poll of polls',
@@ -98,8 +99,9 @@ app.get('/', function(req, res){
             leave:{ label:'Leave', tint:colours.leaveTint  },
             undecided:{ label:'Undecided' },
             timeChart:nunjucks.render( 'time-series.svg',  timeSeriesLayout),
-            singleChart:nunjucks.render( 'single-poll.svg',  pollLayout),
-            latest:latest
+            singleChart: nunjucks.render( 'single-poll.svg',  pollLayout),
+            storyList: nunjucks.render( 'story-list.html', storyList ),
+            latest: latest
         });
         if(!d.nocache){
             cache.set(req.path, value)
@@ -399,6 +401,10 @@ function checkData(){   //for getting the latest data
     }
     if(now.getTime() - externalContent.updated().getTime() >= 60000){
         story = externalContent.updateData(storyPage);
+    }
+    if(now.getTime() - moreStories.updated().getTime() >= 100 || storyList.length == 0){
+        storyList = moreStories.updateData();
+        console.log("updated story list" , storyList);
     }
 }
 
