@@ -17,7 +17,6 @@ const storyPage = 'https://ft-ig-stream-content.herokuapp.com/metacard/data.json
 const maxAge = 120; // for user agent caching purposes
 let data = [];
 let story = '';
-let storyList;
 
 const cache = lru({
     max: 500,
@@ -72,7 +71,6 @@ app.get('/__gtg', function(req, res){
 
 app.get('/', function(req, res){
     let value = cache.get(req.path);
-    console.log(data.length);
     if(!value){
         let latest = story.data;
         let d = pollOfPolls();
@@ -87,7 +85,6 @@ app.get('/', function(req, res){
             d.nocache = true;
         }
         let pollLayout = layout.singlePoll(600, 75, d, false);
-        console.log('list', storyList);
 
         value = nunjucks.render( 'index.html' , {
             title: 'EU referendum poll of polls',
@@ -100,7 +97,7 @@ app.get('/', function(req, res){
             undecided:{ label:'Undecided' },
             timeChart:nunjucks.render( 'time-series.svg',  timeSeriesLayout),
             singleChart: nunjucks.render( 'single-poll.svg',  pollLayout),
-            storyList: nunjucks.render( 'story-list.html', storyList ),
+            storyList: nunjucks.render( 'story-list.html', { stories:moreStories.getData() } ),
             latest: latest
         });
         if(!d.nocache){
@@ -225,7 +222,6 @@ app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
 });
 
 app.get('/poll-of-polls/:date/:width-x-:height.svg',function(req, res){
-    console.log('poll of polls by date');
     let value = cache.get(req.path);
     if(!value){
         let d = pollOfPolls( req.params.date );
@@ -402,9 +398,8 @@ function checkData(){   //for getting the latest data
     if(now.getTime() - externalContent.updated().getTime() >= 60000){
         story = externalContent.updateData(storyPage);
     }
-    if(now.getTime() - moreStories.updated().getTime() >= 100 || storyList.length == 0){
-        storyList = moreStories.updateData();
-        console.log("updated story list" , storyList);
+    if(now.getTime() - moreStories.updated().getTime() >= 60000 || moreStories.getData().length == 0){
+        moreStories.updateData();
     }
 }
 
