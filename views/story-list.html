@@ -1,0 +1,12 @@
+<h2 class="article__crosshead-alt">More coverage</h2>
+<div class="stories__container o-grid-row">
+{% for story in  stories %}
+<div class="stories__story" data-o-grid-colspan="12 M4">
+	<div class="stories__story--container">
+	    <a href="{{story.link}}"><div class="stories__story--headline">{{story.headline}}</div>
+	    <div class="stories__story--image"><img class="stories__story--image" src="{{story.image}}" alt=""></div></a>
+	    <div class="stories__story--blurb">{{story.blurb}}</div>
+    </div>
+</div>
+{% endfor %}
+</div>
