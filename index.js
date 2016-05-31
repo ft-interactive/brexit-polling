@@ -2,7 +2,7 @@
 
 const express = require('express'),
     bertha = require('./bertha.js'),
-    //bertha = require('./scraper.js'),
+    moreStories = require('./more-stories.js'),
     externalContent = require('./external-content.js'),
 	layout = require('./layouts/index.js'),
 	nunjucks = require('nunjucks'),
@@ -13,11 +13,10 @@ const express = require('express'),
     colours = require('./layouts/colours.js'),
     request = require('request');
 
-const storyPage = 'https://ft-ig-brexit-stream-content.herokuapp.com/metacard/data.json';
+const storyPage = 'https://ft-ig-stream-content.herokuapp.com/metacard/data.json';
 const maxAge = 120; // for user agent caching purposes
 let data = [];
 let story = '';
-
 
 const cache = lru({
     max: 500,
@@ -72,10 +71,9 @@ app.get('/__gtg', function(req, res){
 
 app.get('/', function(req, res){
     let value = cache.get(req.path);
-    console.log(data.length);
     if(!value){
         let latest = story.data;
-        let d = latestPollOfPollsData();
+        let d = pollOfPolls();
         let endDate = new Date();
         let startDate = new Date(2015,8,1);
         // startDate.setYear( endDate.getFullYear()-1);
@@ -98,8 +96,9 @@ app.get('/', function(req, res){
             leave:{ label:'Leave', tint:colours.leaveTint  },
             undecided:{ label:'Undecided' },
             timeChart:nunjucks.render( 'time-series.svg',  timeSeriesLayout),
-            singleChart:nunjucks.render( 'single-poll.svg',  pollLayout),
-            latest:latest
+            singleChart: nunjucks.render( 'single-poll.svg',  pollLayout),
+            storyList: nunjucks.render( 'story-list.html', { stories:moreStories.getData() } ),
+            latest: latest
         });
         if(!d.nocache){
             cache.set(req.path, value)
@@ -192,7 +191,7 @@ app.get('/poll/fontless/:id/:width-x-:height.svg', function (req, res) {
 app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
-        let d = latestPollOfPollsData();
+        let d = pollOfPolls();
         let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, true);
         chartLayout.background = '#' + req.params.background;
         value = nunjucks.render( 'single-poll.svg', chartLayout );
@@ -209,7 +208,23 @@ app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
 app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
-        let d = latestPollOfPollsData();
+        let d = pollOfPolls();
+        let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, true);
+        value = nunjucks.render( 'single-poll.svg', chartLayout );
+        if(!d.nocache){
+            cache.set(req.path, value);
+        }else{
+            bertha.invalidate();
+        }
+        checkData();
+    }
+    setSVGHeaders(res).send(value);
+});
+
+app.get('/poll-of-polls/:date/:width-x-:height.svg',function(req, res){
+    let value = cache.get(req.path);
+    if(!value){
+        let d = pollOfPolls( req.params.date );
         let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, true);
         value = nunjucks.render( 'single-poll.svg', chartLayout );
         if(!d.nocache){
@@ -225,7 +240,7 @@ app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
 app.get('/poll-of-polls/fontless/:width-x-:height.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
-        let d = latestPollOfPollsData();
+        let d = pollOfPolls();
         let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, false);
         value = nunjucks.render( 'single-poll.svg', chartLayout );
         if(!d.nocache){
@@ -290,15 +305,19 @@ app.get('/polls/fontless/:startdate,:enddate/:width-x-:height.svg', function (re
 
 //utility functions
 
-function latestPollOfPollsData(){
-    let d = {};
-    if(Array.isArray(data.smoothedData)){
-        d = data.smoothedData[Math.max(data.smoothedData.length - 1, 0)];
-    }else{
-        console.log('smoothedData is not an array')
-        d.nocache = true;
-    }
-    return d;
+function pollOfPolls(date){
+        let d = {};
+        if(Array.isArray(data.smoothedData)){
+            d = data.smoothedData[Math.max(data.smoothedData.length - 1, 0)];
+            if(date){
+                let polls = data.smoothedData.filter(function(p){ return isoShortFormat(p.date) == date });
+                if(polls.length >=1) d = polls[0];
+            }
+        }else{
+            console.log('smoothedData is not an array')
+            d.nocache = true;
+        }
+        return d;
 }
 
 function setSVGHeaders(res){
@@ -378,6 +397,9 @@ function checkData(){   //for getting the latest data
     }
     if(now.getTime() - externalContent.updated().getTime() >= 60000){
         story = externalContent.updateData(storyPage);
+    }
+    if(now.getTime() - moreStories.updated().getTime() >= 60000 || moreStories.getData().length == 0){
+        moreStories.updateData();
     }
 }
 
