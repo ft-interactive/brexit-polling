@@ -45,7 +45,7 @@ module.exports  = function (data){
 		let end = data.slice(i, data.length-1);
 		let basket = {};
 		let inc = 0;
-		while(Object.keys(basket).length < 8 && inc < end.length){
+		while(Object.keys(basket).length < 7 && inc < end.length){
 			let pollster = end[inc].pollster;
 			if(Object.keys(basket).indexOf( pollster ) < 0){
 				basket[pollster] = end[inc];
