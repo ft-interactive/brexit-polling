@@ -13,8 +13,10 @@ const ftTruncatedDateFormat = d3TimeFormat.format('%e %b');
 
 function singlePollLayout(width, height, data, metricEmbed){
     let small = true;
-    if(height>=70) small = false;
-    
+	let narrow = true;
+    if(height >= 70) small = false;
+	if(width >= 300) narrow = false;
+		    
 	let margin = {
 			top:0,
 			left:0,
@@ -39,16 +41,25 @@ function singlePollLayout(width, height, data, metricEmbed){
 
 	let barHeight = 7;
 
-    let footer  = small ? '' : `${data.pollster}. ${ftTruncatedDateFormat(data.startDate)} - ${ftDateFormat(data.endDate)}. ${sampleString}`;
-
+    let footer = '';
+	data.date = new Date(data.date);
     if(data.pollOfPolls){
-        footer = 'FT poll of polls. ' + ftDateFormat(data.date);
-    }
+		console.log(data)
+        footer = small ? '' : 'FT poll of polls. ' + ftDateFormat(data.date);
+    }else{
+		footer = small ? '' : `${data.pollster}. ${ftDateFormat(data.date)}. ${sampleString}`;
+	}
 
     let plotHeight = height-(margin.top+margin.bottom);
     let plotWidth = width-(margin.left+margin.right);
     let labelBuffer = 130;
     
+	console.log(narrow);
+	let remainValuePosition = narrow ? 5 : Math.max( scale(data.remain), labelBuffer );
+	let leaveValuePosition = narrow ? width-5 : Math.min((plotWidth-scale(data.leave)), (plotWidth-labelBuffer));
+	let leaveValueAnchor = narrow ? 'end' : 'start';
+	let remainValueAnchor = narrow ? 'start' : 'end';
+	
 	let config = {
 		title:'',
         small:small,
@@ -77,7 +88,8 @@ function singlePollLayout(width, height, data, metricEmbed){
 			value:data.leave,
 			fill:colour.leave,
 			fontFill:colour.leaveDark,
-            labelPosition:Math.min((plotWidth-scale(data.leave)), (plotWidth-labelBuffer))
+            labelPosition:leaveValuePosition,
+			anchor:leaveValueAnchor,
 		},
 		remain:{
 			title:small ? 'Stay - ' + data.remain + '%' : 'Stay',
@@ -86,7 +98,8 @@ function singlePollLayout(width, height, data, metricEmbed){
 			value:data.remain,
 			fill:colour.remain,
 			fontFill:colour.remainDark,
-            labelPosition:Math.max( scale(data.remain), labelBuffer )
+            labelPosition:remainValuePosition,
+			anchor:remainValueAnchor,
 		},
 		undecided:{
 			title:small ? '' : '',
