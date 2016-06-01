@@ -206,7 +206,7 @@ app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
 });
 
 // poll of polls - multiple svgs in one response
-app.get('/poll-of-polls/multiple/:sizes.svg',function(req, res){
+app.get('/poll-of-polls/multiple/:sizes.html',function(req, res){
     let value = cache.get(req.path);
     if (!value) {
         const sizes = req.params.sizes.split('_').map(string => string.split('-x-'));
@@ -228,7 +228,7 @@ app.get('/poll-of-polls/multiple/:sizes.svg',function(req, res){
         checkData();
 
     }
-    setSVGHeaders(res).send(value);
+    setHTMLHeaders(res).send(value);
 });
 
 app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
