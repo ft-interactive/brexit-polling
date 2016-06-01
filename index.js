@@ -215,7 +215,6 @@ app.get('/poll-of-polls/multiple/:sizes.svg',function(req, res){
 
         value = '<div class="poll-of-polls-multiple">\n';
         for (const size of sizes) {
-
             const chartLayout = layout.singlePoll(size[0], size[1], d, false);
             value += nunjucks.render( 'single-poll.svg', chartLayout );
         }
