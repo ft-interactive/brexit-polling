@@ -1,7 +1,7 @@
 {
   "name": "ft-brexit-data",
   "engines": {
-    "node": "6"
+    "node": "5"
   },
   "version": "1.0.0",
   "description": "scrape brexit polls from wikipedia page then present it in some ways",
