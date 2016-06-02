@@ -205,6 +205,32 @@ app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
     setSVGHeaders(res).send(value);
 });
 
+// poll of polls - multiple svgs in one response
+app.get('/poll-of-polls/multiple/:sizes.html',function(req, res){
+    let value = cache.get(req.path);
+    if (!value) {
+        const sizes = req.params.sizes.split('_').map(string => string.split('-x-'));
+
+        const d = pollOfPolls();
+
+        value = '<div class="poll-of-polls-multiple">\n';
+        for (const size of sizes) {
+            const chartLayout = layout.singlePoll(size[0], size[1], d, false);
+            value += nunjucks.render( 'single-poll.svg', chartLayout );
+        }
+        value += '\n</div>';
+
+        if (!d.nocache) {
+            cache.set(req.path, value);
+        } else {
+            bertha.invalidate();
+        }
+        checkData();
+
+    }
+    setHTMLHeaders(res).send(value);
+});
+
 app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
     let value = cache.get(req.path);
     if(!value){
@@ -323,6 +349,13 @@ function pollOfPolls(date){
 function setSVGHeaders(res){
     res.setHeader('Access-Control-Allow-Origin', '*');  
     res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
+    return res;
+}
+
+function setHTMLHeaders(res){
+    res.setHeader('Access-Control-Allow-Origin', '*');  
+    res.setHeader('Content-Type', 'text/html');
     res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
     return res;
 }
