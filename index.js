@@ -206,19 +206,19 @@ app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
 });
 
 // poll of polls - multiple svgs in one response
-app.get('/poll-of-polls/multiple/:sizes.html',function(req, res){
+app.get('/poll-of-polls/multiple/:sizes.json',function(req, res){
     let value = cache.get(req.path);
     if (!value) {
         const sizes = req.params.sizes.split('_').map(string => string.split('-x-'));
 
         const d = pollOfPolls();
 
-        value = '<div class="poll-of-polls-multiple">\n';
+        value = [];
         for (const size of sizes) {
             const chartLayout = layout.singlePoll(size[0], size[1], d, false);
-            value += nunjucks.render( 'single-poll.svg', chartLayout );
+            value.push(nunjucks.render( 'single-poll.svg', chartLayout ));
         }
-        value += '\n</div>';
+        value = JSON.stringify(value);
 
         if (!d.nocache) {
             cache.set(req.path, value);
@@ -228,7 +228,7 @@ app.get('/poll-of-polls/multiple/:sizes.html',function(req, res){
         checkData();
 
     }
-    setHTMLHeaders(res).send(value);
+    setJSONHeaders(res).send(value);
 });
 
 app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
@@ -353,9 +353,9 @@ function setSVGHeaders(res){
     return res;
 }
 
-function setHTMLHeaders(res){
+function setJSONHeaders(res){
     res.setHeader('Access-Control-Allow-Origin', '*');  
-    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Content-Type', 'application/json');
     res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
     return res;
 }
