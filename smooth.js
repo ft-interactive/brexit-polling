@@ -3,7 +3,7 @@ const	d3Array = require('d3-array');
 
 
 function calculateMeans(data, date){
-	data = data.sort(function(a,b){return b.remain - a.remain});
+	data = data.sort(function(a,b){return (b.remain-b.leave) - (a.remain-a.leave)});
 	data = data.slice(Math.min(1,data.length-1),Math.min(6,data.length));
 	data = data.sort(function(a,b){return b.date - a.date});
 	data.forEach(function(d,i){
