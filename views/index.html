@@ -24,18 +24,18 @@
 .enhanced .o--if-no-js {
     display: none !important;
 }
-    
+
 html {
   -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%; 
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  margin: 0; 
+  margin: 0;
 }
 
 img {
-  border: 0; 
+  border: 0;
 }
 
 button,
@@ -53,17 +53,17 @@ textarea {
 }
 
 button {
-  overflow: visible; 
+  overflow: visible;
 }
 
 button, select {
-  text-transform: none; 
+  text-transform: none;
 }
 
 button::-moz-focus-inner,
 input::-moz-focus-inner {
   border: 0;
-  padding: 0; 
+  padding: 0;
 }
 
 textarea { overflow: auto; }
@@ -72,14 +72,14 @@ body {
   background-color: #fff1e0;
   margin: 0;
   border: 0;
-  font-family: MetricWeb, sans-serif; 
+  font-family: MetricWeb, sans-serif;
   color: #43423e;
 }
 
 .site-header {
   padding: 18px 0 14px;
   text-align: center;
-  border-bottom: 1px solid #e9decf; 
+  border-bottom: 1px solid #e9decf;
 }
 .site-header > a { opacity: 0.75; }
 .site-header > a:hover {  opacity: 1; }
@@ -124,10 +124,20 @@ body {
     max-width:600px;
 }
 
-.article p a {
+.article p a, .article li a {
     color: #27757b;
     border-bottom: 1px dotted #27757b;
     text-decoration: none;
+}
+
+.article ul {
+  list-style-type: square;
+}
+
+.article li {
+  text-align: left;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .article a:hover {
@@ -137,7 +147,7 @@ body {
 table{
     margin-left: auto;
     margin-right: auto;
-    
+
 }
 
 th {
@@ -236,7 +246,7 @@ p.off-link a:after {
   text-decoration: none;
   font-style: normal;
   display:block;
-  width:100%; 
+  width:100%;
 }
 
 .stories__container{
@@ -286,9 +296,9 @@ a {
 
 @media (max-width: 500px) {
   .x.axis{
-     font-size: 24px; 
+     font-size: 24px;
   }
-  
+
   .y.axis{
       font-size:24px;
   }
@@ -325,18 +335,25 @@ a {
         <div class="stand-first">
           <p>The UK will hold a referendum on June 23 to decide if it will stay in or leave the European Union. This page summarises the opinion polling on the matter.</p>
         </div>
-        
-        <!--{{ latest.updated }}--><h2 class="article__crosshead-alt">Latest developments</h2>        
+
+        <!--{{ latest.updated }}--><h2 class="article__crosshead-alt">Latest developments</h2>
         <div class="single chart">
             {{ singleChart | safe }}
         </div>
-        
+
         <div class="intro">
         {{ latest.text | safe }}
         <p class="off-link"><a href="http://www.ft.com/eu-referendum">Full Brexit coverage</a></p>
         </div>
         <div class="time chart">
             {{ timeChart | safe }}
+        </div>
+        <div>
+          <ul>
+          <li><a href="http://www.ft.com/cms/s/2/6a63c2ca-2d80-11e6-bf8d-26294ad519fc.html">Online or Telephone, why does it matter?</a></li>
+          <li><a href="http://www.ft.com/cms/s/2/6a63c2ca-2d80-11e6-bf8d-26294ad519fc.html">How accurate are the polls?</a></li>
+          <li><a href="http://blogs.ft.com/ftdata/2016/06/09/eu-referendum-can-we-trust-the-polls-alternative-prediction-models/">Do pollsters have the right approach or can alternative methods do better?</a></li>
+        </ul>
         </div>
         <div>
           {{ storyList | safe }}
@@ -367,7 +384,7 @@ a {
                 {% endfor %}
             </tbody>
         </table>
-        
+
 
             <p class="source">
             Source : FT Research
@@ -375,7 +392,7 @@ a {
              <p class="note">* The FT poll of polls is calculated by taking the last seven polls from unique pollsters up to a given date, removing the two polls with the highest and lowest shares for 'remain', and calculating an adjusted average of the five remaining polls, where the more recent polls are given a higher weight<p>
 
     </main>
-  
+
 <footer class="o-footer o-footer--theme-light" data-o-component="o-footer">
   <div class="o-footer__container">
     <nav class="o-footer__row o-footer__nav">
