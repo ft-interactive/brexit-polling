@@ -29,8 +29,8 @@
 			<rect x="{{ (remain.width + undecided.width) }}" y="0" width="{{ leave.width }}" height="{{ leave.height }}" fill="{{ leave.fill }}" class="leave"></rect>
 			<rect x="{{ remain.width }}" y="0" width="{{ undecided.width }}" height="{{ undecided.height }}" fill="{{ undecided.fill }}" class="undecided"></rect>
 			{% if not small %}
-            <text font-weight="100" y="{{ remain.height }}" x="{{ remain.labelPosition }}" dy="{{ valueLabelOffset.y }}" dx="-{{ valueLabelOffset.x }}" text-anchor="end" font-size="{{ valueLabelSize }}px" font-family="MetricWeb,sans-serif" fill="{{ remain.fontFill }}">{{ remain.value }}%</text>
-			<text font-weight="100" y="{{ leave.height }}" x="{{ leave.labelPosition }}" dy="{{ valueLabelOffset.y }}" dx="{{ valueLabelOffset.x }}"  font-size="{{ valueLabelSize }}px" font-family="MetricWeb,sans-serif" fill="{{ leave.fontFill }}">{{ leave.value }}%</text>
+            <text font-weight="200" y="{{ remain.height }}" x="{{ remain.labelPosition }}" dy="{{ valueLabelOffset.y }}" dx="-{{ valueLabelOffset.x }}" text-anchor="{{ remain.anchor }}" font-size="{{ valueLabelSize }}px" font-family="MetricWeb,sans-serif" fill="{{ remain.fontFill }}">{{ remain.value }}%</text>
+			<text font-weight="200" y="{{ leave.height }}" x="{{ leave.labelPosition }}" dy="{{ valueLabelOffset.y }}" dx="{{ valueLabelOffset.x }}"  text-anchor="{{ leave.anchor }}" font-size="{{ valueLabelSize }}px" font-family="MetricWeb,sans-serif" fill="{{ leave.fontFill }}">{{ leave.value }}%</text>
             {% endif %}
 			<line x1="{{ width/2 }}" y1="-3" x2="{{ width/2 }}" y2="{{ remain.height + 2 }}" stroke-width="2" stroke="{{ fontColour }}" stroke-dasharray="2, 2"></line>
 		</g>
