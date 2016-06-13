@@ -45,7 +45,7 @@ function singlePollLayout(width, height, data, metricEmbed){
 	data.date = new Date(data.date);
     if(data.pollOfPolls){
 <<<<<<< HEAD
-        footer = 'FT poll of polls. Last poll on ' + ftDateFormat(data.date);
+        footer = 'FT poll of polls. Fieldwork for most recent poll ended on ' + ftDateFormat(data.date);
     }
 =======
 		console.log(data)
