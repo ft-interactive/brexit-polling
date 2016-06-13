@@ -42,7 +42,7 @@ function singlePollLayout(width, height, data, metricEmbed){
     let footer  = small ? '' : `${data.pollster}. ${ftTruncatedDateFormat(data.startDate)} - ${ftDateFormat(data.endDate)}. ${sampleString}`;
 
     if(data.pollOfPolls){
-        footer = 'FT poll of polls. ' + ftDateFormat(data.date);
+        footer = 'FT poll of polls. Last poll on ' + ftDateFormat(data.date);
     }
 
     let plotHeight = height-(margin.top+margin.bottom);
