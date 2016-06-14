@@ -153,6 +153,17 @@ app.get('/data.html', function (req, res) {
 
 //graphics
 //SINGLE POLL
+app.get('/poll/fontless/:id/:width-x-:height.svg', function (req, res) {
+    let value = cache.get(req.path);
+    if(!value){
+        let chartLayout = layout.singlePoll(req.params.width, req.params.height, getDataByID( req.params.id ), false);
+        value = nunjucks.render( 'single-poll.svg' ,  chartLayout);
+        cache.set(req.path, value);
+        checkData();
+    }
+    setSVGHeaders(res).send(value)
+});
+
 app.get('/poll/:id/:width-x-:height-:background.svg', function(req,res){
     let value = cache.get(req.path);
     if(!value){
@@ -176,34 +187,7 @@ app.get('/poll/:id/:width-x-:height.svg', function (req, res) {
     setSVGHeaders(res).send(value)
 });
 
-app.get('/poll/fontless/:id/:width-x-:height.svg', function (req, res) {
-    let value = cache.get(req.path);
-    if(!value){
-        let chartLayout = layout.singlePoll(req.params.width, req.params.height, getDataByID( req.params.id ), false);
-        value = nunjucks.render( 'single-poll.svg' ,  chartLayout);
-        cache.set(req.path, value);
-        checkData();
-    }
-    setSVGHeaders(res).send(value)
-});
-
 //POLL OF POLLS
-app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
-    let value = cache.get(req.path);
-    if(!value){
-        let d = pollOfPolls();
-        let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, true);
-        chartLayout.background = '#' + req.params.background;
-        value = nunjucks.render( 'single-poll.svg', chartLayout );
-        if(!d.nocache){
-            cache.set(req.path, value);
-        }else{
-            bertha.invalidate();
-        }
-        checkData();
-    }
-    setSVGHeaders(res).send(value);
-});
 
 // poll of polls - multiple svgs in one response
 app.get('/poll-of-polls/multiple/:sizes.json',function(req, res){
@@ -229,6 +213,39 @@ app.get('/poll-of-polls/multiple/:sizes.json',function(req, res){
 
     }
     setJSONHeaders(res).send(value);
+});
+
+app.get('/poll-of-polls/fontless/:width-x-:height.svg',function(req, res){
+    let value = cache.get(req.path);
+    if(!value){
+        let d = pollOfPolls();
+        let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, false);
+        value = nunjucks.render( 'single-poll.svg', chartLayout );
+        if(!d.nocache){
+            cache.set(req.path, value);
+        }else{
+            bertha.invalidate();
+        }
+        checkData();
+    }
+    setSVGHeaders(res).send(value);
+});
+
+app.get('/poll-of-polls/:width-x-:height-:background.svg',function(req, res){
+    let value = cache.get(req.path);
+    if(!value){
+        let d = pollOfPolls();
+        let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, true);
+        chartLayout.background = '#' + req.params.background;
+        value = nunjucks.render( 'single-poll.svg', chartLayout );
+        if(!d.nocache){
+            cache.set(req.path, value);
+        }else{
+            bertha.invalidate();
+        }
+        checkData();
+    }
+    setSVGHeaders(res).send(value);
 });
 
 app.get('/poll-of-polls/:width-x-:height.svg',function(req, res){
@@ -263,29 +280,13 @@ app.get('/poll-of-polls/:date/:width-x-:height.svg',function(req, res){
     setSVGHeaders(res).send(value);
 });
 
-app.get('/poll-of-polls/fontless/:width-x-:height.svg',function(req, res){
-    let value = cache.get(req.path);
-    if(!value){
-        let d = pollOfPolls();
-        let chartLayout = layout.singlePoll(req.params.width, req.params.height, d, false);
-        value = nunjucks.render( 'single-poll.svg', chartLayout );
-        if(!d.nocache){
-            cache.set(req.path, value);
-        }else{
-            bertha.invalidate();
-        }
-        checkData();
-    }
-    setSVGHeaders(res).send(value);
-});
-
 //TIME SERIES
 
-app.get('/polls/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
+app.get('/polls/fontless/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
     let value = cache.get(req.path);
-    if(!value){        
+    if(!value){
         let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
-        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, true);
+        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, false);
         chartLayout.background = '#' + req.params.background;
         value = nunjucks.render( 'time-series.svg' , chartLayout );
         checkData();
@@ -293,11 +294,22 @@ app.get('/polls/:startdate,:enddate/:width-x-:height-:background.svg', function 
     setSVGHeaders(res).send(value);
 });
 
-app.get('/polls/fontless/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
+app.get('/polls/fontless/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
-    if(!value){        
+    if(!value){
         let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
         let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, false);
+        value = nunjucks.render( 'time-series.svg' , chartLayout );
+        checkData();
+    }
+    setSVGHeaders(res).send(value);
+});
+
+app.get('/polls/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
+    let value = cache.get(req.path);
+    if(!value){
+        let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
+        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, true);
         chartLayout.background = '#' + req.params.background;
         value = nunjucks.render( 'time-series.svg' , chartLayout );
         checkData();
@@ -307,20 +319,9 @@ app.get('/polls/fontless/:startdate,:enddate/:width-x-:height-:background.svg', 
 
 app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
-    if(!value){        
+    if(!value){
         let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
         let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, true);
-        value = nunjucks.render( 'time-series.svg' , chartLayout );
-        checkData();
-    }
-    setSVGHeaders(res).send(value);
-});
-
-app.get('/polls/fontless/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
-    let value = cache.get(req.path);
-    if(!value){        
-        let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
-        let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, false);
         value = nunjucks.render( 'time-series.svg' , chartLayout );
         checkData();
     }
@@ -347,14 +348,14 @@ function pollOfPolls(date){
 }
 
 function setSVGHeaders(res){
-    res.setHeader('Access-Control-Allow-Origin', '*');  
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'image/svg+xml');
     res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
     return res;
 }
 
 function setJSONHeaders(res){
-    res.setHeader('Access-Control-Allow-Origin', '*');  
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Cache-Control', 'public, max-age=' + maxAge);
     return res;
@@ -423,7 +424,7 @@ function getDataByID(id){
     return d;
 }
 
-function checkData(){   //for getting the latest data 
+function checkData(){   //for getting the latest data
     let now = new Date();
     if(now.getTime() - bertha.updated().getTime() >= 60000){
         data = bertha.updateData();
