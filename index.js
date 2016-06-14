@@ -92,7 +92,7 @@ app.get('/', function(req, res){
             data: data.combinedData.reverse(),
             updated: bertha.updated(),
             source: 'FT Research',
-            remain:{ label:'Stay', tint:colours.remainTint },
+            remain:{ label:'Remain', tint:colours.remainTint },
             leave:{ label:'Leave', tint:colours.leaveTint  },
             undecided:{ label:'Undecided' },
             timeChart:nunjucks.render( 'time-series.svg',  timeSeriesLayout),

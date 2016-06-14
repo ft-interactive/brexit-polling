@@ -44,7 +44,7 @@ function singlePollLayout(width, height, data, metricEmbed){
     let footer = '';
 	data.date = new Date(data.date);
     if(data.pollOfPolls){
-    	footer = small ? '' : 'FT poll of polls. ' + ftDateFormat(data.date);
+        footer = small ? '' : 'FT poll of polls, updated ' + ftDateFormat(new Date());
     }else{
 		footer = small ? '' : `${data.pollster}. ${ftDateFormat(data.date)}. ${sampleString}`;
 	}
@@ -91,7 +91,7 @@ function singlePollLayout(width, height, data, metricEmbed){
 			anchor:leaveValueAnchor,
 		},
 		remain:{
-			title:small ? 'Stay - ' + data.remain + '%' : 'Stay',
+			title:small ? 'Remain - ' + data.remain + '%' : 'Remain',
 			width:scale(data.remain),
 			height:barHeight,
 			value:data.remain,
