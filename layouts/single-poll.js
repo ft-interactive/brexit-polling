@@ -91,7 +91,7 @@ function singlePollLayout(width, height, data, metricEmbed){
 			anchor:leaveValueAnchor,
 		},
 		remain:{
-			title:small ? 'Stay - ' + data.remain + '%' : 'Stay',
+			title:small ? 'Remain - ' + data.remain + '%' : 'Remain',
 			width:scale(data.remain),
 			height:barHeight,
 			value:data.remain,
