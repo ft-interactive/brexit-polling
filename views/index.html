@@ -17,7 +17,7 @@
 
     <title>{{ title }}</title>
 
-    <link rel="stylesheet" href="https://origami-build.ft.com/v2/bundles/css?modules=o-footer@^4,o-fonts@^2,o-grid@^4.0.8">
+    <link rel="stylesheet" href="https://origami-build.ft.com/v2/bundles/css?modules=o-footer@^4,o-fonts@^2,o-grid@^4.0.8,o-ads@^4.3.2">
 
     <style>
 .core .o--if-js,
@@ -304,6 +304,65 @@ a {
   }
 }
 
+
+.above-header-advert {
+    display: block;
+    padding: 10px 0;
+}
+
+.advert--background {
+    background-color: #e9decf;
+    background-image: -webkit-repeating-linear-gradient(315deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2) 1.5px, transparent 0, transparent 3px);
+    background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2) 1.5px, transparent 0, transparent 3px);
+    background-size: 4px 4px
+}
+.advert--transition {
+    will-change: min-height, padding, height;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-transition: height .35s ease-in-out, min-height .35s ease-in-out, padding .35s ease-in-out;
+    transition: height .35s ease-in-out, min-height .35s ease-in-out, padding .35s ease-in-out
+}
+.advert--reserve-90 {
+    min-height: 90px;
+    height: 90px
+}
+.advert--reserve-90[data-o-ads-loaded=Billboard],
+.advert--reserve-90[data-o-ads-loaded=MediumRectangle] {
+    height: 250px
+}
+.advert--reserve-250 {
+    height: 250px;
+    min-height: 250px;
+    padding: 10px 0
+}
+.advert--reserve-250[data-o-ads-loaded=Leaderboard] .o-ads__outer,
+.advert--reserve-250[data-o-ads-loaded=SuperLeaderboard] .o-ads__outer {
+    position: relative;
+    top: 50%;
+    margin-top: -45px
+}
+.advert--reserve-90[data-o-ads-loaded=Responsive],
+.advert--reserve-250[data-o-ads-loaded=Responsive] {
+    height: 250px;
+    min-height: 250px;
+    padding: 10px 0
+}
+@media (max-width: 90em) {
+    .advert--reserve-90[data-o-ads-loaded=Responsive],
+    .advert--reserve-250[data-o-ads-loaded=Responsive] {
+        height: auto;
+        min-height: 17.34vw;
+        padding: 0
+    }
+}
+@media (max-width: 30.615em) {
+    .advert--reserve-90[data-o-ads-loaded=Responsive],
+    .advert--reserve-250[data-o-ads-loaded=Responsive] {
+        height: auto;
+        min-height: 48.1vw
+    }
+}
     </style>
 
     <link href="https://plus.google.com/113457471429583444041/" rel="publisher" />
@@ -318,10 +377,28 @@ a {
       ga('send', 'pageview');
       </script>
 
+      <script data-o-ads-config="" type="application/json">
+      {
+      	"gpt": {
+      		"network": 5887,
+      		"site": "test.5887.origami"
+      	},
+      	"responsive": {
+      		"large": [600, 0],
+      		"small": [0, 0]
+      	}
+      }
+      </script>
+
   </head>
     <body>
 
-		<script>(function(){function init(){var oTracking=Origami['o-tracking'];oTracking.init({server:'https://spoor-api.ft.com/px.gif',system:{is_live:true},context:{product:'IG'}});oTracking.link.init();oTracking.page({content:{asset_type:'interactive',uuid:'5c8c7e2e-d715-11e5-829b-8564e7528e54',microsite_name: 'Brexit Polling'}});}var o=document.createElement('script');o.async=o.defer=true;o.src='https://origami-build.ft.com/v2/bundles/js?modules=o-tracking';var s=document.getElementsByTagName('script')[0];if(o.hasOwnProperty('onreadystatechange')){o.onreadystatechange=function(){if(o.readyState==='loaded'){init();}};}else{o.onload=init;}s.parentNode.insertBefore(o,s);}());</script><noscript data-o-component="o-tracking"><img src="https://spoor-api.ft.com/px.gif?data=%7B%22action%22%3A%22view%22%2C%22category%22%3A%22page%22%2C%22context%22%3A%7B%22content%22%3A%7B%22asset_type%22%3A%22interactive%22%2C%22uuid%22%3A%225c8c7e2e-d715-11e5-829b-8564e7528e54%22%7D%2C%22product%22%3A%22IG%22%2C%22microsite_name%22%3A%22Brexit Polling%22%7D%2C%22system%22%3A%7B%22is_live%22%3Atrue%2C%22apiKey%22%3A%22qUb9maKfKbtpRsdp0p2J7uWxRPGJEP%22%2C%22source%22%3A%22o-tracking-ns%22%2C%22version%22%3A%221.0.0%22%7D%7D" height="1" width="1" /></noscript>
+		<script>(function(){function init(){var oTracking=Origami['o-tracking'];oTracking.init({server:'https://spoor-api.ft.com/px.gif',system:{is_live:true},context:{product:'IG'}});oTracking.link.init();oTracking.page({content:{asset_type:'interactive',uuid:'5c8c7e2e-d715-11e5-829b-8564e7528e54',microsite_name: 'Brexit Polling'}});}var o=document.createElement('script');o.async=o.defer=true;o.src='https://origami-build.ft.com/v2/bundles/js?modules=o-tracking,o-ads@^4.3.2';var s=document.getElementsByTagName('script')[0];if(o.hasOwnProperty('onreadystatechange')){o.onreadystatechange=function(){if(o.readyState==='loaded'){init();}};}else{o.onload=init;}s.parentNode.insertBefore(o,s);}());</script><noscript data-o-component="o-tracking"><img src="https://spoor-api.ft.com/px.gif?data=%7B%22action%22%3A%22view%22%2C%22category%22%3A%22page%22%2C%22context%22%3A%7B%22content%22%3A%7B%22asset_type%22%3A%22interactive%22%2C%22uuid%22%3A%225c8c7e2e-d715-11e5-829b-8564e7528e54%22%7D%2C%22product%22%3A%22IG%22%2C%22microsite_name%22%3A%22Brexit Polling%22%7D%2C%22system%22%3A%7B%22is_live%22%3Atrue%2C%22apiKey%22%3A%22qUb9maKfKbtpRsdp0p2J7uWxRPGJEP%22%2C%22source%22%3A%22o-tracking-ns%22%2C%22version%22%3A%221.0.0%22%7D%7D" height="1" width="1" /></noscript>
+
+
+
+
+    <div class="o-ads above-header-advert advert advert--background advert--transition advert--reserve-90 o-ads--center" data-o-ads-name="entry" data-o-ads-center="true" data-o-ads-targeting="pos=top" data-o-ads-formats-default="false" data-o-ads-formats-small="false" data-o-ads-formats-medium="Leaderboard,Responsive" data-o-ads-formats-large="SuperLeaderboard,Leaderboard,Responsive" data-o-ads-formats-extra="Billboard,SuperLeaderboard,Leaderboard,Responsive" data-o-ads-lazy-load="true" aria-hidden="true"></div>
 
     <header class="site-header" role="banner">
       <a href="http://www.ft.com/">
@@ -358,6 +435,8 @@ a {
         <div>
           {{ storyList | safe }}
         </div>
+
+    <div class="o-ads above-header-advert advert advert--reserve-90 o-ads--center" data-o-ads-name="mid" data-o-ads-center="true" data-o-ads-targeting="pos=mid" data-o-ads-formats="MediumRectangle,Responsive" data-o-ads-lazy-load="true" aria-hidden="true"></div>
 
         <h2 class="article__crosshead-alt">Full list of individual polls</h2>
         <table>
