@@ -367,7 +367,7 @@ function getDateDomain(start, end){
     let titleOverride = null;
 
     if(end === 'now'){
-        endDate = new Date();
+        endDate = new Date(2016,5,23);
         if(start === 'month'){
             startDate = new Date();
             startDate.setMonth(startDate.getMonth()-1);
