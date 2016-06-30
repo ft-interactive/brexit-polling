@@ -74,7 +74,7 @@ app.get('/', function(req, res){
     if(!value){
         let latest = story.data;
         let d = pollOfPolls();
-        let endDate = new Date();
+        let endDate = new Date(2016,5,23);
         let startDate = new Date(2015,8,1);
         // startDate.setYear( endDate.getFullYear()-1);
         let timeSeriesLayout = layout.timeSeries(600, 400, [startDate, endDate], data, 'Polling movement since September 2015', false);
@@ -285,7 +285,7 @@ app.get('/poll-of-polls/:date/:width-x-:height.svg',function(req, res){
 app.get('/polls/fontless/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
     let value = cache.get(req.path);
     if(!value){
-        let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
+        let dateDomain = [new Date(2015,8,1), new Date(2016,5,23)];
         let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, false);
         chartLayout.background = '#' + req.params.background;
         value = nunjucks.render( 'time-series.svg' , chartLayout );
@@ -297,7 +297,7 @@ app.get('/polls/fontless/:startdate,:enddate/:width-x-:height-:background.svg', 
 app.get('/polls/fontless/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
     if(!value){
-        let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
+        let dateDomain = [new Date(2015,8,1), new Date(2016,5,23)];
         let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, false);
         value = nunjucks.render( 'time-series.svg' , chartLayout );
         checkData();
@@ -308,7 +308,7 @@ app.get('/polls/fontless/:startdate,:enddate/:width-x-:height.svg', function (re
 app.get('/polls/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
     let value = cache.get(req.path);
     if(!value){
-        let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
+        let dateDomain = [new Date(2015,8,1), new Date(2016,5,23)];
         let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, true);
         chartLayout.background = '#' + req.params.background;
         value = nunjucks.render( 'time-series.svg' , chartLayout );
@@ -320,7 +320,7 @@ app.get('/polls/:startdate,:enddate/:width-x-:height-:background.svg', function 
 app.get('/polls/:startdate,:enddate/:width-x-:height.svg', function (req, res) {
     let value = cache.get(req.path);
     if(!value){
-        let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
+        let dateDomain = [new Date(2015,8,1), new Date(2016,5,23)];
         let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, true);
         value = nunjucks.render( 'time-series.svg' , chartLayout );
         checkData();
@@ -367,7 +367,7 @@ function getDateDomain(start, end){
     let titleOverride = null;
 
     if(end === 'now'){
-        endDate = new Date();
+        endDate = new Date(2016,5,23);
         if(start === 'month'){
             startDate = new Date();
             startDate.setMonth(startDate.getMonth()-1);
