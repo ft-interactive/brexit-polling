@@ -285,7 +285,7 @@ app.get('/poll-of-polls/:date/:width-x-:height.svg',function(req, res){
 app.get('/polls/fontless/:startdate,:enddate/:width-x-:height-:background.svg', function (req, res) {
     let value = cache.get(req.path);
     if(!value){
-        let dateDomain = getDateDomain(req.params.startdate, req.params.enddate);
+        let dateDomain = [new Date(2015,8,1), new Date(2016,5,23)];
         let chartLayout = layout.timeSeries(req.params.width, req.params.height, dateDomain.domain, data, dateDomain.title, false);
         chartLayout.background = '#' + req.params.background;
         value = nunjucks.render( 'time-series.svg' , chartLayout );

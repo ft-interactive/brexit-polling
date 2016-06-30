@@ -44,7 +44,7 @@ function singlePollLayout(width, height, data, metricEmbed){
     let footer = '';
 	data.date = new Date(data.date);
     if(data.pollOfPolls){
-        footer = small ? '' : 'FT poll of polls, updated ' + ftDateFormat(new Date());
+        footer = small ? '' : 'FT poll of polls, updated ' + ftDateFormat(new Date(2016,5,23));
     }else{
 		footer = small ? '' : `${data.pollster}. ${ftDateFormat(data.date)}. ${sampleString}`;
 	}
