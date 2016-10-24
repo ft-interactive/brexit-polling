@@ -1,7 +1,7 @@
 'use strict';
 const	request = require('request');
 
-let berthaURL = 'http://bertha.ig.ft.com/republish/publish/ig/1GEBwWBf6IZ2S4WOdv_sv6QNqrdD8LNxLLoZKPGA5VxA/basic,stories';
+let berthaURL = 'http://bertha.ig.ft.com/view/publish/ig/1GEBwWBf6IZ2S4WOdv_sv6QNqrdD8LNxLLoZKPGA5VxA/basic,stories';
 var data = [];
 let updated = new Date(2015,0,1);
 
