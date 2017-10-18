@@ -1,0 +1,11 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/project
+    docker:
+      - image: node:8
+    steps:
+      - checkout
+      - run: cd archive && npm install
+      - deploy:
+          command: cd archive && ./node_modules/.bin/ft-graphics-deploy --assets-prefix=https://ig.ft.com/v2/__assets/ --confirm
