@@ -7,7 +7,6 @@
   "description": "scrape brexit polls from wikipedia page then present it in some ways",
   "main": "index.js",
   "scripts": {
-    "deploy": "ft-graphics-deploy --assets-prefix=https://ig.ft.com/v2/__assets/",
     "start": "node index.js",
     "test": "node test.js",
     "dev": "nodemon -e js,html,svg"
@@ -26,8 +25,5 @@
     "lru-cache": "^4.0.0",
     "nunjucks": "^2.2.0",
     "request": "^2.69.0"
-  },
-  "devDependencies": {
-    "ft-graphics-deploy": "^2.1.4"
   }
 }

@@ -6,12 +6,11 @@ jobs:
       - image: node:8
     steps:
       - checkout
+      - run:
+        name: Install deps
+        command: |
+          cd archive
+          npm install
       - deploy:
           name: Deploy
-          command: |
-            if [ "$PREVIEW" == "true" ]
-            then
-              npm run deploy -- --confirm --preview
-            else
-              npm run deploy -- --confirm
-            fi
+          command: ./archive/node_modules/.bin/ft-graphics-deploy --assets-prefix=https://ig.ft.com/v2/__assets/
