@@ -1,0 +1,17 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/project
+    docker:
+      - image: node:8
+    steps:
+      - checkout
+      - deploy:
+          name: Deploy
+          command: |
+            if [ "$PREVIEW" == "true" ]
+            then
+              npm run deploy -- --confirm --preview
+            else
+              npm run deploy -- --confirm
+            fi
